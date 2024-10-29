@@ -22,7 +22,7 @@ class LoginState extends State<Login> {
       child: Padding(
         padding:
             const EdgeInsets.only(top: 32, left: 24, right: 24, bottom: 32),
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height - 64,
           width: MediaQuery.of(context).size.height - 48,
           child: Stack(
