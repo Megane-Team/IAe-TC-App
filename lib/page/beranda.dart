@@ -157,22 +157,14 @@ class BerandaState extends State<Beranda> {
                             itemCount: places.length,
                             itemBuilder: (context, index) {
                               return Container(
+                                width: MediaQuery.of(context).size.width-200,
+                                height: 200,
                                 decoration: BoxDecoration(
+                                  color: Colors.black,
                                   borderRadius: BorderRadius.circular(12),
                                   image: DecorationImage(
-                                    image: NetworkImage(places[index]['photo']!),
+                                    image: AssetImage(places[index]['photo']!),
                                     fit: BoxFit.cover,
-                                  ),
-                                ),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Container(
-                                    color: Colors.black54,
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      places[index]['name']!,
-                                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
-                                    ),
                                   ),
                                 ),
                               );
@@ -193,23 +185,35 @@ class BerandaState extends State<Beranda> {
   List<Map<String, String>> places = [
     {
       'name': 'Central Park',
-      'photo': 'image.png',
+      'photo': 'assets/images/logos/inventara.png',
     },
     {
       'name': 'Eiffel Tower',
-      'photo': 'image.png',
+      'photo': 'assets/images/logos/inventara.png',
     },
     {
       'name': 'Great Wall of China',
-      'photo': 'image.png',
+      'photo': 'assets/images/logos/inventara.png',
     },
     {
       'name': 'Sydney Opera House',
-      'photo': 'image.png',
+      'photo': 'assets/images/logos/inventara.png',
     },
     {
       'name': 'Statue of Liberty',
-      'photo': 'image.png',
+      'photo': 'assets/images/logos/inventara.png',
+    },
+    {
+      'name': 'Statue of Liberty',
+      'photo': 'assets/images/logos/inventara.png',
+    },
+    {
+      'name': 'Statue of Liberty',
+      'photo': 'assets/images/logos/inventara.png',
+    },
+    {
+      'name': 'Statue of Liberty',
+      'photo': 'assets/images/logos/inventara.png',
     },
   ];
 }
