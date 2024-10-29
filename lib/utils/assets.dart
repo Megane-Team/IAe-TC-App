@@ -1,5 +1,5 @@
 class Assets {
-  static const path = 'assets/images/';
+  static const path = 'assets/images';
 
   static String logos(String name) {
     return '$path/logos/$name.png';
