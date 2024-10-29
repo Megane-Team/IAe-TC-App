@@ -34,6 +34,14 @@ dependencies:
   go_router: ^14.3.0
   http: ^1.2.2
   google_fonts: ^6.2.1
+  flutter_native_splash: ^2.4.2
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/logos/inventara.png
+  android_12:
+    color: "#ffffff"
+    image: assets/images/logos/inventara.png
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +59,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  assets:
+    - assets/images/
+    - assets/images/logos/
+    - assets/images/icons/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
