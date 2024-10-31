@@ -152,39 +152,38 @@ class BerandaState extends State<Beranda> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                if (isGedungActive) {
-                                  places = List.from(originalPlaces);
-                                } else {
-                                  places.sort((a, b) => a['kategori']!
-                                      .compareTo(b['kategori']!));
-                                }
-                                isGedungActive = !isGedungActive;
-                                isParkiranActive = false;
-                              });
-                            },style: ElevatedButton.styleFrom(
-                              backgroundColor: isGedungActive
-                                  ? Colors.orange
-                                  : Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
+                              onPressed: () {
+                                setState(() {
+                                  if (isGedungActive) {
+                                    places = List.from(originalPlaces);
+                                  } else {
+                                    places.sort((a, b) => a['kategori']!
+                                        .compareTo(b['kategori']!));
+                                  }
+                                  isGedungActive = !isGedungActive;
+                                  isParkiranActive = false;
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: isGedungActive
+                                    ? Colors.orange
+                                    : Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                shadowColor: Colors.black,
+                                elevation: 2,
                               ),
-                              shadowColor: Colors.black,
-                              elevation: 2,
-                            ),
-                            child: Text(
-                              'Gedung',
-                              style: TextStyle(
-                                color: isGedungActive
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            )
-
-                          ),
+                              child: Text(
+                                'Gedung',
+                                style: TextStyle(
+                                  color: isGedungActive
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              )),
                           const Gap(18),
                           ElevatedButton(
                             onPressed: () {
@@ -192,8 +191,8 @@ class BerandaState extends State<Beranda> {
                                 if (isParkiranActive) {
                                   places = List.from(originalPlaces);
                                 } else {
-                                  places.sort((a, b) => b['kategori']!
-                                      .compareTo(a['kategori']!));
+                                  places.sort((a, b) =>
+                                      b['kategori']!.compareTo(a['kategori']!));
                                 }
                                 isParkiranActive = !isParkiranActive;
                                 isGedungActive = false;
@@ -282,7 +281,8 @@ class BerandaState extends State<Beranda> {
                                       const Gap(14),
                                       Text(
                                         places[index]['name']!,
-                                        style: const TextStyle(color: Colors.black),
+                                        style: const TextStyle(
+                                            color: Colors.black),
                                       ),
                                     ],
                                   ),
