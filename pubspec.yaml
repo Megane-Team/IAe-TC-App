@@ -35,7 +35,6 @@ dependencies:
   http: ^1.2.2
   google_fonts: ^6.2.1
   flutter_native_splash: ^2.4.2
-  gap: ^3.0.1
 
 flutter_native_splash:
   color: "#ffffff"
