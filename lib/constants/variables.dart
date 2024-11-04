@@ -1,1 +1,1 @@
-const apiBaseURI = 'https://192.168.1.253:3000';
+const apiBaseURl = 'https://192.168.1.253:3000';
