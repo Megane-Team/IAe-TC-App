@@ -149,9 +149,11 @@ class RuanganState extends State<Ruangan> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height - 400,
                     child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: Kelas_1.map((item) => item['name']).toSet().length,
                       itemBuilder: (context, index) {
-                        final uniqueNames = Kelas_1.map((item) => item['name']).toSet().toList();
+                        final uniqueNames = Kelas_1.map((item) => item['name']).toSet().toList()..sort();
                         return Container(
                           margin: EdgeInsets.only(bottom: 24),
                           child: Column(
@@ -175,38 +177,148 @@ class RuanganState extends State<Ruangan> {
                                   physics: NeverScrollableScrollPhysics(),
                                   itemCount: Kelas_1.where((item) => item['name'] == uniqueNames[index]).length,
                                   itemBuilder: (context, index2) {
-                                    final items = Kelas_1.where((item) => item['name'] == uniqueNames[index]).toList();
+                                    final items = Kelas_1.where((item) => item['name'] == uniqueNames[index]).toList()
+                                      ..sort((a, b) {
+                                        if (a['status'] == 'Digunakan' && b['status'] != 'Digunakan') return 1;
+                                        if (a['status'] != 'Digunakan' && b['status'] == 'Digunakan') return -1;
+                                        return int.parse(a['kode_barang']!).compareTo(int.parse(b['kode_barang']!));
+                                      });
                                     return Container(
+                                      margin: EdgeInsets.only(top: 10),
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 60,
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(16),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withOpacity(0.1),
-                                            spreadRadius: 1,
-                                            blurRadius: 4,
-                                            offset: const Offset(0, 0),
-                                          )
-                                        ]
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(16),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withOpacity(0.1),
+                                              spreadRadius: 1,
+                                              blurRadius: 4,
+                                              offset: const Offset(0, 0),
+                                            )
+                                          ]
                                       ),
-                                      child: Row(
-                                        children: [
-                                          Image.asset(items[index2]['photo']!, width: 50, height: 50,),
-                                          Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(items[index2]['name']!),
-                                                  Text(items[index2]['kode_barang']!),
-                                                ],
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.only(left: 10, right: 10),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(16),
+                                          ),
+                                          elevation: 4,
+                                          shadowColor: Colors.black.withOpacity(0.1),
+                                        ),
+                                        onPressed: items[index2]['status'] == 'Digunakan' ? null : () {
+                                          showModalBottomSheet(
+                                            showDragHandle: true,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Padding(
+                                                padding: EdgeInsets.only(left: 24, right: 24, bottom: 32),
+                                                child: Container(
+                                                  width: MediaQuery.of(context).size.width,
+                                                  height: MediaQuery.of(context).size.height/2.6,
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Container(
+                                                        width: MediaQuery.of(context).size.width,
+                                                        height: 218,
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.black,
+                                                          borderRadius: BorderRadius.circular(10),
+                                                        ),
+                                                        child: Image.asset(items[index2]['photo']!, width: 50, height: 50,),
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Text(items[index2]['name']!, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                                                          Text(' ${items[index2]['kode_barang']!}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                                                        ],
+                                                      ),
+                                                      Text('Kondisi ${items[index2]['kondisi']!}'),
+                                                      Expanded(
+                                                        child: Align(
+                                                          alignment: Alignment.bottomCenter,
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              Container(
+                                                                width: MediaQuery.of(context).size.width / 2.3,
+                                                                child: ElevatedButton(
+                                                                  onPressed: () {
+                                                                    Navigator.pop(context);
+                                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                                      const SnackBar(
+                                                                        content: Text('Barang Disimpan di Keranjang'),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                  style: ElevatedButton.styleFrom(
+                                                                    padding: EdgeInsets.zero,
+                                                                    side: BorderSide(color: Color(0xFFFCA311)),
+                                                                  ),
+                                                                  child: Text(
+                                                                    'Masukan Keranjang',
+                                                                    style: TextStyle(color: Color(0xFFFCA311), fontWeight: FontWeight.w600),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                width: MediaQuery.of(context).size.width / 2.3,
+                                                                child: ElevatedButton(
+                                                                  onPressed: () {
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                  style: ElevatedButton.styleFrom(
+                                                                    padding: EdgeInsets.zero,
+                                                                    backgroundColor: Color(0xFFFCA311),
+                                                                  ),
+                                                                  child: Text(
+                                                                    'Pinjam Barang',
+                                                                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 60,
+                                              height: 46,
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                borderRadius: BorderRadius.circular(10),
                                               ),
-                                              Text(items[index2]['kondisi']!),
-                                            ],
-                                          )
-                                        ],
-                                      )
+                                              child: Image.asset(items[index2]['photo']!, width: 50, height: 50,),
+                                            ),
+                                            Gap(4),
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(items[index2]['name']!,style: TextStyle(color: Colors.black),),
+                                                    Text(' ${items[index2]['kode_barang']!}',style: TextStyle(color: Colors.black),),
+                                                  ],
+                                                ),
+                                                Text(items[index2]['kondisi']!, style: TextStyle(color: Colors.black),),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                     );
                                   },
                                 ),
