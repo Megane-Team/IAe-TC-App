@@ -12,22 +12,22 @@ class RuanganState extends State<Ruangan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 247,
-              decoration: const BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50)
-                )
-              ),
-              child: Image.asset('assets/images/logos/inventara.png'),
+      body: Stack(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 247,
+            decoration: const BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(50),
+                bottomRight: Radius.circular(50)
+              )
             ),
-            SafeArea(
+            child: Image.asset('assets/images/logos/inventara.png'),
+          ),
+          SafeArea(
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
@@ -150,7 +150,6 @@ class RuanganState extends State<Ruangan> {
                     height: MediaQuery.of(context).size.height - 400,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
                       itemCount: Kelas_1.map((item) => item['name']).toSet().length,
                       itemBuilder: (context, index) {
                         final uniqueNames = Kelas_1.map((item) => item['name']).toSet().toList()..sort();
@@ -174,7 +173,6 @@ class RuanganState extends State<Ruangan> {
                                 padding: const EdgeInsets.only(left: 24, right: 24),
                                 child: ListView.builder(
                                   shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
                                   itemCount: Kelas_1.where((item) => item['name'] == uniqueNames[index]).length,
                                   itemBuilder: (context, index2) {
                                     final items = Kelas_1.where((item) => item['name'] == uniqueNames[index]).toList()
@@ -330,10 +328,10 @@ class RuanganState extends State<Ruangan> {
                     ),
                   )
                 ],
-              )
+              ),
             )
-          ],
-        ),
+          )
+        ],
       )
     );
   }
