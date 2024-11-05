@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:inventara/actions/login_action.dart';
 import 'package:inventara/utils/assets.dart';
 
 class Login extends StatefulWidget {
@@ -135,8 +137,29 @@ class LoginState extends State<Login> {
                           backgroundColor: Colors.orange,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8))),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {}
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          // Call login action
+                          var login = await loginAction(
+                              _emailController.text, _passwordController.text);
+
+                          if (login != true) {
+                            AlertDialog(
+                              title: const Text('Gagal'),
+                              content: const Text('Email atau password salah'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('OK'),
+                                )
+                              ],
+                            );
+                          } else {
+                            context.go('/beranda');
+                          }
+                        }
                       },
                       child: const Text('Masuk',
                           style: TextStyle(
