@@ -143,11 +143,17 @@ class LoginState extends State<Login> {
                           var login = await loginAction(_emailController.text, _passwordController.text);
 
                           if (login != true) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Email atau password salah. Silahkan coba lagi.')
+                            AlertDialog(
+                              title: const Text('Gagal'),
+                              content: const Text('Email atau password salah'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('OK'),
                                 )
+                              ],
                             );
                           } else {
                             context.go('/beranda');
