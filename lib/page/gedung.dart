@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:inventara/page/beranda.dart';
 
 class Gedung extends StatefulWidget {
-  const Gedung({Key? key}) : super(key: key);
+  const Gedung({super.key});
 
   @override
   State<Gedung> createState() => GedungState();
@@ -37,12 +37,12 @@ class GedungState extends State<Gedung> {
                     MaterialPageRoute(builder: (context) => const Beranda()),
                   );
                 },
-                icon: Icon(Icons.navigate_before),
+                icon: const Icon(Icons.navigate_before),
               ),
             ),
             Text(
               Tempat[0]['name'] ?? 'Gedung',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
             Container(
               width: 40,
@@ -56,7 +56,7 @@ class GedungState extends State<Gedung> {
               ], color: Colors.white, shape: BoxShape.circle),
               child: IconButton(
                 onPressed: () {},
-                icon: Icon(Icons.search),
+                icon: const Icon(Icons.search),
               ),
             ),
           ],
@@ -72,7 +72,7 @@ class GedungState extends State<Gedung> {
                     border: Border(
                       bottom: BorderSide(
                           color: isKelasActive
-                              ? Color(0xFFFCA311)
+                              ? const Color(0xFFFCA311)
                               : Colors.transparent,
                           width: 2.0),
                     ),
@@ -84,16 +84,16 @@ class GedungState extends State<Gedung> {
                         isGudangActive = false;
                       });
                     },
-                    child: Text(
-                      "Kelas",
-                      style: TextStyle(color: Colors.black),
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
                       ),
                       elevation: 0,
+                    ),
+                    child: const Text(
+                      "Kelas",
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ),
@@ -103,7 +103,7 @@ class GedungState extends State<Gedung> {
                     border: Border(
                       bottom: BorderSide(
                           color: isGudangActive
-                              ? Color(0xFFFCA311)
+                              ? const Color(0xFFFCA311)
                               : Colors.transparent,
                           width: 2.0),
                     ),
@@ -115,20 +115,20 @@ class GedungState extends State<Gedung> {
                         isKelasActive = false;
                       });
                     },
-                    child:
-                        Text("Gudang", style: TextStyle(color: Colors.black)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
                       ),
                       elevation: 0,
                     ),
+                    child: const Text("Gudang",
+                        style: TextStyle(color: Colors.black)),
                   ),
                 )
               ],
             ),
-            Gap(20),
+            const Gap(20),
             Expanded(
               child: ListView.builder(
                 itemCount: isKelasActive
@@ -145,8 +145,9 @@ class GedungState extends State<Gedung> {
                   var gudang = filteredList[index];
                   return Container(
                     height: 61,
-                    margin: EdgeInsets.only(left: 24, right: 24, bottom: 8),
-                    padding: EdgeInsets.only(left: 8, right: 16),
+                    margin:
+                        const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+                    padding: const EdgeInsets.only(left: 8, right: 16),
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
@@ -174,14 +175,14 @@ class GedungState extends State<Gedung> {
                                 child: Image.asset(gudang['photo'] ?? '',
                                     height: 50, width: 50),
                               ),
-                              Gap(16),
+                              const Gap(16),
                               Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       gudang['name'] ?? '',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -189,11 +190,11 @@ class GedungState extends State<Gedung> {
                                             gudang['status']!.isNotEmpty
                                         ? Text(
                                             gudang['status'] ?? '',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 12,
                                                 color: Colors.black54),
                                           )
-                                        : SizedBox.shrink()
+                                        : const SizedBox.shrink()
                                   ])
                             ],
                           ),
@@ -206,7 +207,8 @@ class GedungState extends State<Gedung> {
                                 decoration: BoxDecoration(
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Color(0xFFFCA311).withOpacity(1),
+                                      color: const Color(0xFFFCA311)
+                                          .withOpacity(1),
                                       spreadRadius: 1,
                                       blurRadius: 4,
                                       offset: const Offset(0, 0),
@@ -219,21 +221,21 @@ class GedungState extends State<Gedung> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.person,
                                       color: Color(0xFFFCA311),
                                       size: 16,
                                     ),
                                     Text(
                                       gudang['kapasitas'] ?? '',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 12,
                                           color: Color(0xFFFCA311)),
                                     ),
                                   ],
                                 ),
                               )
-                            : SizedBox.shrink(),
+                            : const SizedBox.shrink(),
                       ],
                     ),
                   );

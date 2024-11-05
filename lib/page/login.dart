@@ -140,7 +140,8 @@ class LoginState extends State<Login> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           // Call login action
-                          var login = await loginAction(_emailController.text, _passwordController.text);
+                          var login = await loginAction(
+                              _emailController.text, _passwordController.text);
 
                           if (login != true) {
                             AlertDialog(
