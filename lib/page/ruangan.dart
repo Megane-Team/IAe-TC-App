@@ -123,7 +123,8 @@ class RuanganState extends State<Ruangan> {
                                 decoration: BoxDecoration(
                                   boxShadow: [
                                     BoxShadow(
-                                      color: const Color(0xFFFCA311).withOpacity(1),
+                                      color: const Color(0xFFFCA311)
+                                          .withOpacity(1),
                                       spreadRadius: 1,
                                       blurRadius: 4,
                                       offset: const Offset(0, 0),
@@ -168,19 +169,24 @@ class RuanganState extends State<Ruangan> {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: Kelas_1.map((item) => item['name']).toSet().length,
+                              itemCount: Kelas_1.map((item) => item['name'])
+                                  .toSet()
+                                  .length,
                               itemBuilder: (context, index) {
-                                final uniqueNames = Kelas_1.map((item) => item['name'])
-                                    .toSet()
-                                    .toList()
-                                  ..sort();
+                                final uniqueNames =
+                                    Kelas_1.map((item) => item['name'])
+                                        .toSet()
+                                        .toList()
+                                      ..sort();
                                 return Container(
                                   margin: const EdgeInsets.only(bottom: 24),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 24, right: 24),
+                                        padding: const EdgeInsets.only(
+                                            left: 24, right: 24),
                                         child: Text(
                                           uniqueNames[index]!,
                                           style: const TextStyle(
@@ -194,28 +200,49 @@ class RuanganState extends State<Ruangan> {
                                         thickness: 1,
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 24, right: 24),
+                                        padding: const EdgeInsets.only(
+                                            left: 24, right: 24),
                                         child: ListView.builder(
-                                          physics: NeverScrollableScrollPhysics(),
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
-                                          itemCount: Kelas_1.where((item) => item['name'] == uniqueNames[index]).length,
+                                          itemCount: Kelas_1.where((item) =>
+                                              item['name'] ==
+                                              uniqueNames[index]).length,
                                           itemBuilder: (context, index2) {
-                                            final items = Kelas_1.where((item) => item['name'] == uniqueNames[index]).toList()
+                                            final items = Kelas_1.where(
+                                                (item) =>
+                                                    item['name'] ==
+                                                    uniqueNames[index]).toList()
                                               ..sort((a, b) {
-                                                if (a['status'] == 'Digunakan' && b['status'] != 'Digunakan') return 1;
-                                                if (a['status'] != 'Digunakan' && b['status'] == 'Digunakan') return -1;
-                                                return int.parse(a['kode_barang']!).compareTo(int.parse(b['kode_barang']!));
+                                                if (a['status'] ==
+                                                        'Digunakan' &&
+                                                    b['status'] != 'Digunakan')
+                                                  return 1;
+                                                if (a['status'] !=
+                                                        'Digunakan' &&
+                                                    b['status'] == 'Digunakan')
+                                                  return -1;
+                                                return int.parse(
+                                                        a['kode_barang']!)
+                                                    .compareTo(int.parse(
+                                                        b['kode_barang']!));
                                               });
                                             return Container(
-                                              margin: const EdgeInsets.only(top: 10),
-                                              width: MediaQuery.of(context).size.width,
+                                              margin: const EdgeInsets.only(
+                                                  top: 10),
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
                                               height: 60,
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
-                                                borderRadius: BorderRadius.circular(16),
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
                                                 boxShadow: [
                                                   BoxShadow(
-                                                    color: Colors.black.withOpacity(0.1),
+                                                    color: Colors.black
+                                                        .withOpacity(0.1),
                                                     spreadRadius: 1,
                                                     blurRadius: 4,
                                                     offset: const Offset(0, 0),
@@ -224,46 +251,85 @@ class RuanganState extends State<Ruangan> {
                                               ),
                                               child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
-                                                  padding: const EdgeInsets.only(left: 10, right: 10),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10, right: 10),
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(16),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16),
                                                   ),
                                                   elevation: 4,
-                                                  backgroundColor: items[index2]['status'] == 'Digunakan' ? Colors.black12 : Colors.white,
-                                                  shadowColor: Colors.black.withOpacity(0.1),
+                                                  backgroundColor: items[index2]
+                                                              ['status'] ==
+                                                          'Digunakan'
+                                                      ? Colors.black12
+                                                      : Colors.white,
+                                                  shadowColor: Colors.black
+                                                      .withOpacity(0.1),
                                                 ),
                                                 onPressed: () {
-                                                  if (items[index2]['status'] == 'Digunakan') {
+                                                  if (items[index2]['status'] ==
+                                                      'Digunakan') {
                                                     showDialog(
                                                       context: context,
-                                                      builder: (BuildContext context) {
+                                                      builder: (BuildContext
+                                                          context) {
                                                         return AlertDialog(
                                                           title: Text(
                                                             'Asset sedang Digunakan',
-                                                            style: TextStyle(fontWeight: FontWeight.w600),
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
                                                           ),
                                                           content: Column(
-                                                            mainAxisSize: MainAxisSize.min,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: Peminjaman.map((item) => Text(
-                                                              'Name: ${item['name']}\nDivisi: ${item['Divisi']}\nEstimasi Peminjaman: ${item['estimasi peminjaman']}',
-                                                              style: TextStyle(height: 2),
-                                                            )).toList(),
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: Peminjaman
+                                                                .map((item) =>
+                                                                    Text(
+                                                                      'Name: ${item['name']}\nDivisi: ${item['Divisi']}\nEstimasi Peminjaman: ${item['estimasi peminjaman']}',
+                                                                      style: TextStyle(
+                                                                          height:
+                                                                              2),
+                                                                    )).toList(),
                                                           ),
                                                           actions: [
                                                             Container(
-                                                              width: MediaQuery.of(context).size.width,
-                                                              child: ElevatedButton(
-                                                                style: ElevatedButton.styleFrom(
-                                                                  padding: EdgeInsets.zero,
-                                                                  backgroundColor: const Color(0xFFFCA311),
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                              child:
+                                                                  ElevatedButton(
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .zero,
+                                                                  backgroundColor:
+                                                                      const Color(
+                                                                          0xFFFCA311),
                                                                 ),
                                                                 onPressed: () {
-                                                                  Navigator.of(context).pop();
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
                                                                 },
                                                                 child: Text(
                                                                   'OK',
-                                                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600),
                                                                 ),
                                                               ),
                                                             ),
@@ -275,24 +341,50 @@ class RuanganState extends State<Ruangan> {
                                                     showModalBottomSheet(
                                                       showDragHandle: true,
                                                       context: context,
-                                                      builder: (BuildContext context) {
+                                                      builder: (BuildContext
+                                                          context) {
                                                         return Padding(
-                                                          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 32),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 24,
+                                                                  right: 24,
+                                                                  bottom: 32),
                                                           child: SizedBox(
-                                                            width: MediaQuery.of(context).size.width,
-                                                            height: MediaQuery.of(context).size.height / 2.6,
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height /
+                                                                2.6,
                                                             child: Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
                                                               children: [
                                                                 Container(
-                                                                  width: MediaQuery.of(context).size.width,
+                                                                  width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
                                                                   height: 218,
-                                                                  decoration: BoxDecoration(
-                                                                    color: Colors.black,
-                                                                    borderRadius: BorderRadius.circular(10),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10),
                                                                   ),
-                                                                  child: Image.asset(
-                                                                    items[index2]['photo']!,
+                                                                  child: Image
+                                                                      .asset(
+                                                                    items[index2]
+                                                                        [
+                                                                        'photo']!,
                                                                     width: 50,
                                                                     height: 50,
                                                                   ),
@@ -300,26 +392,44 @@ class RuanganState extends State<Ruangan> {
                                                                 Row(
                                                                   children: [
                                                                     Text(
-                                                                      items[index2]['name']!,
-                                                                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                                                                      items[index2]
+                                                                          [
+                                                                          'name']!,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              20,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
                                                                     ),
                                                                     Text(
                                                                       ' ${items[index2]['kode_barang']!}',
-                                                                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              20,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
                                                                     ),
                                                                   ],
                                                                 ),
-                                                                Text('Kondisi ${items[index2]['kondisi']!}'),
+                                                                Text(
+                                                                    'Kondisi ${items[index2]['kondisi']!}'),
                                                                 Expanded(
                                                                   child: Align(
-                                                                    alignment: Alignment.bottomCenter,
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .bottomCenter,
                                                                     child: Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
                                                                       children: [
                                                                         SizedBox(
-                                                                          width: MediaQuery.of(context).size.width / 2.3,
-                                                                          child: ElevatedButton(
-                                                                            onPressed: () {
+                                                                          width:
+                                                                              MediaQuery.of(context).size.width / 2.3,
+                                                                          child:
+                                                                              ElevatedButton(
+                                                                            onPressed:
+                                                                                () {
                                                                               Navigator.pop(context);
                                                                               ScaffoldMessenger.of(context).showSnackBar(
                                                                                 const SnackBar(
@@ -327,27 +437,34 @@ class RuanganState extends State<Ruangan> {
                                                                                 ),
                                                                               );
                                                                             },
-                                                                            style: ElevatedButton.styleFrom(
+                                                                            style:
+                                                                                ElevatedButton.styleFrom(
                                                                               padding: EdgeInsets.zero,
                                                                               side: const BorderSide(color: Color(0xFFFCA311)),
                                                                             ),
-                                                                            child: const Text(
+                                                                            child:
+                                                                                const Text(
                                                                               'Masukan Keranjang',
                                                                               style: TextStyle(color: Color(0xFFFCA311), fontWeight: FontWeight.w600),
                                                                             ),
                                                                           ),
                                                                         ),
                                                                         SizedBox(
-                                                                          width: MediaQuery.of(context).size.width / 2.3,
-                                                                          child: ElevatedButton(
-                                                                            onPressed: () {
+                                                                          width:
+                                                                              MediaQuery.of(context).size.width / 2.3,
+                                                                          child:
+                                                                              ElevatedButton(
+                                                                            onPressed:
+                                                                                () {
                                                                               Navigator.pop(context);
                                                                             },
-                                                                            style: ElevatedButton.styleFrom(
+                                                                            style:
+                                                                                ElevatedButton.styleFrom(
                                                                               padding: EdgeInsets.zero,
                                                                               backgroundColor: const Color(0xFFFCA311),
                                                                             ),
-                                                                            child: const Text(
+                                                                            child:
+                                                                                const Text(
                                                                               'Pinjam Barang',
                                                                               style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                                                                             ),
@@ -372,7 +489,9 @@ class RuanganState extends State<Ruangan> {
                                                       height: 46,
                                                       decoration: BoxDecoration(
                                                         color: Colors.black,
-                                                        borderRadius: BorderRadius.circular(10),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
                                                       ),
                                                       child: Image.asset(
                                                         items[index2]['photo']!,
@@ -382,24 +501,37 @@ class RuanganState extends State<Ruangan> {
                                                     ),
                                                     const Gap(4),
                                                     Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Row(
                                                           children: [
                                                             Text(
-                                                              items[index2]['name']!,
-                                                              style: const TextStyle(color: Colors.black),
+                                                              items[index2]
+                                                                  ['name']!,
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black),
                                                             ),
                                                             Text(
                                                               ' ${items[index2]['kode_barang']!}',
-                                                              style: const TextStyle(color: Colors.black),
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black),
                                                             ),
                                                           ],
                                                         ),
                                                         Text(
-                                                          items[index2]['kondisi']!,
-                                                          style: const TextStyle(color: Colors.black),
+                                                          items[index2]
+                                                              ['kondisi']!,
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .black),
                                                         ),
                                                       ],
                                                     ),
@@ -432,12 +564,16 @@ class RuanganState extends State<Ruangan> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: FloatingActionButton(
-                          backgroundColor: const Color(0xFFFCA311),
-                          onPressed: () {
-                            // Add your onPressed code here!
-                          },
-                          child: Text("Pinjam Ruangan", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),)
-                        ),
+                            backgroundColor: const Color(0xFFFCA311),
+                            onPressed: () {
+                              // Add your onPressed code here!
+                            },
+                            child: Text(
+                              "Pinjam Ruangan",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            )),
                       )
                     ],
                   ),
