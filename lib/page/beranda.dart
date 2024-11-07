@@ -263,7 +263,7 @@ class BerandaState extends State<Beranda> {
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                crossAxisSpacing: 40,
+                                crossAxisSpacing: 24,
                                 mainAxisSpacing: 32,
                               ),
                               itemCount: places.length,
