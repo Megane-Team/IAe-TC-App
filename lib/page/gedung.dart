@@ -241,101 +241,147 @@ class GedungState extends State<Gedung> {
             child: ListView.builder(
               itemCount: filteredGedung.length,
               itemBuilder: (context, index) {
-                filteredGedung.sort(
-                    (a, b) => (a['name'] ?? '').compareTo(b['name'] ?? ''));
+                filteredGedung.sort((a, b) {
+                  if (a['status'] == 'Digunakan' &&
+                      b['status'] != 'Digunakan') {
+                    return 1;
+                  } else if (a['status'] != 'Digunakan' &&
+                      b['status'] == 'Digunakan') {
+                    return -1;
+                  } else {
+                    return (a['name'] ?? '').compareTo(b['name'] ?? '');
+                  }
+                });
                 var gudang = filteredGedung[index];
                 return Container(
                   height: 61,
                   margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-                  padding: const EdgeInsets.only(left: 8, right: 16),
                   decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 4,
-                        offset: const Offset(0, 0),
-                      )
-                    ],
-                    color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 60,
-                              height: 46,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.black),
-                              child: Image.asset(gudang['photo'] ?? '',
-                                  height: 50, width: 50),
-                            ),
-                            const Gap(16),
-                            Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    gudang['name'] ?? '',
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  gudang['status'] != null &&
-                                          gudang['status']!.isNotEmpty
-                                      ? Text(
-                                          gudang['status'] ?? '',
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black54),
-                                        )
-                                      : const SizedBox.shrink()
-                                ])
-                          ],
-                        ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      gudang['kapasitas'] != null &&
-                              gudang['kapasitas']!.isNotEmpty
-                          ? Container(
-                              width: 46,
-                              height: 22,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color:
-                                        const Color(0xFFFCA311).withOpacity(1),
-                                    spreadRadius: 1,
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 0),
-                                  )
-                                ],
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
+                      elevation: 4,
+                      backgroundColor: gudang['status'] == 'Digunakan'
+                          ? Colors.grey
+                          : Colors.white,
+                    ),
+                    onPressed: () {
+                      if (gudang['status'] == 'Digunakan') {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Ruangan Sedang Digunakan'),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: Peminjaman.map((peminjaman) {
+                                  return ListTile(
+                                    title: Text(peminjaman['name']!),
+                                    subtitle: Text(
+                                        'Divisi: ${peminjaman['Divisi']!}\nEstimasi Peminjaman: ${peminjaman['estimasi peminjaman']!}'),
+                                  );
+                                }).toList(),
                               ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.person,
-                                    color: Color(0xFFFCA311),
-                                    size: 16,
+                              actions: [
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                      backgroundColor: const Color(0xFFFCA311),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'OK',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    ),
                                   ),
-                                  Text(
-                                    gudang['kapasitas'] ?? '',
-                                    style: const TextStyle(
-                                        fontSize: 12, color: Color(0xFFFCA311)),
-                                  ),
-                                ],
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {}
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 46,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Colors.black),
+                                child: Image.asset(gudang['photo'] ?? '',
+                                    height: 50, width: 50),
                               ),
-                            )
-                          : const SizedBox.shrink(),
-                    ],
+                              const Gap(16),
+                              Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      gudang['name'] ?? '',
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black),
+                                    ),
+                                  ])
+                            ],
+                          ),
+                        ),
+                        gudang['kapasitas'] != null &&
+                                gudang['kapasitas']!.isNotEmpty
+                            ? Container(
+                                width: 46,
+                                height: 22,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFFFCA311)
+                                          .withOpacity(1),
+                                      spreadRadius: 1,
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 0),
+                                    )
+                                  ],
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.person,
+                                      color: Color(0xFFFCA311),
+                                      size: 16,
+                                    ),
+                                    Text(
+                                      gudang['kapasitas'] ?? '',
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFFFCA311)),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -353,6 +399,15 @@ class GedungState extends State<Gedung> {
       'photo': 'assets/images/logos/inventara.png',
     },
   ];
+
+  List<Map<String, String>> Peminjaman = [
+    {
+      'name': 'User 1',
+      'Divisi': 'HC3000',
+      'estimasi peminjaman': '31-11-2024',
+    },
+  ];
+
   List<Map<String, String>> Gedung_1 = [
     {
       'name': 'Kelas 1',
