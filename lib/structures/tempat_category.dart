@@ -1,7 +1,9 @@
 import 'package:hive/hive.dart';
 
-@HiveType(typeId: 3)
-enum tempatCategory{
+part 'tempat_category.g.dart';
+
+@HiveType(typeId: 4)
+enum TempatCategory {
   @HiveField(0)
   parkiran,
   @HiveField(1)

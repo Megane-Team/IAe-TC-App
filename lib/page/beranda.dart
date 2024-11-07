@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:inventara/page/login.dart';
+import 'package:inventara/utils/sessions.dart';
 
 class Beranda extends StatefulWidget {
   const Beranda({super.key});
@@ -9,9 +10,24 @@ class Beranda extends StatefulWidget {
   State<Beranda> createState() => BerandaState();
 }
 
+var user = Session.get();
+
+//get time of the day
+String getTime() {
+  var timeNow = DateTime.now().hour;
+  if (timeNow < 12) {
+    return 'pagi';
+  }
+  if (timeNow < 17) {
+    return 'siang';
+  }
+  return 'malam';
+}
+
 class BerandaState extends State<Beranda> {
   bool isGedungActive = false;
   bool isParkiranActive = false;
+
   List<Map<String, String>> originalPlaces = [];
 
   @override
@@ -27,15 +43,15 @@ class BerandaState extends State<Beranda> {
             title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Halo',
+                Text('Selamat ${getTime()}',
                     style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
-                Text('Maulana Yusuf',
+                        const TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
+                Text(user!.name,
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                        const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
               ],
             ),
             IconButton(

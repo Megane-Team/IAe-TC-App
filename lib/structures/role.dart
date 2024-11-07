@@ -1,7 +1,9 @@
 import 'package:hive/hive.dart';
 
+part 'role.g.dart';
+
 @HiveType(typeId: 1)
-enum Role{
+enum Role {
   @HiveField(0)
   headAdmin,
   @HiveField(1)
