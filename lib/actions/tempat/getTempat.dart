@@ -1,15 +1,12 @@
 import 'dart:convert';
 
 import 'package:inventara/constants/variables.dart';
+import 'package:inventara/main.dart';
 import 'package:inventara/structures/tempat.dart';
-import 'package:http/http.dart' as http;
 
 Future<List<Tempat>> getTempat(String token) async {
-  final response = await http
-      .get(Uri.parse('$apiBaseURl/tempats'), headers: <String, String>{
-    'Content-Type': 'application/json; charset=UTF-8',
-    'authorization': 'Bearer $token'
-  });
+  final response = await App.api.get(apiBaseURl.resolve('/tempats'),
+      headers: {'authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {
     final List<dynamic> data = jsonDecode(response.body);
