@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/page/login.dart';
 import 'package:inventara/utils/sessions.dart';
 
@@ -59,7 +60,9 @@ class BerandaState extends State<Beranda> {
                 Icons.notifications_outlined,
                 size: 32,
               ),
-              onPressed: () {},
+              onPressed: () {
+                readTempat();
+              },
             )
           ],
         )),

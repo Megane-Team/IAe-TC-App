@@ -17,18 +17,17 @@ class TempatAdapter extends TypeAdapter<Tempat> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Tempat(
-      id: fields[0] as String,
+      id: fields[0] as int,
       name: fields[1] as String,
-      category: fields[2] as TempatCategory,
+      category: fields[2] as TempatCategory?,
       photo: fields[3] as String,
-      createdAt: fields[4] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, Tempat obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -36,9 +35,7 @@ class TempatAdapter extends TypeAdapter<Tempat> {
       ..writeByte(2)
       ..write(obj.category)
       ..writeByte(3)
-      ..write(obj.photo)
-      ..writeByte(4)
-      ..write(obj.createdAt);
+      ..write(obj.photo);
   }
 
   @override
