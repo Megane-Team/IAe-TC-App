@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
-import 'package:inventara/page/login.dart';
+import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/utils/sessions.dart';
+import 'package:inventara/actions/tempat/read_tempat_photo_action.dart';
 
 class Beranda extends StatefulWidget {
   const Beranda({super.key});
@@ -29,12 +31,21 @@ class BerandaState extends State<Beranda> {
   bool isGedungActive = false;
   bool isParkiranActive = false;
 
+  late List<Tempat> tempatList;
+
   List<Map<String, String>> originalPlaces = [];
 
   @override
   void initState() {
     super.initState();
-    originalPlaces = List.from(places);
+    tempatInit();
+  }
+
+  void tempatInit() async {
+    tempatList = await readTempat();
+    setState(() {
+      originalPlaces = List.from(tempatList);
+    });
   }
 
   @override
@@ -47,7 +58,7 @@ class BerandaState extends State<Beranda> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Selamat ${getTime()}',
+                Text('Selamat ${getTime()},',
                     style:
                         const TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
                 Text(user!.name,
@@ -60,8 +71,7 @@ class BerandaState extends State<Beranda> {
                 Icons.notifications_outlined,
                 size: 32,
               ),
-              onPressed: () {
-                readTempat();
+              onPressed: () async {
               },
             )
           ],
@@ -99,10 +109,8 @@ class BerandaState extends State<Beranda> {
                   child: Divider(color: Colors.grey, thickness: 1)),
               ListTile(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Login()),
-                  );
+                  Session.unset();
+                  context.go('/login');
                 },
                 leading: const Icon(
                   Icons.logout,
@@ -112,79 +120,115 @@ class BerandaState extends State<Beranda> {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 28),
-                  width: MediaQuery.of(context).size.width - 48,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 4,
-                        offset: const Offset(0, 0),
-                      )
-                    ],
-                  ),
-                  child: TextField(
-                    cursorColor: Colors.black,
-                    decoration: InputDecoration(
-                      hintStyle: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                      hintText: 'Cari barang...',
-                      prefixIcon: const Icon(Icons.search),
-                      border: InputBorder.none,
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
+        body: RefreshIndicator(
+          onRefresh: () async {
+            tempatInit();
+          },
+          child: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 28),
+                    width: MediaQuery.of(context).size.width - 48,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 4,
+                          offset: const Offset(0, 0),
+                        )
+                      ],
+                    ),
+                    child: TextField(
+                      cursorColor: Colors.black,
+                      decoration: InputDecoration(
+                        hintStyle: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                        hintText: 'Cari barang...',
+                        prefixIcon: const Icon(Icons.search),
+                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 10.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const Gap(40),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 48,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Text("kategori",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w500)),
-                      const Gap(20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ElevatedButton(
+                  const Gap(40),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 48,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Text("kategori",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w500)),
+                        const Gap(20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if (isGedungActive) {
+                                      tempatList = List.from(originalPlaces);
+                                    } else {
+                                      // TODO: sort by categorise (Gedung)
+                                    }
+                                    isGedungActive = !isGedungActive;
+                                    isParkiranActive = false;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: isGedungActive
+                                      ? Colors.orange
+                                      : Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  shadowColor: Colors.black,
+                                  elevation: 2,
+                                ),
+                                child: Text(
+                                  'Gedung',
+                                  style: TextStyle(
+                                    color: isGedungActive
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                )),
+                            const Gap(18),
+                            ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  if (isGedungActive) {
-                                    places = List.from(originalPlaces);
+                                  if (isParkiranActive) {
+                                    tempatList = List.from(originalPlaces);
                                   } else {
-                                    places.sort((a, b) => a['kategori']!
-                                        .compareTo(b['kategori']!));
+                                    // TODO: sort by categorise (Parkiran)
                                   }
-                                  isGedungActive = !isGedungActive;
-                                  isParkiranActive = false;
+                                  isParkiranActive = !isParkiranActive;
+                                  isGedungActive = false;
                                 });
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: isGedungActive
+                                backgroundColor: isParkiranActive
                                     ? Colors.orange
                                     : Colors.white,
                                 shape: RoundedRectangleBorder(
@@ -194,172 +238,105 @@ class BerandaState extends State<Beranda> {
                                 elevation: 2,
                               ),
                               child: Text(
-                                'Gedung',
+                                'Parkiran',
                                 style: TextStyle(
-                                  color: isGedungActive
+                                  color: isParkiranActive
                                       ? Colors.white
                                       : Colors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                 ),
-                              )),
-                          const Gap(18),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                if (isParkiranActive) {
-                                  places = List.from(originalPlaces);
-                                } else {
-                                  places.sort((a, b) =>
-                                      b['kategori']!.compareTo(a['kategori']!));
-                                }
-                                isParkiranActive = !isParkiranActive;
-                                isGedungActive = false;
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: isParkiranActive
-                                  ? Colors.orange
-                                  : Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
                               ),
-                              shadowColor: Colors.black,
-                              elevation: 2,
-                            ),
-                            child: Text(
-                              'Parkiran',
-                              style: TextStyle(
-                                color: isParkiranActive
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                const Gap(40),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 48,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Text("Asset",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w500)),
-                      const Gap(20),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width - 48,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 24,
-                                mainAxisSpacing: 32,
-                              ),
-                              itemCount: places.length,
-                              itemBuilder: (context, index) {
-                                return ElevatedButton(
-                                  onPressed: () {
-                                    // Add your onPressed functionality here
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    shadowColor: Colors.black.withOpacity(1),
-                                    elevation: 4,
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 106,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          color: Colors.black,
-                                        ),
-                                        child: Image.asset(
-                                            places[index]['photo']!),
-                                      ),
-                                      const Gap(14),
-                                      Text(
-                                        places[index]['name']!,
-                                        style: const TextStyle(
-                                            color: Colors.black),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
                             ),
                           ],
-                        ),
-                      ),
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                )
-              ],
+                  const Gap(40),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 48,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Text("Asset",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w500)),
+                        const Gap(20),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width - 48,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              FutureBuilder<List<Tempat>>(
+                                future: readTempat(), // Your future function to fetch data
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}'); // Show error message if any
+                                  } else if (snapshot.hasData) {
+                                    List<Tempat> tempatList = snapshot.data!;
+                                    return GridView.builder(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 24,
+                                        mainAxisSpacing: 32,
+                                      ),
+                                      itemCount: tempatList.length,
+                                      itemBuilder: (context, index) {
+                                        return ElevatedButton(
+                                          onPressed: () {
+                                            // Add your onPressed functionality here
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(12),
+                                            ),
+                                            shadowColor: Colors.black.withOpacity(1),
+                                            elevation: 4,
+                                            padding: EdgeInsets.zero,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context).size.width,
+                                                height: 106,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(12),
+                                                  color: Colors.black,
+                                                ),
+                                                child: Image.asset('name'),
+                                              ),
+                                              const Gap(14),
+                                              Text(
+                                                tempatList[index].name,
+                                                style: const TextStyle(color: Colors.black),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    return const Text('No data available'); // Show message if no data
+                                  }
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ));
   }
-
-  List<Map<String, String>> places = [
-    {
-      'name': 'Gedung 1',
-      'photo': 'assets/images/logos/inventara.png',
-      'kategori': 'gedung'
-    },
-    {
-      'name': 'Gedung 2',
-      'photo': 'assets/images/logos/inventara.png',
-      'kategori': 'gedung'
-    },
-    {
-      'name': 'Gedung 3',
-      'photo': 'assets/images/logos/inventara.png',
-      'kategori': 'gedung'
-    },
-    {
-      'name': 'Gedung 4',
-      'photo': 'assets/images/logos/inventara.png',
-      'kategori': 'gedung'
-    },
-    {
-      'name': 'Gedung 5',
-      'photo': 'assets/images/logos/inventara.png',
-      'kategori': 'gedung'
-    },
-    {
-      'name': 'Parkiran 3',
-      'photo': 'assets/images/logos/inventara.png',
-      'kategori': 'parkiran'
-    },
-    {
-      'name': 'Parkiran 2',
-      'photo': 'assets/images/logos/inventara.png',
-      'kategori': 'parkiran'
-    },
-    {
-      'name': 'Parkiran 1',
-      'photo': 'assets/images/logos/inventara.png',
-      'kategori': 'parkiran'
-    },
-  ];
 }
