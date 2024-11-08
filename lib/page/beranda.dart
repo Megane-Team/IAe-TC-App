@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/utils/sessions.dart';
-import 'package:inventara/actions/tempat/read_tempat_photo_action.dart';
 
 class Beranda extends StatefulWidget {
   const Beranda({super.key});
