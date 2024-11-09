@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
+import 'package:inventara/actions/tempat/read_tempat_photo_action.dart';
 import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/utils/sessions.dart';
 
@@ -309,7 +312,24 @@ class BerandaState extends State<Beranda> {
                                                   borderRadius: BorderRadius.circular(12),
                                                   color: Colors.black,
                                                 ),
-                                                child: Image.asset('name'),
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(12),
+                                                  child: FutureBuilder<Widget>(
+                                                    future: tempatPhoto(tempatList[index].name),
+                                                    builder: (context, snapshot) {
+                                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                                        return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                      } else if (snapshot.hasError) {
+                                                        log("Error: ${snapshot.error}");
+                                                        return const Text('Error: Error while getting the data'); // Show error message if any
+                                                      } else if (snapshot.hasData) {
+                                                        return snapshot.data!; // Return the widget once the future completes
+                                                      } else {
+                                                        return const Text('No data available'); // Show message if no data
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
                                               ),
                                               const Gap(14),
                                               Text(
