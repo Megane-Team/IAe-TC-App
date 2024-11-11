@@ -15,7 +15,8 @@ Future<List<Tempat>> readTempat() async {
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final List<dynamic> data = responseData['data'];
-    final List<Tempat> tempats = data.map((item) => Tempat.fromJson(item)).toList();
+    final List<Tempat> tempats =
+        data.map((item) => Tempat.fromJson(item)).toList();
 
     return tempats;
   } else {

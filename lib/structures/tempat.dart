@@ -14,21 +14,20 @@ class Tempat {
   @HiveField(3)
   late String photo;
 
-
-  Tempat(
-      {required this.id,
-      required this.name,
-      required this.category,
-      required this.photo,
+  Tempat({
+    required this.id,
+    required this.name,
+    required this.category,
+    required this.photo,
   });
 
   factory Tempat.fromJson(Map<String, dynamic> json) {
     return Tempat(
-        id: json['id'],
-        name: json['name'],
-        category: TempatCategory.values.firstWhere(
-            (e) => e.toString() == 'TempatCategory.${json['category']}'),
-        photo: json['photo'],
+      id: json['id'],
+      name: json['name'],
+      category: TempatCategory.values.firstWhere(
+          (e) => e.toString() == 'TempatCategory.${json['category']}'),
+      photo: json['photo'],
     );
   }
 }

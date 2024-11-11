@@ -34,7 +34,6 @@ class BerandaState extends State<Beranda> {
 
   late List<Tempat> tempatList;
 
-
   void fetchData() async {
     List<Tempat> allTempat = await readTempat();
     setState(() {
@@ -45,9 +44,11 @@ class BerandaState extends State<Beranda> {
 
   void listSort(List<Tempat> list) async {
     if (isParkiranActive == true) {
-      tempatList.sort((a, b) => b.category.toString().compareTo(a.category.toString()));
-    } else if ( isGedungActive == true ) {
-      tempatList.sort((a, b) => a.category.toString().compareTo(b.category.toString()));
+      tempatList.sort(
+          (a, b) => b.category.toString().compareTo(a.category.toString()));
+    } else if (isGedungActive == true) {
+      tempatList.sort(
+          (a, b) => a.category.toString().compareTo(b.category.toString()));
     } else {
       tempatList = list;
     }
@@ -70,11 +71,11 @@ class BerandaState extends State<Beranda> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Selamat ${getTime()},',
-                    style:
-                        const TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w400)),
                 Text(user!.name,
-                    style:
-                        const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w500)),
               ],
             ),
             IconButton(
@@ -82,8 +83,7 @@ class BerandaState extends State<Beranda> {
                 Icons.notifications_outlined,
                 size: 32,
               ),
-              onPressed: () async {
-              },
+              onPressed: () async {},
             )
           ],
         )),
@@ -278,20 +278,26 @@ class BerandaState extends State<Beranda> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               FutureBuilder<List<Tempat>>(
-                                future: readTempat(), // Your future function to fetch data
+                                future:
+                                    readTempat(), // Your future function to fetch data
                                 builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
                                     return const CircularProgressIndicator(); // Show a loading indicator while waiting
                                   } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}'); // Show error message if any
+                                    return Text(
+                                        'Error: ${snapshot.error}'); // Show error message if any
                                   } else if (snapshot.hasData) {
                                     return GridView.builder(
                                       shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
                                         crossAxisSpacing: 24,
-                                        mainAxisSpacing: 32,                                      ),
+                                        mainAxisSpacing: 32,
+                                      ),
                                       itemCount: tempatList.length,
                                       itemBuilder: (context, index) {
                                         return ElevatedButton(
@@ -302,35 +308,51 @@ class BerandaState extends State<Beranda> {
                                           },
                                           style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(12),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
                                             ),
-                                            shadowColor: Colors.black.withOpacity(1),
+                                            shadowColor:
+                                                Colors.black.withOpacity(1),
                                             elevation: 4,
                                             padding: EdgeInsets.zero,
                                           ),
                                           child: Column(
                                             children: [
                                               Container(
-                                                width: MediaQuery.of(context).size.width,
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
                                                 height: 106,
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(12),
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
                                                   color: Colors.black,
                                                 ),
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(12),
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
                                                   child: FutureBuilder<Widget>(
-                                                    future: Assets().tempat(tempatList[index].name),
-                                                    builder: (context, snapshot) {
-                                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                                    future: Assets().tempat(
+                                                        tempatList[index].name),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
                                                         return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                      } else if (snapshot.hasError) {
+                                                      } else if (snapshot
+                                                          .hasError) {
                                                         log("Error: ${snapshot.error}");
-                                                        return const Text('Error: Error while getting the data'); // Show error message if any
-                                                      } else if (snapshot.hasData) {
-                                                        return snapshot.data!; // Return the widget once the future completes
+                                                        return const Text(
+                                                            'Error: Error while getting the data'); // Show error message if any
+                                                      } else if (snapshot
+                                                          .hasData) {
+                                                        return snapshot
+                                                            .data!; // Return the widget once the future completes
                                                       } else {
-                                                        return const Text('No data available'); // Show message if no data
+                                                        return const Text(
+                                                            'No data available'); // Show message if no data
                                                       }
                                                     },
                                                   ),
@@ -339,7 +361,8 @@ class BerandaState extends State<Beranda> {
                                               const Gap(14),
                                               Text(
                                                 tempatList[index].name,
-                                                style: const TextStyle(color: Colors.black),
+                                                style: const TextStyle(
+                                                    color: Colors.black),
                                               ),
                                             ],
                                           ),
@@ -347,7 +370,8 @@ class BerandaState extends State<Beranda> {
                                       },
                                     );
                                   } else {
-                                    return const Text('No data available'); // Show message if no data
+                                    return const Text(
+                                        'No data available'); // Show message if no data
                                   }
                                 },
                               )
