@@ -8,7 +8,7 @@ import 'package:inventara/page/keranjang.dart';
 final appRouter = GoRouter(initialLocation: '/Login', routes: [
   GoRoute(path: '/Login', builder: (context, state) => const Login()),
   GoRoute(path: '/Beranda', builder: (context, state) => const Beranda()),
-  GoRoute(path: '/Gedung', builder: (context, state) => const Gedung()),
+  GoRoute(path: '/Gedung/:id', builder: (context, state) => const Gedung()),
   GoRoute(path: '/Ruangan', builder: (context, state) => const Ruangan()),
   GoRoute(path: '/Keranjang', builder: (context, state) => const Keranjang()),
 ]);

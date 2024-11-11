@@ -303,7 +303,7 @@ class BerandaState extends State<Beranda> {
                                         return ElevatedButton(
                                           onPressed: () {
                                             setState(() {
-                                              // get to the ruangan page
+                                              context.go('/ruangan');
                                             });
                                           },
                                           style: ElevatedButton.styleFrom(

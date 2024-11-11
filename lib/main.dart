@@ -4,6 +4,8 @@ import 'package:hive/hive.dart';
 import 'package:inventara/constants/themes.dart';
 import 'package:inventara/router.dart';
 import 'package:inventara/structures/role.dart';
+import 'package:inventara/structures/ruangan.dart';
+import 'package:inventara/structures/ruangan_category.dart';
 import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/structures/tempat_category.dart';
 import 'package:inventara/structures/user.dart';
@@ -21,6 +23,8 @@ Future<void> main() async {
   Hive.registerAdapter(TempatAdapter());
   Hive.registerAdapter(TempatCategoryAdapter());
   Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(RuanganAdapter());
+  Hive.registerAdapter(RuanganCategoryAdapter());
 
   await Hive.openBox('session', compactionStrategy: (int total, int deleted) {
     return deleted > 10;
