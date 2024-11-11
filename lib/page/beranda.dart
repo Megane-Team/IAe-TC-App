@@ -34,19 +34,29 @@ class BerandaState extends State<Beranda> {
 
   late List<Tempat> tempatList;
 
-  List<Map<String, String>> originalPlaces = [];
+
+  void fetchData() async {
+    List<Tempat> allTempat = await readTempat();
+    setState(() {
+      tempatList = allTempat;
+      listSort(tempatList);
+    });
+  }
+
+  void listSort(List<Tempat> list) async {
+    if (isParkiranActive == true) {
+      tempatList.sort((a, b) => b.category.toString().compareTo(a.category.toString()));
+    } else if ( isGedungActive == true ) {
+      tempatList.sort((a, b) => a.category.toString().compareTo(b.category.toString()));
+    } else {
+      tempatList = list;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    tempatInit();
-  }
-
-  void tempatInit() async {
-    tempatList = await readTempat();
-    setState(() {
-      originalPlaces = List.from(tempatList);
-    });
+    fetchData();
   }
 
   @override
@@ -123,7 +133,7 @@ class BerandaState extends State<Beranda> {
         ),
         body: RefreshIndicator(
           onRefresh: () async {
-            tempatInit();
+            fetchData();
           },
           child: SingleChildScrollView(
             child: Center(
@@ -186,15 +196,11 @@ class BerandaState extends State<Beranda> {
                             ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    if (isGedungActive) {
-                                      tempatList = List.from(originalPlaces);
-                                    } else {
-                                      tempatList.sort((a, b) {
-                                        return a.category.toString().compareTo(b.category.toString());
-                                      });
-                                    }
                                     isGedungActive = !isGedungActive;
-                                    isParkiranActive = false;
+                                    if (isParkiranActive = true) {
+                                      isParkiranActive = false;
+                                    }
+                                    listSort(tempatList);
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -221,15 +227,11 @@ class BerandaState extends State<Beranda> {
                             ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  if (isParkiranActive) {
-                                    tempatList = List.from(originalPlaces);
-                                  } else {
-                                    tempatList.sort((a, b) {
-                                      return b.category.toString().compareTo(a.category.toString());
-                                    });
-                                  }
                                   isParkiranActive = !isParkiranActive;
-                                  isGedungActive = false;
+                                  if (isGedungActive = true) {
+                                    isGedungActive = false;
+                                  }
+                                  listSort(tempatList);
                                 });
                               },
                               style: ElevatedButton.styleFrom(
@@ -283,22 +285,20 @@ class BerandaState extends State<Beranda> {
                                   } else if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}'); // Show error message if any
                                   } else if (snapshot.hasData) {
-                                    List<Tempat> tempatList = snapshot.data!;
                                     return GridView.builder(
                                       shrinkWrap: true,
                                       physics: const NeverScrollableScrollPhysics(),
                                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
                                         crossAxisSpacing: 24,
-                                        mainAxisSpacing: 32,
-                                      ),
+                                        mainAxisSpacing: 32,                                      ),
                                       itemCount: tempatList.length,
                                       itemBuilder: (context, index) {
                                         return ElevatedButton(
                                           onPressed: () {
-                                            // send the tempatList[index].id to the next page
-
-
+                                            setState(() {
+                                              // get to the ruangan page
+                                            });
                                           },
                                           style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
