@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
-import 'package:inventara/actions/tempat/read_tempat_photo_action.dart';
 import 'package:inventara/structures/tempat.dart';
+import 'package:inventara/utils/assets.dart';
 import 'package:inventara/utils/sessions.dart';
 
 class Beranda extends StatefulWidget {
@@ -17,7 +17,6 @@ class Beranda extends StatefulWidget {
 
 var user = Session.get();
 
-//get time of the day
 String getTime() {
   var timeNow = DateTime.now().hour;
   if (timeNow < 12) {
@@ -190,7 +189,9 @@ class BerandaState extends State<Beranda> {
                                     if (isGedungActive) {
                                       tempatList = List.from(originalPlaces);
                                     } else {
-                                      // TODO: sort by categorise (Gedung)
+                                      tempatList.sort((a, b) {
+                                        return a.category.toString().compareTo(b.category.toString());
+                                      });
                                     }
                                     isGedungActive = !isGedungActive;
                                     isParkiranActive = false;
@@ -223,7 +224,9 @@ class BerandaState extends State<Beranda> {
                                   if (isParkiranActive) {
                                     tempatList = List.from(originalPlaces);
                                   } else {
-                                    // TODO: sort by categorise (Parkiran)
+                                    tempatList.sort((a, b) {
+                                      return b.category.toString().compareTo(a.category.toString());
+                                    });
                                   }
                                   isParkiranActive = !isParkiranActive;
                                   isGedungActive = false;
@@ -293,7 +296,9 @@ class BerandaState extends State<Beranda> {
                                       itemBuilder: (context, index) {
                                         return ElevatedButton(
                                           onPressed: () {
-                                            // Add your onPressed functionality here
+                                            // send the tempatList[index].id to the next page
+
+
                                           },
                                           style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -315,7 +320,7 @@ class BerandaState extends State<Beranda> {
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(12),
                                                   child: FutureBuilder<Widget>(
-                                                    future: tempatPhoto(tempatList[index].name),
+                                                    future: Assets().tempat(tempatList[index].name),
                                                     builder: (context, snapshot) {
                                                       if (snapshot.connectionState == ConnectionState.waiting) {
                                                         return const CircularProgressIndicator(); // Show a loading indicator while waiting
