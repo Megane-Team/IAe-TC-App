@@ -19,7 +19,9 @@ Future<List<Tempat>> readTempat() async {
         data.map((item) => Tempat.fromJson(item)).toList();
 
     return tempats;
+  } else if (response.statusCode == 401) {
+      throw Exception('Unauthorized');
   } else {
-    throw Exception('Failed to get tempat. Is internet connection available?');
+      throw Exception('Failed to get tempat. Is internet connection available?');
   }
 }

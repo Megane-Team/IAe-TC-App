@@ -303,7 +303,10 @@ class BerandaState extends State<Beranda> {
                                         return ElevatedButton(
                                           onPressed: () {
                                             setState(() {
-                                              context.go('/ruangan');
+                                              // TODO: Send the id of the selected index
+                                              context.push('/gedung', extra: {
+                                                'tempatId': tempatList[index].id
+                                              });
                                             });
                                           },
                                           style: ElevatedButton.styleFrom(
