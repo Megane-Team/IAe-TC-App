@@ -235,6 +235,7 @@ class BerandaState extends State<Beranda> {
                                 });
                               },
                               style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(100, 50),
                                 backgroundColor: isParkiranActive
                                     ? Colors.orange
                                     : Colors.white,
@@ -373,7 +374,7 @@ class BerandaState extends State<Beranda> {
                                     );
                                   } else {
                                     return const Text(
-                                        'No data available'); // Show message if no data
+                                        'No data available');
                                   }
                                 },
                               )

@@ -18,7 +18,6 @@ class GedungState extends State<Gedung> {
   bool isGudangActive = false;
   bool isLabActive = false;
   TextEditingController searchController = TextEditingController();
-  List<Map<String, String>> filteredGedung = [];
   late List<Ruangan> ruanganList = [];
 
   void fetchData() async {
@@ -123,7 +122,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isKelasActive = !isKelasActive;
-                      // updateGedungList();
+                      // TODO: add the sort function here
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -145,7 +144,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isLabActive = !isLabActive;
-                      // updateGedungList();
+                      // TODO: add the sort function here
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -167,7 +166,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isGudangActive = !isGudangActive;
-                      // updateGedungList();
+                      // TODO: add the sort function here
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -189,114 +188,111 @@ class GedungState extends State<Gedung> {
           ),
           const Gap(20),
           Expanded(
-            child: ListView.builder(
-              itemCount: filteredGedung.length,
-              itemBuilder: (context, index) {
-                filteredGedung.sort((a, b) {
-                  if (a['status'] == 'Digunakan' &&
-                      b['status'] != 'Digunakan') {
-                    return 1;
-                  } else if (a['status'] != 'Digunakan' &&
-                      b['status'] == 'Digunakan') {
-                    return -1;
-                  } else {
-                    return (a['name'] ?? '').compareTo(b['name'] ?? '');
-                  }
-                });
-                var gudang = filteredGedung[index];
-                return Container(
-                  height: 61,
-                  margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      elevation: 4,
-                      backgroundColor: gudang['status'] == 'Digunakan'
-                          ? Colors.grey
-                          : Colors.white,
-                    ),
-                    onPressed: () {
-                      if (gudang['status'] == 'Digunakan') {
-                        // showDialog(
-                        //   context: context,
-                        //   builder: (BuildContext context) {
-                        //     return AlertDialog(
-                        //       title: const Text('Ruangan Sedang Digunakan'),
-                        //       content: Column(
-                        //         mainAxisSize: MainAxisSize.min,
-                        //         children: Peminjaman.map((peminjaman) {
-                        //           return ListTile(
-                        //             title: Text(peminjaman['name']!),
-                        //             subtitle: Text(
-                        //                 'Divisi: ${peminjaman['Divisi']!}\nEstimasi Peminjaman: ${peminjaman['estimasi peminjaman']!}'),
-                        //           );
-                        //         }).toList(),
-                        //       ),
-                        //       actions: [
-                        //         SizedBox(
-                        //           width: MediaQuery.of(context).size.width,
-                        //           child: ElevatedButton(
-                        //             style: ElevatedButton.styleFrom(
-                        //               padding: EdgeInsets.zero,
-                        //               backgroundColor: const Color(0xFFFCA311),
-                        //             ),
-                        //             onPressed: () {
-                        //               Navigator.of(context).pop();
-                        //             },
-                        //             child: const Text(
-                        //               'OK',
-                        //               style: TextStyle(
-                        //                   color: Colors.white,
-                        //                   fontWeight: FontWeight.w600),
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       ],
-                        //     );
-                        //   },
-                        // );
-                      } else {}
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 60,
-                                height: 46,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Colors.black),
-                                child: Image.asset(gudang['photo'] ?? '',
-                                    height: 50, width: 50),
-                              ),
-                              const Gap(16),
-                              Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      gudang['name'] ?? '',
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black),
-                                    ),
-                                  ])
-                            ],
-                          ),
+            child: FutureBuilder<List<Ruangan>>(
+              future: readRuangan(widget.id),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text(
+                      'Error: ${snapshot.error}');
+                } else if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: ruanganList.length,
+                    itemBuilder: (context, index) {
+                      var ruangan = ruanganList[index];
+                      return Container(
+                        height: 61,
+                        margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        gudang['kapasitas'] != null &&
-                                gudang['kapasitas']!.isNotEmpty
-                            ? Container(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 4,
+                            backgroundColor: ruangan.status == 'Digunakan'
+                                ? Colors.grey
+                                : Colors.white,
+                          ),
+                          onPressed: () {
+                            if (ruangan.status == 'Digunakan') {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Ruangan Sedang Digunakan'),
+                                    content: const Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      // children: Peminjaman.map((peminjaman) {
+                                      //   return ListTile(
+                                      //     title: Text(peminjaman['name']!),
+                                      //     subtitle: Text(
+                                      //         'Divisi: ${peminjaman['Divisi']!}\nEstimasi Peminjaman: ${peminjaman['estimasi peminjaman']!}'),
+                                      //   );
+                                      // }).toList(),
+                                    ),
+                                    actions: [
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width,
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            padding: EdgeInsets.zero,
+                                            backgroundColor: const Color(0xFFFCA311),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text(
+                                            'OK',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {}
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 60,
+                                      height: 46,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          color: Colors.black),
+                                      child: Image.asset(ruangan.photo,
+                                          height: 50, width: 50),
+                                    ),
+                                    const Gap(16),
+                                    Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            ruangan.code,
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black),
+                                          ),
+                                        ])
+                                  ],
+                                ),
+                              ),
+                              Container(
                                 width: 46,
                                 height: 22,
                                 decoration: BoxDecoration(
@@ -322,7 +318,7 @@ class GedungState extends State<Gedung> {
                                       size: 16,
                                     ),
                                     Text(
-                                      gudang['kapasitas'] ?? '',
+                                      ruangan.capacity.toString(),
                                       style: const TextStyle(
                                           fontSize: 12,
                                           color: Color(0xFFFCA311)),
@@ -330,11 +326,15 @@ class GedungState extends State<Gedung> {
                                   ],
                                 ),
                               )
-                            : const SizedBox.shrink(),
-                      ],
-                    ),
-                  ),
-                );
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return const Text('No data available');
+                }
               },
             ),
           ),
@@ -342,86 +342,4 @@ class GedungState extends State<Gedung> {
       ),
     );
   }
-  //
-  // List<Map<String, String>> Tempat = [
-  //   {
-  //     'name': 'Gedung 1',
-  //     'kategori': 'Gedung',
-  //     'photo': 'assets/images/logos/inventara.png',
-  //   },
-  // ];
-  //
-  // List<Map<String, String>> Peminjaman = [
-  //   {
-  //     'name': 'User 1',
-  //     'Divisi': 'HC3000',
-  //     'estimasi peminjaman': '31-11-2024',
-  //   },
-  // ];
-  //
-  // List<Map<String, String>> Gedung_1 = [
-  //   {
-  //     'name': 'Kelas 1',
-  //     'kategori': 'Kelas',
-  //     'photo': 'assets/images/logos/inventara.png',
-  //     'status': 'Tidak Digunakan',
-  //     'kapasitas': '20',
-  //   },
-  //   {
-  //     'name': 'Kelas 2',
-  //     'kategori': 'Kelas',
-  //     'photo': 'assets/images/logos/inventara.png',
-  //     'status': 'Tidak Digunakan',
-  //     'kapasitas': '20',
-  //   },
-  //   {
-  //     'name': 'Kelas 3',
-  //     'kategori': 'Kelas',
-  //     'photo': 'assets/images/logos/inventara.png',
-  //     'status': 'Digunakan',
-  //     'kapasitas': '20',
-  //   },
-  //   {
-  //     'name': 'Gudang 1',
-  //     'kategori': 'Gudang',
-  //     'photo': 'assets/images/logos/inventara.png',
-  //     'status': '',
-  //     'kapasitas': '',
-  //   },
-  //   {
-  //     'name': 'Gudang 2',
-  //     'kategori': 'Gudang',
-  //     'photo': 'assets/images/logos/inventara.png',
-  //     'status': '',
-  //     'kapasitas': '',
-  //   },
-  //   {
-  //     'name': 'Gudang 3',
-  //     'kategori': 'Gudang',
-  //     'photo': 'assets/images/logos/inventara.png',
-  //     'status': '',
-  //     'kapasitas': '',
-  //   },
-  //   {
-  //     'name': 'Lab 1',
-  //     'kategori': 'Lab',
-  //     'photo': 'assets/images/logos/inventara.png',
-  //     'status': 'a',
-  //     'kapasitas': '11',
-  //   },
-  //   {
-  //     'name': 'Lab 2',
-  //     'kategori': 'Lab',
-  //     'photo': 'assets/images/logos/inventara.png',
-  //     'status': 'b',
-  //     'kapasitas': '12',
-  //   },
-  //   {
-  //     'name': 'Lab 3',
-  //     'kategori': 'Lab',
-  //     'photo': 'assets/images/logos/inventara.png',
-  //     'status': 'c',
-  //     'kapasitas': '10',
-  //   },
-  // ];
 }

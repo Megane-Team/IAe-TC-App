@@ -168,7 +168,7 @@ class RuanganState extends State<Ruangan> {
                           children: [
                             ListView.builder(
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: Kelas_1.map((item) => item['name'])
                                   .toSet()
                                   .length,
