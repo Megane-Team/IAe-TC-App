@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class Ruangan extends StatefulWidget {
   String name;
@@ -54,7 +55,9 @@ class RuanganState extends State<Ruangan> {
                               shape: BoxShape.circle,
                             ),
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                context.go('/beranda');
+                              },
                               icon: const Icon(Icons.navigate_before),
                             ),
                           ),
@@ -220,8 +223,9 @@ class RuanganState extends State<Ruangan> {
                                               ..sort((a, b) {
                                                 if (a['status'] ==
                                                         'Digunakan' &&
-                                                    b['status'] != 'Digunakan')
+                                                    b['status'] != 'Digunakan') {
                                                   return 1;
+                                                }
                                                 if (a['status'] !=
                                                         'Digunakan' &&
                                                     b['status'] == 'Digunakan')
@@ -571,7 +575,7 @@ class RuanganState extends State<Ruangan> {
                             onPressed: () {
                               // Add your onPressed code here!
                             },
-                            child: Text(
+                            child: const Text(
                               "Pinjam Ruangan",
                               style: TextStyle(
                                   color: Colors.white,

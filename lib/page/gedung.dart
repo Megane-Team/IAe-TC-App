@@ -18,14 +18,26 @@ class GedungState extends State<Gedung> {
   bool isKelasActive = false;
   bool isGudangActive = false;
   bool isLabActive = false;
-  TextEditingController searchController = TextEditingController();
   late List<Ruangan> ruanganList = [];
+  late List<Ruangan> originalRuanganList = [];
 
   void fetchData() async {
     var ruangan = await readRuangan(widget.id);
     setState(() {
-      ruanganList = ruangan;
+      originalRuanganList = ruangan;
+      ruanganList = List.from(originalRuanganList);
+      listSort(ruanganList);
     });
+  }
+
+  void listSort(List<Ruangan> list) {
+    if (isKelasActive) {
+      ruanganList.sort((a, b) => a.category.toString().compareTo(b.category.toString()));
+    } else if (isLabActive) {
+      ruanganList.sort((a, b) => a.category.toString().compareTo(b.category.toString()));
+    } else if (isGudangActive) {
+      ruanganList.sort((a, b) => a.category.toString().compareTo(b.category.toString()));
+    }
   }
 
   @override
@@ -89,13 +101,12 @@ class GedungState extends State<Gedung> {
               ],
             ),
             child: TextField(
-              controller: searchController,
               cursorColor: Colors.black,
               decoration: InputDecoration(
                 hintStyle: const TextStyle(
-                    color: Colors.black,
+                    color: Colors.black54,
                     fontSize: 16,
-                    fontWeight: FontWeight.w400),
+                    fontWeight: FontWeight.w100),
                 hintText: 'Cari ruangan...',
                 prefixIcon: const Icon(Icons.search),
                 border: InputBorder.none,
@@ -112,6 +123,18 @@ class GedungState extends State<Gedung> {
                   borderSide: BorderSide.none,
                 ),
               ),
+              onChanged: (value) {
+                setState(() {
+                  if (value.isEmpty) {
+                    ruanganList = List.from(originalRuanganList);
+                  } else {
+                    ruanganList = originalRuanganList
+                        .where((element) =>
+                        element.code.toLowerCase().contains(value.toLowerCase()))
+                        .toList();
+                  }
+                });
+              },
             ),
           ),
           const Gap(12),
@@ -123,7 +146,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isKelasActive = !isKelasActive;
-                      // TODO: add the sort function here
+                      fetchData();
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -145,7 +168,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isLabActive = !isLabActive;
-                      // TODO: add the sort function here
+                      fetchData();
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -167,7 +190,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isGudangActive = !isGudangActive;
-                      // TODO: add the sort function here
+                      fetchData();
                     });
                   },
                   style: ElevatedButton.styleFrom(

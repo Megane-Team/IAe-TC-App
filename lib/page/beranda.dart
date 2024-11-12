@@ -201,7 +201,7 @@ class BerandaState extends State<Beranda> {
                                     if (isParkiranActive = true) {
                                       isParkiranActive = false;
                                     }
-                                    listSort(tempatList);
+                                    fetchData();
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -232,7 +232,7 @@ class BerandaState extends State<Beranda> {
                                   if (isGedungActive = true) {
                                     isGedungActive = false;
                                   }
-                                  listSort(tempatList);
+                                  fetchData();
                                 });
                               },
                               style: ElevatedButton.styleFrom(
@@ -286,7 +286,6 @@ class BerandaState extends State<Beranda> {
                                       ConnectionState.waiting) {
                                     return const CircularProgressIndicator(); // Show a loading indicator while waiting
                                   } else if (snapshot.hasError) {
-                                    print(snapshot.error);
                                     return const Center(
                                       child: Text(
                                           'Error: No data available, is internet connection available?'),
