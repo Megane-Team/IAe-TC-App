@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/tempat.dart';
+import 'package:inventara/structures/tempat_category.dart';
 import 'package:inventara/utils/assets.dart';
 import 'package:inventara/utils/sessions.dart';
 
@@ -308,8 +309,13 @@ class BerandaState extends State<Beranda> {
                                             setState(() {
                                               var param1 = tempatList[index].id;
                                               var param2 = tempatList[index].name;
+
+                                              if (tempatList[index].category == TempatCategory.parkiran) {
+                                                context.go("/ruangan?id=$param1&name=$param2");
+                                              } else {
                                               context.go("/gedung?id=$param1&name=$param2");
-                                            });
+                                            }}
+                                            );
                                           },
                                           style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(

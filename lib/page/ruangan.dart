@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class Ruangan extends StatefulWidget {
-  const Ruangan({super.key});
+  String name;
+  String id;
+
+  Ruangan({required this.name, required this.id, super.key});
 
   @override
   State<Ruangan> createState() => RuanganState();

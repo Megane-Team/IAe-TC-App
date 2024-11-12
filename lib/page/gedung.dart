@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -199,7 +197,6 @@ class GedungState extends State<Gedung> {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   // send error message to terminal
-                  print(snapshot.error);
                   return const Center(
                     child: Text(
                         'Error: No data available. Is internet connection available?'),
@@ -285,7 +282,6 @@ class GedungState extends State<Gedung> {
                                             if (snapshot.connectionState == ConnectionState.waiting) {
                                               return const CircularProgressIndicator(); // Show a loading indicator while waiting
                                             } else if (snapshot.hasError) {
-                                              print('error: ${snapshot.error.toString()}');
                                               return Image.asset(Assets.icons('no_image')); // Show error message if any
                                             } else if (snapshot.hasData) {
                                               return snapshot.data!; // Return the widget once the future completes
