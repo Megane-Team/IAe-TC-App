@@ -286,8 +286,11 @@ class BerandaState extends State<Beranda> {
                                       ConnectionState.waiting) {
                                     return const CircularProgressIndicator(); // Show a loading indicator while waiting
                                   } else if (snapshot.hasError) {
-                                    return Text(
-                                        'Error: ${snapshot.error}'); // Show error message if any
+                                    print(snapshot.error);
+                                    return const Center(
+                                      child: Text(
+                                          'Error: No data available, is internet connection available?'),
+                                    );
                                   } else if (snapshot.hasData) {
                                     return GridView.builder(
                                       shrinkWrap: true,

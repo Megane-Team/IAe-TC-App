@@ -195,8 +195,12 @@ class GedungState extends State<Gedung> {
                     ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return Text(
-                      'Error: ${snapshot.error}');
+                  // send error message to terminal
+                  print(snapshot.error);
+                  return const Center(
+                    child: Text(
+                        'Error: No data available. Is internet connection available?'),
+                  );
                 } else if (snapshot.hasData) {
                   return ListView.builder(
                     itemCount: ruanganList.length,
