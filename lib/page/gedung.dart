@@ -4,7 +4,8 @@ import 'package:gap/gap.dart';
 import 'package:inventara/page/beranda.dart';
 
 class Gedung extends StatefulWidget {
-  const Gedung({super.key});
+  final String? id;
+  const Gedung({required this.id, super.key});
 
   @override
   State<Gedung> createState() => GedungState();

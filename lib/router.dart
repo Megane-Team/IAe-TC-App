@@ -8,8 +8,9 @@ import 'package:inventara/page/keranjang.dart';
 final appRouter = GoRouter(initialLocation: '/Login', routes: [
   GoRoute(path: '/Login', builder: (context, state) => const Login()),
   GoRoute(path: '/Beranda', builder: (context, state) => const Beranda()),
-  // TODO: get the extra from when being called
-  GoRoute(path: '/Gedung', builder: (context, state) => const Gedung()),
+  GoRoute(path: '/Gedung', builder: (context, state) => Gedung(
+    id: state.uri.queryParameters['id'] ?? '',
+  )),
   GoRoute(path: '/Ruangan', builder: (context, state) => const Ruangan()),
   GoRoute(path: '/Keranjang', builder: (context, state) => const Keranjang()),
 ]);
