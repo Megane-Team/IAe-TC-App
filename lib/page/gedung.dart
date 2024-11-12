@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-
-import 'package:inventara/page/beranda.dart';
+import 'package:go_router/go_router.dart';
+import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
+import 'package:inventara/structures/ruangan.dart';
 
 class Gedung extends StatefulWidget {
-  final String? id;
-  const Gedung({required this.id, super.key});
+  final String id;
+  final String name;
+  const Gedung({required this.name, required this.id, super.key});
 
   @override
   State<Gedung> createState() => GedungState();
@@ -17,71 +19,19 @@ class GedungState extends State<Gedung> {
   bool isLabActive = false;
   TextEditingController searchController = TextEditingController();
   List<Map<String, String>> filteredGedung = [];
+  late List<Ruangan> ruanganList = [];
 
-  List<Map<String, String>> originalGedung_1 = [];
-
-  @override
-  void initState() {
-    super.initState();
-    originalGedung_1 = List.from(Gedung_1);
-    filteredGedung = List.from(Gedung_1);
-    searchController.addListener(_filterGedungList);
-  }
-
-  void updateGedungList() {
-    if (!isKelasActive && !isLabActive && !isGudangActive) {
-      filteredGedung = List.from(originalGedung_1);
-    } else {
-      filteredGedung = [];
-      if (isKelasActive) {
-        filteredGedung.addAll(
-            originalGedung_1.where((item) => item['kategori'] == 'Kelas'));
-      }
-      if (isLabActive) {
-        filteredGedung.addAll(
-            originalGedung_1.where((item) => item['kategori'] == 'Lab'));
-      }
-      if (isGudangActive) {
-        filteredGedung.addAll(
-            originalGedung_1.where((item) => item['kategori'] == 'Gudang'));
-      }
-    }
-    _filterGedungList();
-  }
-
-  void _filterGedungList() {
-    String query = searchController.text.toLowerCase();
-
+  void fetchData() async {
+    var ruangan = await readRuangan(widget.id);
     setState(() {
-      if (query.isEmpty) {
-        filteredGedung = List.from(originalGedung_1);
-        if (isKelasActive || isLabActive || isGudangActive) {
-          filteredGedung = [];
-          if (isKelasActive) {
-            filteredGedung.addAll(
-                originalGedung_1.where((item) => item['kategori'] == 'Kelas'));
-          }
-          if (isLabActive) {
-            filteredGedung.addAll(
-                originalGedung_1.where((item) => item['kategori'] == 'Lab'));
-          }
-          if (isGudangActive) {
-            filteredGedung.addAll(
-                originalGedung_1.where((item) => item['kategori'] == 'Gudang'));
-          }
-        }
-      } else {
-        filteredGedung = filteredGedung
-            .where((item) => item['name']!.toLowerCase().contains(query))
-            .toList();
-      }
+      ruanganList = ruangan;
     });
   }
 
   @override
-  void dispose() {
-    searchController.removeListener(_filterGedungList);
-    super.dispose();
+  void initState() {
+    super.initState();
+    fetchData();
   }
 
   @override
@@ -103,17 +53,17 @@ class GedungState extends State<Gedung> {
               ], color: Colors.white, shape: BoxShape.circle),
               child: IconButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Beranda()),
-                  );
+                  context.go('/beranda');
                 },
                 icon: const Icon(Icons.navigate_before),
               ),
             ),
             Text(
-              Tempat[0]['name'] ?? 'Gedung',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              widget.name,
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
             ),
             Container(
               width: 40,
@@ -173,7 +123,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isKelasActive = !isKelasActive;
-                      updateGedungList();
+                      // updateGedungList();
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -195,7 +145,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isLabActive = !isLabActive;
-                      updateGedungList();
+                      // updateGedungList();
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -217,7 +167,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isGudangActive = !isGudangActive;
-                      updateGedungList();
+                      // updateGedungList();
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -273,44 +223,44 @@ class GedungState extends State<Gedung> {
                     ),
                     onPressed: () {
                       if (gudang['status'] == 'Digunakan') {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Ruangan Sedang Digunakan'),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: Peminjaman.map((peminjaman) {
-                                  return ListTile(
-                                    title: Text(peminjaman['name']!),
-                                    subtitle: Text(
-                                        'Divisi: ${peminjaman['Divisi']!}\nEstimasi Peminjaman: ${peminjaman['estimasi peminjaman']!}'),
-                                  );
-                                }).toList(),
-                              ),
-                              actions: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      backgroundColor: const Color(0xFFFCA311),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(
-                                      'OK',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        // showDialog(
+                        //   context: context,
+                        //   builder: (BuildContext context) {
+                        //     return AlertDialog(
+                        //       title: const Text('Ruangan Sedang Digunakan'),
+                        //       content: Column(
+                        //         mainAxisSize: MainAxisSize.min,
+                        //         children: Peminjaman.map((peminjaman) {
+                        //           return ListTile(
+                        //             title: Text(peminjaman['name']!),
+                        //             subtitle: Text(
+                        //                 'Divisi: ${peminjaman['Divisi']!}\nEstimasi Peminjaman: ${peminjaman['estimasi peminjaman']!}'),
+                        //           );
+                        //         }).toList(),
+                        //       ),
+                        //       actions: [
+                        //         SizedBox(
+                        //           width: MediaQuery.of(context).size.width,
+                        //           child: ElevatedButton(
+                        //             style: ElevatedButton.styleFrom(
+                        //               padding: EdgeInsets.zero,
+                        //               backgroundColor: const Color(0xFFFCA311),
+                        //             ),
+                        //             onPressed: () {
+                        //               Navigator.of(context).pop();
+                        //             },
+                        //             child: const Text(
+                        //               'OK',
+                        //               style: TextStyle(
+                        //                   color: Colors.white,
+                        //                   fontWeight: FontWeight.w600),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     );
+                        //   },
+                        // );
                       } else {}
                     },
                     child: Row(
@@ -392,86 +342,86 @@ class GedungState extends State<Gedung> {
       ),
     );
   }
-
-  List<Map<String, String>> Tempat = [
-    {
-      'name': 'Gedung 1',
-      'kategori': 'Gedung',
-      'photo': 'assets/images/logos/inventara.png',
-    },
-  ];
-
-  List<Map<String, String>> Peminjaman = [
-    {
-      'name': 'User 1',
-      'Divisi': 'HC3000',
-      'estimasi peminjaman': '31-11-2024',
-    },
-  ];
-
-  List<Map<String, String>> Gedung_1 = [
-    {
-      'name': 'Kelas 1',
-      'kategori': 'Kelas',
-      'photo': 'assets/images/logos/inventara.png',
-      'status': 'Tidak Digunakan',
-      'kapasitas': '20',
-    },
-    {
-      'name': 'Kelas 2',
-      'kategori': 'Kelas',
-      'photo': 'assets/images/logos/inventara.png',
-      'status': 'Tidak Digunakan',
-      'kapasitas': '20',
-    },
-    {
-      'name': 'Kelas 3',
-      'kategori': 'Kelas',
-      'photo': 'assets/images/logos/inventara.png',
-      'status': 'Digunakan',
-      'kapasitas': '20',
-    },
-    {
-      'name': 'Gudang 1',
-      'kategori': 'Gudang',
-      'photo': 'assets/images/logos/inventara.png',
-      'status': '',
-      'kapasitas': '',
-    },
-    {
-      'name': 'Gudang 2',
-      'kategori': 'Gudang',
-      'photo': 'assets/images/logos/inventara.png',
-      'status': '',
-      'kapasitas': '',
-    },
-    {
-      'name': 'Gudang 3',
-      'kategori': 'Gudang',
-      'photo': 'assets/images/logos/inventara.png',
-      'status': '',
-      'kapasitas': '',
-    },
-    {
-      'name': 'Lab 1',
-      'kategori': 'Lab',
-      'photo': 'assets/images/logos/inventara.png',
-      'status': 'a',
-      'kapasitas': '11',
-    },
-    {
-      'name': 'Lab 2',
-      'kategori': 'Lab',
-      'photo': 'assets/images/logos/inventara.png',
-      'status': 'b',
-      'kapasitas': '12',
-    },
-    {
-      'name': 'Lab 3',
-      'kategori': 'Lab',
-      'photo': 'assets/images/logos/inventara.png',
-      'status': 'c',
-      'kapasitas': '10',
-    },
-  ];
+  //
+  // List<Map<String, String>> Tempat = [
+  //   {
+  //     'name': 'Gedung 1',
+  //     'kategori': 'Gedung',
+  //     'photo': 'assets/images/logos/inventara.png',
+  //   },
+  // ];
+  //
+  // List<Map<String, String>> Peminjaman = [
+  //   {
+  //     'name': 'User 1',
+  //     'Divisi': 'HC3000',
+  //     'estimasi peminjaman': '31-11-2024',
+  //   },
+  // ];
+  //
+  // List<Map<String, String>> Gedung_1 = [
+  //   {
+  //     'name': 'Kelas 1',
+  //     'kategori': 'Kelas',
+  //     'photo': 'assets/images/logos/inventara.png',
+  //     'status': 'Tidak Digunakan',
+  //     'kapasitas': '20',
+  //   },
+  //   {
+  //     'name': 'Kelas 2',
+  //     'kategori': 'Kelas',
+  //     'photo': 'assets/images/logos/inventara.png',
+  //     'status': 'Tidak Digunakan',
+  //     'kapasitas': '20',
+  //   },
+  //   {
+  //     'name': 'Kelas 3',
+  //     'kategori': 'Kelas',
+  //     'photo': 'assets/images/logos/inventara.png',
+  //     'status': 'Digunakan',
+  //     'kapasitas': '20',
+  //   },
+  //   {
+  //     'name': 'Gudang 1',
+  //     'kategori': 'Gudang',
+  //     'photo': 'assets/images/logos/inventara.png',
+  //     'status': '',
+  //     'kapasitas': '',
+  //   },
+  //   {
+  //     'name': 'Gudang 2',
+  //     'kategori': 'Gudang',
+  //     'photo': 'assets/images/logos/inventara.png',
+  //     'status': '',
+  //     'kapasitas': '',
+  //   },
+  //   {
+  //     'name': 'Gudang 3',
+  //     'kategori': 'Gudang',
+  //     'photo': 'assets/images/logos/inventara.png',
+  //     'status': '',
+  //     'kapasitas': '',
+  //   },
+  //   {
+  //     'name': 'Lab 1',
+  //     'kategori': 'Lab',
+  //     'photo': 'assets/images/logos/inventara.png',
+  //     'status': 'a',
+  //     'kapasitas': '11',
+  //   },
+  //   {
+  //     'name': 'Lab 2',
+  //     'kategori': 'Lab',
+  //     'photo': 'assets/images/logos/inventara.png',
+  //     'status': 'b',
+  //     'kapasitas': '12',
+  //   },
+  //   {
+  //     'name': 'Lab 3',
+  //     'kategori': 'Lab',
+  //     'photo': 'assets/images/logos/inventara.png',
+  //     'status': 'c',
+  //     'kapasitas': '10',
+  //   },
+  // ];
 }

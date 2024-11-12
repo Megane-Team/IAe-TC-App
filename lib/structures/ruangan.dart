@@ -12,7 +12,7 @@ class Ruangan {
   @HiveField(2)
   late String status;
   @HiveField(3)
-  late String capacity;
+  late int capacity;
   @HiveField(4)
   late RuanganCategory? category;
   @HiveField(5)
