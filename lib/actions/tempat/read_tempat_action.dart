@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'package:inventara/constants/variables.dart';
 import 'package:inventara/main.dart';
 import 'package:inventara/structures/tempat.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:inventara/utils/sessions.dart';
 
 Future<List<Tempat>> readTempat() async {
-  const secureStorage = FlutterSecureStorage();
-  var token = await secureStorage.read(key: 'token');
+  final token = await Session.getToken();
 
   final response = await App.api.get(apiBaseURl.resolve('/tempats'),
       headers: {'authorization': 'Bearer $token'});

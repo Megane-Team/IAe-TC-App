@@ -1,13 +1,12 @@
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:inventara/constants/variables.dart';
 import 'package:inventara/main.dart';
 import 'package:inventara/structures/ruangan.dart';
+import 'package:inventara/utils/sessions.dart';
 
 Future<List<Ruangan>> readRuangan(String id) async {
-  const secureStorage = FlutterSecureStorage();
-  var token = await secureStorage.read(key: 'token');
+  final token = await Session.getToken();
 
   final response = await App.api.get(apiBaseURl.resolve('/tempats/$id/ruangans'),
       headers: {'authorization': 'Bearer $token'});

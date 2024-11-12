@@ -235,7 +235,6 @@ class BerandaState extends State<Beranda> {
                                 });
                               },
                               style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(100, 50),
                                 backgroundColor: isParkiranActive
                                     ? Colors.orange
                                     : Colors.white,
@@ -338,7 +337,7 @@ class BerandaState extends State<Beranda> {
                                                   borderRadius:
                                                       BorderRadius.circular(12),
                                                   child: FutureBuilder<Widget>(
-                                                    future: Assets().tempat(
+                                                    future: Assets.tempat(
                                                         tempatList[index].name),
                                                     builder:
                                                         (context, snapshot) {
@@ -350,8 +349,7 @@ class BerandaState extends State<Beranda> {
                                                       } else if (snapshot
                                                           .hasError) {
                                                         log("Error: ${snapshot.error}");
-                                                        return const Text(
-                                                            'Error: Error while getting the data'); // Show error message if any
+                                                        return Image.asset(Assets.icons('no_image')); // Show error message if any
                                                       } else if (snapshot
                                                           .hasData) {
                                                         return snapshot

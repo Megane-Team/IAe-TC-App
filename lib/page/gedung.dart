@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/structures/ruangan.dart';
+import 'package:inventara/utils/assets.dart';
 
 class Gedung extends StatefulWidget {
   final String id;
@@ -275,10 +278,21 @@ class GedungState extends State<Gedung> {
                                       width: 60,
                                       height: 46,
                                       decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
-                                          color: Colors.black),
-                                      child: Image.asset(ruangan.photo,
-                                          height: 50, width: 50),
+                                          borderRadius: BorderRadius.circular(8),),
+                                      child: FutureBuilder<Widget>(
+                                          future: Assets.ruangan(ruangan.photo),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState == ConnectionState.waiting) {
+                                              return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                            } else if (snapshot.hasError) {
+                                              print('error: ${snapshot.error.toString()}');
+                                              return Image.asset(Assets.icons('no_image')); // Show error message if any
+                                            } else if (snapshot.hasData) {
+                                              return snapshot.data!; // Return the widget once the future completes
+                                            } else {
+                                              return const Text('No data available'); // Show message if no data
+                                            }
+                                          }),
                                     ),
                                     const Gap(16),
                                     Column(
