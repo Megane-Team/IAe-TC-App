@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class Keranjang extends StatefulWidget {
-  const Keranjang({Key? key}) : super(key: key);
+  const Keranjang({super.key});
 
   @override
   State<Keranjang> createState() => KeranjangState();

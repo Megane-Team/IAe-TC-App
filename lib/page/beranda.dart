@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/tempat.dart';
+import 'package:inventara/structures/tempat_category.dart';
 import 'package:inventara/utils/assets.dart';
 import 'package:inventara/utils/sessions.dart';
 
@@ -200,7 +201,7 @@ class BerandaState extends State<Beranda> {
                                     if (isParkiranActive = true) {
                                       isParkiranActive = false;
                                     }
-                                    listSort(tempatList);
+                                    fetchData();
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -231,7 +232,7 @@ class BerandaState extends State<Beranda> {
                                   if (isGedungActive = true) {
                                     isGedungActive = false;
                                   }
-                                  listSort(tempatList);
+                                  fetchData();
                                 });
                               },
                               style: ElevatedButton.styleFrom(
@@ -285,8 +286,10 @@ class BerandaState extends State<Beranda> {
                                       ConnectionState.waiting) {
                                     return const CircularProgressIndicator(); // Show a loading indicator while waiting
                                   } else if (snapshot.hasError) {
-                                    return Text(
-                                        'Error: ${snapshot.error}'); // Show error message if any
+                                    return const Center(
+                                      child: Text(
+                                          'Error: No data available, is internet connection available?'),
+                                    );
                                   } else if (snapshot.hasData) {
                                     return GridView.builder(
                                       shrinkWrap: true,
@@ -303,7 +306,18 @@ class BerandaState extends State<Beranda> {
                                         return ElevatedButton(
                                           onPressed: () {
                                             setState(() {
-                                              // get to the ruangan page
+                                              var param1 = tempatList[index].id;
+                                              var param2 =
+                                                  tempatList[index].name;
+
+                                              if (tempatList[index].category ==
+                                                  TempatCategory.parkiran) {
+                                                context.go(
+                                                    "/ruangan?id=$param1&name=$param2");
+                                              } else {
+                                                context.go(
+                                                    "/gedung?id=$param1&name=$param2");
+                                              }
                                             });
                                           },
                                           style: ElevatedButton.styleFrom(
@@ -332,7 +346,7 @@ class BerandaState extends State<Beranda> {
                                                   borderRadius:
                                                       BorderRadius.circular(12),
                                                   child: FutureBuilder<Widget>(
-                                                    future: Assets().tempat(
+                                                    future: Assets.tempat(
                                                         tempatList[index].name),
                                                     builder:
                                                         (context, snapshot) {
@@ -344,8 +358,9 @@ class BerandaState extends State<Beranda> {
                                                       } else if (snapshot
                                                           .hasError) {
                                                         log("Error: ${snapshot.error}");
-                                                        return const Text(
-                                                            'Error: Error while getting the data'); // Show error message if any
+                                                        return Image.asset(
+                                                            Assets.icons(
+                                                                'no_image')); // Show error message if any
                                                       } else if (snapshot
                                                           .hasData) {
                                                         return snapshot
@@ -370,8 +385,7 @@ class BerandaState extends State<Beranda> {
                                       },
                                     );
                                   } else {
-                                    return const Text(
-                                        'No data available'); // Show message if no data
+                                    return const Text('No data available');
                                   }
                                 },
                               )
