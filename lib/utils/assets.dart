@@ -33,7 +33,6 @@ class Assets {
         fit: BoxFit.fill,
       );
     } catch (e) {
-      print('Error: $e');
       return Image.asset(Assets.icons('no_image'));
     }
   }
@@ -57,7 +56,6 @@ class Assets {
         fit: BoxFit.fill,
       );
     } catch (e) {
-      print('Error: $e');
       return Image.asset(Assets.icons('no_image'));
     }
   }

@@ -3,8 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class Ruangan extends StatefulWidget {
-  String name;
-  String id;
+  final String name;
+  final String id;
 
   Ruangan({required this.name, required this.id, super.key});
 
@@ -229,7 +229,8 @@ class RuanganState extends State<Ruangan> {
                                                 }
                                                 if (a['status'] !=
                                                         'Digunakan' &&
-                                                    b['status'] == 'Digunakan') {
+                                                    b['status'] ==
+                                                        'Digunakan') {
                                                   return -1;
                                                 }
                                                 return int.parse(
@@ -331,7 +332,8 @@ class RuanganState extends State<Ruangan> {
                                                                           context)
                                                                       .pop();
                                                                 },
-                                                                child: const Text(
+                                                                child:
+                                                                    const Text(
                                                                   'OK',
                                                                   style: TextStyle(
                                                                       color: Colors
