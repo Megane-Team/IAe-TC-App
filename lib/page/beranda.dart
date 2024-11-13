@@ -307,14 +307,18 @@ class BerandaState extends State<Beranda> {
                                           onPressed: () {
                                             setState(() {
                                               var param1 = tempatList[index].id;
-                                              var param2 = tempatList[index].name;
+                                              var param2 =
+                                                  tempatList[index].name;
 
-                                              if (tempatList[index].category == TempatCategory.parkiran) {
-                                                context.go("/ruangan?id=$param1&name=$param2");
+                                              if (tempatList[index].category ==
+                                                  TempatCategory.parkiran) {
+                                                context.go(
+                                                    "/ruangan?id=$param1&name=$param2");
                                               } else {
-                                              context.go("/gedung?id=$param1&name=$param2");
-                                            }}
-                                            );
+                                                context.go(
+                                                    "/gedung?id=$param1&name=$param2");
+                                              }
+                                            });
                                           },
                                           style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -354,7 +358,9 @@ class BerandaState extends State<Beranda> {
                                                       } else if (snapshot
                                                           .hasError) {
                                                         log("Error: ${snapshot.error}");
-                                                        return Image.asset(Assets.icons('no_image')); // Show error message if any
+                                                        return Image.asset(
+                                                            Assets.icons(
+                                                                'no_image')); // Show error message if any
                                                       } else if (snapshot
                                                           .hasData) {
                                                         return snapshot
@@ -379,8 +385,7 @@ class BerandaState extends State<Beranda> {
                                       },
                                     );
                                   } else {
-                                    return const Text(
-                                        'No data available');
+                                    return const Text('No data available');
                                   }
                                 },
                               )

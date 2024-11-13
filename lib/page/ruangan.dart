@@ -210,7 +210,7 @@ class RuanganState extends State<Ruangan> {
                                             left: 24, right: 24),
                                         child: ListView.builder(
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
                                           itemCount: Kelas_1.where((item) =>
                                               item['name'] ==
@@ -223,13 +223,15 @@ class RuanganState extends State<Ruangan> {
                                               ..sort((a, b) {
                                                 if (a['status'] ==
                                                         'Digunakan' &&
-                                                    b['status'] != 'Digunakan') {
+                                                    b['status'] !=
+                                                        'Digunakan') {
                                                   return 1;
                                                 }
                                                 if (a['status'] !=
                                                         'Digunakan' &&
-                                                    b['status'] == 'Digunakan')
+                                                    b['status'] == 'Digunakan') {
                                                   return -1;
+                                                }
                                                 return int.parse(
                                                         a['kode_barang']!)
                                                     .compareTo(int.parse(
@@ -283,7 +285,7 @@ class RuanganState extends State<Ruangan> {
                                                       builder: (BuildContext
                                                           context) {
                                                         return AlertDialog(
-                                                          title: Text(
+                                                          title: const Text(
                                                             'Asset sedang Digunakan',
                                                             style: TextStyle(
                                                                 fontWeight:
@@ -301,13 +303,13 @@ class RuanganState extends State<Ruangan> {
                                                                 .map((item) =>
                                                                     Text(
                                                                       'Name: ${item['name']}\nDivisi: ${item['Divisi']}\nEstimasi Peminjaman: ${item['estimasi peminjaman']}',
-                                                                      style: TextStyle(
+                                                                      style: const TextStyle(
                                                                           height:
                                                                               2),
                                                                     )).toList(),
                                                           ),
                                                           actions: [
-                                                            Container(
+                                                            SizedBox(
                                                               width:
                                                                   MediaQuery.of(
                                                                           context)
@@ -329,7 +331,7 @@ class RuanganState extends State<Ruangan> {
                                                                           context)
                                                                       .pop();
                                                                 },
-                                                                child: Text(
+                                                                child: const Text(
                                                                   'OK',
                                                                   style: TextStyle(
                                                                       color: Colors
@@ -561,7 +563,7 @@ class RuanganState extends State<Ruangan> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(right: 24, left: 24),
+                  padding: const EdgeInsets.only(right: 24, left: 24),
                   width: MediaQuery.of(context).size.width,
                   height: 80,
                   child: Column(

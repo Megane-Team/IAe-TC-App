@@ -32,11 +32,14 @@ class GedungState extends State<Gedung> {
 
   void listSort(List<Ruangan> list) {
     if (isKelasActive) {
-      ruanganList.sort((a, b) => a.category.toString().compareTo(b.category.toString()));
+      ruanganList.sort(
+          (a, b) => a.category.toString().compareTo(b.category.toString()));
     } else if (isLabActive) {
-      ruanganList.sort((a, b) => a.category.toString().compareTo(b.category.toString()));
+      ruanganList.sort(
+          (a, b) => a.category.toString().compareTo(b.category.toString()));
     } else if (isGudangActive) {
-      ruanganList.sort((a, b) => a.category.toString().compareTo(b.category.toString()));
+      ruanganList.sort(
+          (a, b) => a.category.toString().compareTo(b.category.toString()));
     }
   }
 
@@ -129,8 +132,9 @@ class GedungState extends State<Gedung> {
                     ruanganList = List.from(originalRuanganList);
                   } else {
                     ruanganList = originalRuanganList
-                        .where((element) =>
-                        element.code.toLowerCase().contains(value.toLowerCase()))
+                        .where((element) => element.code
+                            .toLowerCase()
+                            .contains(value.toLowerCase()))
                         .toList();
                   }
                 });
@@ -215,8 +219,7 @@ class GedungState extends State<Gedung> {
             child: FutureBuilder<List<Ruangan>>(
               future: readRuangan(widget.id),
               builder: (context, snapshot) {
-                if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   // send error message to terminal
@@ -231,7 +234,8 @@ class GedungState extends State<Gedung> {
                       var ruangan = ruanganList[index];
                       return Container(
                         height: 61,
-                        margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+                        margin: const EdgeInsets.only(
+                            left: 24, right: 24, bottom: 8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                         ),
@@ -252,7 +256,8 @@ class GedungState extends State<Gedung> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: const Text('Ruangan Sedang Digunakan'),
+                                    title:
+                                        const Text('Ruangan Sedang Digunakan'),
                                     content: const Column(
                                       mainAxisSize: MainAxisSize.min,
                                       // children: Peminjaman.map((peminjaman) {
@@ -265,11 +270,13 @@ class GedungState extends State<Gedung> {
                                     ),
                                     actions: [
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             padding: EdgeInsets.zero,
-                                            backgroundColor: const Color(0xFFFCA311),
+                                            backgroundColor:
+                                                const Color(0xFFFCA311),
                                           ),
                                           onPressed: () {
                                             Navigator.of(context).pop();
@@ -298,25 +305,32 @@ class GedungState extends State<Gedung> {
                                       width: 60,
                                       height: 46,
                                       decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
                                       child: FutureBuilder<Widget>(
                                           future: Assets.ruangan(ruangan.photo),
                                           builder: (context, snapshot) {
-                                            if (snapshot.connectionState == ConnectionState.waiting) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
                                               return const CircularProgressIndicator(); // Show a loading indicator while waiting
                                             } else if (snapshot.hasError) {
-                                              return Image.asset(Assets.icons('no_image')); // Show error message if any
+                                              return Image.asset(Assets.icons(
+                                                  'no_image')); // Show error message if any
                                             } else if (snapshot.hasData) {
-                                              return snapshot.data!; // Return the widget once the future completes
+                                              return snapshot
+                                                  .data!; // Return the widget once the future completes
                                             } else {
-                                              return const Text('No data available'); // Show message if no data
+                                              return const Text(
+                                                  'No data available'); // Show message if no data
                                             }
                                           }),
                                     ),
                                     const Gap(16),
                                     Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             ruangan.code,

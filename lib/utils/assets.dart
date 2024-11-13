@@ -18,7 +18,8 @@ class Assets {
     final token = await Session.getToken();
 
     try {
-      final response = await App.api.get(apiBaseURl.resolve('photoFiles/tempat/$name'),
+      final response = await App.api.get(
+        apiBaseURl.resolve('photoFiles/tempat/$name'),
         headers: {'authorization': 'Bearer $token'},
       );
 
@@ -41,19 +42,20 @@ class Assets {
     final token = await Session.getToken();
 
     try {
-      final response = await App.api.get(apiBaseURl.resolve('photoFiles/ruangan/$name'),
+      final response = await App.api.get(
+        apiBaseURl.resolve('photoFiles/ruangan/$name'),
         headers: {'authorization': 'Bearer $token'},
       );
 
       if (response.statusCode == 404) {
         return Image.asset(Assets.icons('no_image'));
-    }
+      }
 
-    return Image.network(
-      apiBaseURl.resolve('photoFiles/ruangan/$name').toString(),
-      headers: {'authorization': 'Bearer $token'},
-      fit: BoxFit.fill,
-    );
+      return Image.network(
+        apiBaseURl.resolve('photoFiles/ruangan/$name').toString(),
+        headers: {'authorization': 'Bearer $token'},
+        fit: BoxFit.fill,
+      );
     } catch (e) {
       print('Error: $e');
       return Image.asset(Assets.icons('no_image'));

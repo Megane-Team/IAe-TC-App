@@ -19,8 +19,8 @@ Future<List<Tempat>> readTempat() async {
 
     return tempats;
   } else if (response.statusCode == 401) {
-      throw Exception('Unauthorized');
+    throw Exception('Unauthorized');
   } else {
-      throw Exception('Failed to get tempat. Is internet connection available?');
+    throw Exception('Failed to get tempat. Is internet connection available?');
   }
 }

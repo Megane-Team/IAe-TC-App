@@ -36,8 +36,8 @@ class Ruangan {
       code: json['code'],
       status: json['status'],
       capacity: json['capacity'],
-      category: RuanganCategory.values
-          .firstWhere((e) => e.toString() == 'RuanganCategory.${json['category']}'),
+      category: RuanganCategory.values.firstWhere(
+          (e) => e.toString() == 'RuanganCategory.${json['category']}'),
       photo: json['photo'],
       tempatId: json['tempatId'],
     );

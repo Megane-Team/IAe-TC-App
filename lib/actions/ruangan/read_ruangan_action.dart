@@ -8,7 +8,8 @@ import 'package:inventara/utils/sessions.dart';
 Future<List<Ruangan>> readRuangan(String id) async {
   final token = await Session.getToken();
 
-  final response = await App.api.get(apiBaseURl.resolve('/tempats/$id/ruangans'),
+  final response = await App.api.get(
+      apiBaseURl.resolve('/tempats/$id/ruangans'),
       headers: {'authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {
