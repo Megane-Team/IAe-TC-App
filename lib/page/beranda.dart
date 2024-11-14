@@ -183,8 +183,8 @@ class BerandaState extends State<Beranda> {
                           } else {
                             tempatList = originalTempatList
                                 .where((element) => element.name
-                                .toLowerCase()
-                                .contains(value.toLowerCase()))
+                                    .toLowerCase()
+                                    .contains(value.toLowerCase()))
                                 .toList();
                           }
                         });
@@ -320,8 +320,7 @@ class BerandaState extends State<Beranda> {
                                           onPressed: () {
                                             setState(() {
                                               var param1 = tempat.id;
-                                              var param2 =
-                                                  tempat.name;
+                                              var param2 = tempat.name;
 
                                               if (tempat.category ==
                                                   TempatCategory.parkiran) {
