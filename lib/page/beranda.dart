@@ -321,11 +321,12 @@ class BerandaState extends State<Beranda> {
                                             setState(() {
                                               var param1 = tempat.id;
                                               var param2 = tempat.name;
+                                              var param3 = tempat.photo;
 
                                               if (tempat.category ==
                                                   TempatCategory.parkiran) {
                                                 context.go(
-                                                    "/ruangan?id=$param1&name=$param2&category=parkiran");
+                                                    "/ruangan?id=$param1&name=$param2&category=parkiran&photo=$param3");
                                               } else {
                                                 context.go(
                                                     "/gedung?id=$param1&name=$param2");

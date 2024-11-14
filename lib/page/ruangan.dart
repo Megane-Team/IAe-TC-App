@@ -3,13 +3,15 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/barang/read_barang_action.dart';
 import 'package:inventara/structures/barang.dart';
+import 'package:inventara/utils/assets.dart';
 
 class Ruangan extends StatefulWidget {
   final String name;
   final String id;
   final String category;
+  final String photo;
 
-  const Ruangan({required this.name, required this.id, required this.category, super.key});
+  const Ruangan({required this.name, required this.id, required this.category, required this.photo, super.key});
 
   @override
   State<Ruangan> createState() => RuanganState();
@@ -22,7 +24,8 @@ class RuanganState extends State<Ruangan> {
   void fetchData() async {
     var barang = await readBarang();
     setState(() {
-
+      barangList = barang;
+      originalBarangList = barang;
     });
   }
 
@@ -48,7 +51,23 @@ class RuanganState extends State<Ruangan> {
                 bottomRight: Radius.circular(50),
               ),
             ),
-            child: Image.asset('assets/images/logos/inventara.png'),
+            child: FutureBuilder<Widget>(
+                future: Assets.ruangan(widget.photo),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                  } else if (snapshot.hasError) {
+                    return Image.asset(Assets.icons(
+                        'no_image')); // Show error message if any
+                  } else if (snapshot.hasData) {
+                    return snapshot
+                        .data!; // Return the widget once the future completes
+                  } else {
+                    return const Text(
+                        'No data available'); // Show message if no data
+                  }
+                }),
           ),
           SafeArea(
             child: Column(
