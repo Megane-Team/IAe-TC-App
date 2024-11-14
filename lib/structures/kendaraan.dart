@@ -3,7 +3,7 @@ import 'kendaraan_category.dart';
 
 part 'kendaraan.g.dart';
 
-@HiveType(typeId: 9)
+@HiveType(typeId: 10)
 class Kendaraan {
   @HiveField(0)
   late int id;

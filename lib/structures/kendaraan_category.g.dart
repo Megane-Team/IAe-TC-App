@@ -8,7 +8,7 @@ part of 'kendaraan_category.dart';
 
 class KendaraanCategoryAdapter extends TypeAdapter<KendaraanCategory> {
   @override
-  final int typeId = 10;
+  final int typeId = 11;
 
   @override
   KendaraanCategory read(BinaryReader reader) {

@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'kendaraan_category.g.dart';
 
-@HiveType(typeId: 10)
+@HiveType(typeId: 11)
 enum KendaraanCategory{
   @HiveField(0)
   mobil,

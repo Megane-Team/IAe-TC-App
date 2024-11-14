@@ -8,7 +8,7 @@ part of 'kendaraan.dart';
 
 class KendaraanAdapter extends TypeAdapter<Kendaraan> {
   @override
-  final int typeId = 9;
+  final int typeId = 10;
 
   @override
   Kendaraan read(BinaryReader reader) {
