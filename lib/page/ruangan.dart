@@ -14,6 +14,16 @@ class Ruangan extends StatefulWidget {
 }
 
 class RuanganState extends State<Ruangan> {
+  void fetchData() async {
+
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -25,6 +25,9 @@ Future<void> main() async {
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(RuanganAdapter());
   Hive.registerAdapter(RuanganCategoryAdapter());
+  Hive.registerAdapter(BarangAdapter());
+  Hive.registerAdapter(PeminjamanAdapter());
+  Hive.registerAdapter(PeminjamanCategoryAdapter());
 
   await Hive.openBox('session', compactionStrategy: (int total, int deleted) {
     return deleted > 10;
