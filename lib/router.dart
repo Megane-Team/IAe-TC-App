@@ -6,7 +6,7 @@ import 'package:inventara/page/ruangan.dart';
 import 'package:inventara/page/keranjang.dart';
 import 'package:inventara/page/riwayat.dart';
 
-final appRouter = GoRouter(initialLocation: '/Riwayat', routes: [
+final appRouter = GoRouter(initialLocation: '/Login', routes: [
   GoRoute(path: '/Login', builder: (context, state) => const Login()),
   GoRoute(path: '/Beranda', builder: (context, state) => const Beranda()),
   GoRoute(path: '/Gedung', builder: (context, state) => const Gedung()),
