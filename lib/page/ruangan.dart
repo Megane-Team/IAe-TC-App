@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:inventara/actions/barang/read_barang_action.dart';
+import 'package:inventara/structures/barang.dart';
 
 class Ruangan extends StatefulWidget {
   final String name;
@@ -14,13 +16,20 @@ class Ruangan extends StatefulWidget {
 }
 
 class RuanganState extends State<Ruangan> {
-  void fetchData() async {
+  late List<Barang> barangList = [];
+  late List<Barang> originalBarangList = [];
 
+  void fetchData() async {
+    var barang = await readBarang();
+    setState(() {
+
+    });
   }
 
   @override
   void initState() {
     super.initState();
+    fetchData();
   }
 
 
