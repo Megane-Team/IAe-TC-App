@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/ruangan.dart';
+import 'package:inventara/structures/ruangan_category.dart';
 import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/utils/assets.dart';
 
@@ -21,7 +22,7 @@ class GedungState extends State<Gedung> {
   bool isKelasActive = false;
   bool isGudangActive = false;
   bool isLabActive = false;
-  late List<Ruangans> ruanganList = [];
+  late List<Ruangans> filteredRuangan = [];
   late List<Ruangans> originalRuanganList = [];
   late List<Tempat> gedung = [];
 
@@ -30,22 +31,64 @@ class GedungState extends State<Gedung> {
     gedung = await readTempatbyId(widget.id);
     setState(() {
       originalRuanganList = ruangan;
-      ruanganList = List.from(originalRuanganList);
-      listSort(ruanganList);
+      filteredRuangan = List.from(originalRuanganList);
+      _filterAndUpdateRuanganList('');
     });
   }
 
-  void listSort(List<Ruangans> list) {
-    if (isKelasActive) {
-      ruanganList.sort(
-          (a, b) => a.category.toString().compareTo(b.category.toString()));
-    } else if (isLabActive) {
-      ruanganList.sort(
-          (a, b) => a.category.toString().compareTo(b.category.toString()));
-    } else if (isGudangActive) {
-      ruanganList.sort(
-          (a, b) => a.category.toString().compareTo(b.category.toString()));
-    }
+  void _filterAndUpdateRuanganList(String value) {
+    setState(() {
+      if (value.isEmpty) {
+        if (isKelasActive || isLabActive || isGudangActive) {
+          filteredRuangan = [];
+          if (isKelasActive) {
+            filteredRuangan.addAll(
+                originalRuanganList.where((item) => item.category == RuanganCategory.kelas));
+          }
+          if (isLabActive) {
+            filteredRuangan.addAll(
+                originalRuanganList.where((item) => item.category == RuanganCategory.lab));
+          }
+          if (isGudangActive) {
+            filteredRuangan.addAll(
+                originalRuanganList.where((item) => item.category == RuanganCategory.gudang));
+          }
+        } else {
+          filteredRuangan = List.from(originalRuanganList);
+        }
+      } else {
+        if (isKelasActive || isLabActive || isGudangActive) {
+          filteredRuangan = [];
+          if (isKelasActive) {
+            filteredRuangan.addAll(
+                originalRuanganList
+                    .where((item) => item.category == RuanganCategory.kelas)
+                    .where((element) => element.code.toLowerCase().contains(value.toLowerCase()))
+            );
+          }
+          if (isLabActive) {
+            filteredRuangan.addAll(
+                originalRuanganList
+                    .where((item) => item.category == RuanganCategory.lab)
+                    .where((element) => element.code.toLowerCase().contains(value.toLowerCase()))
+            );
+          }
+          if (isGudangActive) {
+            filteredRuangan.addAll(
+                originalRuanganList
+                    .where((item) => item.category == RuanganCategory.gudang)
+                    .where((element) => element.code.toLowerCase().contains(value.toLowerCase()))
+            );
+          }
+        } else {
+          filteredRuangan = originalRuanganList
+              .where((element) => element.code.toLowerCase().contains(value.toLowerCase()))
+              .toList();
+        }
+      }
+
+
+    });
   }
 
   @override
@@ -132,17 +175,7 @@ class GedungState extends State<Gedung> {
                 ),
               ),
               onChanged: (value) {
-                setState(() {
-                  if (value.isEmpty) {
-                    ruanganList = List.from(originalRuanganList);
-                  } else {
-                    ruanganList = originalRuanganList
-                        .where((element) => element.code
-                            .toLowerCase()
-                            .contains(value.toLowerCase()))
-                        .toList();
-                  }
-                });
+                _filterAndUpdateRuanganList(value);
               },
             ),
           ),
@@ -155,7 +188,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isKelasActive = !isKelasActive;
-                      fetchData();
+                      _filterAndUpdateRuanganList('');
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -177,7 +210,8 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isLabActive = !isLabActive;
-                      fetchData();
+                      _filterAndUpdateRuanganList('');
+
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -199,7 +233,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isGudangActive = !isGudangActive;
-                      fetchData();
+                      _filterAndUpdateRuanganList('');
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -234,9 +268,9 @@ class GedungState extends State<Gedung> {
                   );
                 } else if (snapshot.hasData) {
                   return ListView.builder(
-                    itemCount: ruanganList.length,
+                    itemCount: filteredRuangan.length,
                     itemBuilder: (context, index) {
-                      var ruangan = ruanganList[index];
+                      var ruangan = filteredRuangan[index];
                       return Container(
                         height: 61,
                         margin: const EdgeInsets.only(

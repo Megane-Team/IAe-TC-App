@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/barang/read_barang_action.dart';
@@ -40,10 +39,10 @@ class RuanganState extends State<Ruangan> {
 
     if (isRuangan()) {
       ruangan = await readRuanganbyId(widget.id);
-      final ruangans = await readBarang(widget.id);
+      final barangs = await readBarang(widget.id);
       setState(() {
-        list = ruangans;
-        originalList = ruangans;
+        list = barangs;
+        originalList = barangs;
       });
       return;
     } else {
