@@ -36,7 +36,7 @@ class BerandaState extends State<Beranda> {
   late List<Tempat> originalTempatList;
 
   void fetchData() async {
-    var tempat = await readTempat();
+    var tempat = await readTempat('');
     setState(() {
       originalTempatList = tempat;
       tempatList = List.from(originalTempatList);
@@ -292,7 +292,7 @@ class BerandaState extends State<Beranda> {
                             children: [
                               FutureBuilder<List<Tempat>>(
                                 future:
-                                    readTempat(), // Your future function to fetch data
+                                    readTempat(''), // Your future function to fetch data
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
@@ -320,16 +320,15 @@ class BerandaState extends State<Beranda> {
                                           onPressed: () {
                                             setState(() {
                                               var param1 = tempat.id;
-                                              var param2 = tempat.name;
                                               var param3 = tempat.photo;
 
                                               if (tempat.category ==
                                                   TempatCategory.parkiran) {
-                                                context.go(
-                                                    "/ruangan?id=$param1&name=$param2&category=parkiran&photo=$param3");
+                                                context.push(
+                                                    "/ruangan?id=$param1&category=parkiran&photo=$param3");
                                               } else {
-                                                context.go(
-                                                    "/gedung?id=$param1&name=$param2");
+                                                context.push(
+                                                    "/gedung?id=$param1");
                                               }
                                             });
                                           },

@@ -1,14 +1,17 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
+import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/ruangan.dart';
+import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/utils/assets.dart';
 
 class Gedung extends StatefulWidget {
   final String id;
-  final String name;
-  const Gedung({required this.name, required this.id, super.key});
+  const Gedung({required this.id, super.key});
 
   @override
   State<Gedung> createState() => GedungState();
@@ -18,11 +21,13 @@ class GedungState extends State<Gedung> {
   bool isKelasActive = false;
   bool isGudangActive = false;
   bool isLabActive = false;
-  late List<Ruangan> ruanganList = [];
-  late List<Ruangan> originalRuanganList = [];
+  late List<Ruangans> ruanganList = [];
+  late List<Ruangans> originalRuanganList = [];
+  late List<Tempat> gedung = [];
 
   void fetchData() async {
     var ruangan = await readRuangan(widget.id);
+    gedung = await readTempatbyId(widget.id);
     setState(() {
       originalRuanganList = ruangan;
       ruanganList = List.from(originalRuanganList);
@@ -30,7 +35,7 @@ class GedungState extends State<Gedung> {
     });
   }
 
-  void listSort(List<Ruangan> list) {
+  void listSort(List<Ruangans> list) {
     if (isKelasActive) {
       ruanganList.sort(
           (a, b) => a.category.toString().compareTo(b.category.toString()));
@@ -53,6 +58,7 @@ class GedungState extends State<Gedung> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -63,18 +69,17 @@ class GedungState extends State<Gedung> {
                   color: Colors.black.withOpacity(0.1),
                   spreadRadius: 1,
                   blurRadius: 4,
-                  offset: const Offset(0, 0),
                 )
               ], color: Colors.white, shape: BoxShape.circle),
               child: IconButton(
                 onPressed: () {
-                  context.go('/beranda');
+                  context.pop();
                 },
                 icon: const Icon(Icons.navigate_before),
               ),
             ),
             Text(
-              widget.name,
+              gedung[0].name,
               style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
@@ -216,7 +221,7 @@ class GedungState extends State<Gedung> {
           ),
           const Gap(20),
           Expanded(
-            child: FutureBuilder<List<Ruangan>>(
+            child: FutureBuilder<List<Ruangans>>(
               future: readRuangan(widget.id),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -299,7 +304,7 @@ class GedungState extends State<Gedung> {
                                 var param2 = ruangan.code;
                                 var param3 = ruangan.photo;
 
-                                context.go("/ruangan?id=$param1&name=$param2&category=ruangan&photo=$param3");
+                                context.push("/ruangan?id=$param1&name=$param2&category=ruangan&photo=$param3");
                               });
                             }
                           },

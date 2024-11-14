@@ -2,31 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/barang/read_barang_action.dart';
+import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/structures/barang.dart';
+import 'package:inventara/structures/kendaraan.dart';
+import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/utils/assets.dart';
 
 class Ruangan extends StatefulWidget {
-  final String name;
   final String id;
   final String category;
-  final String photo;
 
-  const Ruangan({required this.name, required this.id, required this.category, required this.photo, super.key});
+  const Ruangan({required this.id, required this.category, super.key});
 
   @override
   State<Ruangan> createState() => RuanganState();
 }
 
 class RuanganState extends State<Ruangan> {
-  late List<Barang> barangList = [];
-  late List<Barang> originalBarangList = [];
+  late List<Barang> list = [];
+  late List<Barang> originalList = [];
+  late List<Ruangans> ruangan = [];
+  late List<Kendaraan> kendaraan = [];
+  var category = '';
+
+  bool isRuangan() {
+    if (category == 'ruangan') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   void fetchData() async {
-    var barang = await readBarang();
-    setState(() {
-      barangList = barang;
-      originalBarangList = barang;
-    });
+    category = widget.category;
+    if (isRuangan()) {
+      ruangan = await readRuanganbyId(widget.id);
+      final ruangans= await readBarang(widget.id);
+      setState(() {
+        list = ruangans;
+        originalList = ruangans;
+      });
+      return;
+    } else {
+      // TODO: make readKendaraan()
+      // kendaraan = await readKendaraan(widget.id);
+      // final kendaraans = await readKendaraan(widget.id);
+      // setState(() {
+      //   list = kendaraans;
+      //   originalList = kendaraans;
+      // });
+      return;
+    }
   }
 
   @override
@@ -39,6 +65,12 @@ class RuanganState extends State<Ruangan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+        ),
+      ),
       body: Stack(
         children: [
           Container(
@@ -52,7 +84,8 @@ class RuanganState extends State<Ruangan> {
               ),
             ),
             child: FutureBuilder<Widget>(
-                future: Assets.ruangan(widget.photo),
+                future: isRuangan() ? Assets.ruangan(ruangan[0].photo)
+                    : Assets.tempat(kendaraan[0].photo),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState ==
                       ConnectionState.waiting) {
@@ -73,7 +106,7 @@ class RuanganState extends State<Ruangan> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 24, right: 24, top: 8),
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
                   child: Column(
                     children: [
                       Row(
@@ -95,7 +128,7 @@ class RuanganState extends State<Ruangan> {
                             ),
                             child: IconButton(
                               onPressed: () {
-                                context.go('/beranda');
+                                context.pop();
                               },
                               icon: const Icon(Icons.navigate_before),
                             ),
@@ -147,7 +180,7 @@ class RuanganState extends State<Ruangan> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    Gedung_1[0]['name']!,
+                                    ruangan[0].code,
                                     style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600,

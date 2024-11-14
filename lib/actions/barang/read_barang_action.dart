@@ -5,11 +5,11 @@ import 'package:inventara/main.dart';
 import 'package:inventara/structures/barang.dart';
 import 'package:inventara/utils/sessions.dart';
 
-Future<List<Barang>> readBarang() async {
+Future<List<Barang>> readBarang(String id) async {
   var token = await Session.getToken();
 
   final response = await App.api.get(
-      apiBaseURl.resolve('/barangs'),
+      apiBaseURl.resolve('/ruangans/$id/barangs'),
       headers: { 'authorization': 'Bearer $token' }
   );
 
