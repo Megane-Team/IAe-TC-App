@@ -32,13 +32,14 @@ String getTime() {
 class BerandaState extends State<Beranda> {
   bool isGedungActive = false;
   bool isParkiranActive = false;
-
   late List<Tempat> tempatList;
+  late List<Tempat> originalTempatList;
 
   void fetchData() async {
-    List<Tempat> allTempat = await readTempat();
+    var tempat = await readTempat();
     setState(() {
-      tempatList = allTempat;
+      originalTempatList = tempat;
+      tempatList = List.from(originalTempatList);
       listSort(tempatList);
     });
   }
@@ -50,8 +51,6 @@ class BerandaState extends State<Beranda> {
     } else if (isGedungActive == true) {
       tempatList.sort(
           (a, b) => a.category.toString().compareTo(b.category.toString()));
-    } else {
-      tempatList = list;
     }
   }
 
@@ -158,10 +157,10 @@ class BerandaState extends State<Beranda> {
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintStyle: const TextStyle(
-                            color: Colors.black,
+                            color: Colors.black54,
                             fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                        hintText: 'Cari barang...',
+                            fontWeight: FontWeight.w100),
+                        hintText: 'Cari tempat...',
                         prefixIcon: const Icon(Icons.search),
                         border: InputBorder.none,
                         filled: true,
@@ -177,6 +176,19 @@ class BerandaState extends State<Beranda> {
                           borderSide: BorderSide.none,
                         ),
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value.isEmpty) {
+                            tempatList = List.from(originalTempatList);
+                          } else {
+                            tempatList = originalTempatList
+                                .where((element) => element.name
+                                    .toLowerCase()
+                                    .contains(value.toLowerCase()))
+                                .toList();
+                          }
+                        });
+                      },
                     ),
                   ),
                   const Gap(40),
@@ -303,14 +315,14 @@ class BerandaState extends State<Beranda> {
                                       ),
                                       itemCount: tempatList.length,
                                       itemBuilder: (context, index) {
+                                        var tempat = tempatList[index];
                                         return ElevatedButton(
                                           onPressed: () {
                                             setState(() {
-                                              var param1 = tempatList[index].id;
-                                              var param2 =
-                                                  tempatList[index].name;
+                                              var param1 = tempat.id;
+                                              var param2 = tempat.name;
 
-                                              if (tempatList[index].category ==
+                                              if (tempat.category ==
                                                   TempatCategory.parkiran) {
                                                 context.go(
                                                     "/ruangan?id=$param1&name=$param2");
@@ -347,7 +359,7 @@ class BerandaState extends State<Beranda> {
                                                       BorderRadius.circular(12),
                                                   child: FutureBuilder<Widget>(
                                                     future: Assets.tempat(
-                                                        tempatList[index].name),
+                                                        tempat.name),
                                                     builder:
                                                         (context, snapshot) {
                                                       if (snapshot
@@ -375,7 +387,7 @@ class BerandaState extends State<Beranda> {
                                               ),
                                               const Gap(14),
                                               Text(
-                                                tempatList[index].name,
+                                                tempat.name,
                                                 style: const TextStyle(
                                                     color: Colors.black),
                                               ),
