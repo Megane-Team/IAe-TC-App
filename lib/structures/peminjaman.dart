@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:inventara/structures/barang.dart';
 import 'peminjaman_category.dart';
 
 part 'peminjaman.g.dart';
