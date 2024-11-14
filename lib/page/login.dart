@@ -139,7 +139,6 @@ class LoginState extends State<Login> {
                               borderRadius: BorderRadius.circular(8))),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          // Call login action
                           var login = await loginAction(
                               _emailController.text, _passwordController.text);
 
