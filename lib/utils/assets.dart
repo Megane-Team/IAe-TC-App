@@ -59,4 +59,50 @@ class Assets {
       return Image.asset(Assets.icons('no_image'));
     }
   }
+
+  static Future<Widget> barang(String name) async {
+    final token = await Session.getToken();
+
+    try {
+      final response = await App.api.get(
+        apiBaseURl.resolve('photoFiles/barang/$name'),
+        headers: {'authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 404) {
+        return Image.asset(Assets.icons('no_image'));
+      }
+
+      return Image.network(
+        apiBaseURl.resolve('photoFiles/barang/$name').toString(),
+        headers: {'authorization': 'Bearer $token'},
+        fit: BoxFit.fill,
+      );
+    } catch (e) {
+      return Image.asset(Assets.icons('no_image'));
+    }
+  }
+
+  static Future<Widget> kendaraan(String name) async {
+    final token = await Session.getToken();
+
+    try {
+      final response = await App.api.get(
+        apiBaseURl.resolve('photoFiles/kendaraan/$name'),
+        headers: {'authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 404) {
+        return Image.asset(Assets.icons('no_image'));
+      }
+
+      return Image.network(
+        apiBaseURl.resolve('photoFiles/kendaraan/$name').toString(),
+        headers: {'authorization': 'Bearer $token'},
+        fit: BoxFit.fill,
+      );
+    } catch (e) {
+      return Image.asset(Assets.icons('no_image'));
+    }
+  }
 }

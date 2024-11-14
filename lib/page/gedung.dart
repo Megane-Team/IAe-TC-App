@@ -79,7 +79,7 @@ class GedungState extends State<Gedung> {
               ),
             ),
             Text(
-              gedung[0].name,
+              gedung.isEmpty ? 'Gedung' : gedung[0].name,
               style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
@@ -301,10 +301,8 @@ class GedungState extends State<Gedung> {
                             } else {
                               setState(() {
                                 var param1 = ruangan.id;
-                                var param2 = ruangan.code;
-                                var param3 = ruangan.photo;
 
-                                context.push("/ruangan?id=$param1&name=$param2&category=ruangan&photo=$param3");
+                                context.push("/ruangan?id=$param1&category=ruangan");
                               });
                             }
                           },

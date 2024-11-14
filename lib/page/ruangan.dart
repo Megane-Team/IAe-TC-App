@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/barang/read_barang_action.dart';
+import 'package:inventara/actions/kendaraan/read_kendaraan_action.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/structures/barang.dart';
 import 'package:inventara/structures/kendaraan.dart';
@@ -35,22 +37,22 @@ class RuanganState extends State<Ruangan> {
 
   void fetchData() async {
     category = widget.category;
+
     if (isRuangan()) {
       ruangan = await readRuanganbyId(widget.id);
-      final ruangans= await readBarang(widget.id);
+      final ruangans = await readBarang(widget.id);
       setState(() {
         list = ruangans;
         originalList = ruangans;
       });
       return;
     } else {
-      // TODO: make readKendaraan()
-      // kendaraan = await readKendaraan(widget.id);
-      // final kendaraans = await readKendaraan(widget.id);
-      // setState(() {
-      //   list = kendaraans;
-      //   originalList = kendaraans;
-      // });
+      kendaraan = await readKendaraan(widget.id);
+      final kendaraans = await readBarang(widget.id);
+      setState(() {
+        list = kendaraans;
+        originalList = kendaraans;
+      });
       return;
     }
   }
@@ -84,8 +86,11 @@ class RuanganState extends State<Ruangan> {
               ),
             ),
             child: FutureBuilder<Widget>(
-                future: isRuangan() ? Assets.ruangan(ruangan[0].photo)
-                    : Assets.tempat(kendaraan[0].photo),
+                future: isRuangan() && ruangan.isNotEmpty
+                    ? Assets.ruangan(ruangan[0].photo)
+                    : kendaraan.isNotEmpty
+                    ? Assets.kendaraan(kendaraan[0].photo)
+                    : Future.value(const Text('No data available')),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState ==
                       ConnectionState.waiting) {
@@ -180,7 +185,7 @@ class RuanganState extends State<Ruangan> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    ruangan[0].code,
+                                    ruangan.isEmpty ? 'ruangan' : ruangan[0].code,
                                     style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600,

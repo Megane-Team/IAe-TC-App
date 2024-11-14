@@ -320,12 +320,11 @@ class BerandaState extends State<Beranda> {
                                           onPressed: () {
                                             setState(() {
                                               var param1 = tempat.id;
-                                              var param3 = tempat.photo;
 
                                               if (tempat.category ==
                                                   TempatCategory.parkiran) {
                                                 context.push(
-                                                    "/ruangan?id=$param1&category=parkiran&photo=$param3");
+                                                    "/ruangan?id=$param1&category=parkiran");
                                               } else {
                                                 context.push(
                                                     "/gedung?id=$param1");
