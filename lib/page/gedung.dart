@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/structures/ruangan.dart';
+import 'package:inventara/structures/ruangan_category.dart';
 import 'package:inventara/utils/assets.dart';
 
 class Gedung extends StatefulWidget {
@@ -293,7 +294,14 @@ class GedungState extends State<Gedung> {
                                   );
                                 },
                               );
-                            } else {}
+                            } else {
+                              setState(() {
+                                var param1 = ruangan.id;
+                                var param2 = ruangan.code;
+
+                                context.go("/ruangan?id=$param1&name=$param2&category=ruangan");
+                              });
+                            }
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

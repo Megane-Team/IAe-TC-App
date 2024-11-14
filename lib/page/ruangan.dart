@@ -5,8 +5,9 @@ import 'package:go_router/go_router.dart';
 class Ruangan extends StatefulWidget {
   final String name;
   final String id;
+  final String category;
 
-  Ruangan({required this.name, required this.id, super.key});
+  const Ruangan({required this.name, required this.id, required this.category, super.key});
 
   @override
   State<Ruangan> createState() => RuanganState();

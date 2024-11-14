@@ -325,7 +325,7 @@ class BerandaState extends State<Beranda> {
                                               if (tempat.category ==
                                                   TempatCategory.parkiran) {
                                                 context.go(
-                                                    "/ruangan?id=$param1&name=$param2");
+                                                    "/ruangan?id=$param1&name=$param2&category=parkiran");
                                               } else {
                                                 context.go(
                                                     "/gedung?id=$param1&name=$param2");
