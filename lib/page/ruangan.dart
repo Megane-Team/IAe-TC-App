@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/barang/read_barang_action.dart';
-import 'package:inventara/actions/kendaraan/read_kendaraan_action.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
+import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/barang.dart';
 import 'package:inventara/structures/kendaraan.dart';
 import 'package:inventara/structures/ruangan.dart';
+import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/utils/assets.dart';
 
 class Ruangan extends StatefulWidget {
@@ -23,6 +24,7 @@ class RuanganState extends State<Ruangan> {
   late List<Barang> list = [];
   late List<Barang> originalList = [];
   late List<Ruangans> ruangan = [];
+  late List<Tempat> tempat = [];
   late List<Kendaraan> kendaraan = [];
   var category = '';
 
@@ -46,7 +48,7 @@ class RuanganState extends State<Ruangan> {
       });
       return;
     } else {
-      kendaraan = await readKendaraan(widget.id);
+      tempat = await readTempatbyId(widget.id);
       final kendaraans = await readBarang(widget.id);
       setState(() {
         list = kendaraans;
@@ -87,8 +89,8 @@ class RuanganState extends State<Ruangan> {
             child: FutureBuilder<Widget>(
                 future: isRuangan() && ruangan.isNotEmpty
                     ? Assets.ruangan(ruangan[0].photo)
-                    : kendaraan.isNotEmpty
-                    ? Assets.kendaraan(kendaraan[0].photo)
+                    : tempat.isNotEmpty
+                    ? Assets.kendaraan(tempat[0].photo)
                     : Future.value(const Text('No data available')),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState ==
@@ -152,7 +154,10 @@ class RuanganState extends State<Ruangan> {
                               shape: BoxShape.circle,
                             ),
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                // TODO: Create a search function
+
+                              },
                               icon: const Icon(Icons.search),
                             ),
                           ),
@@ -179,27 +184,48 @@ class RuanganState extends State<Ruangan> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    ruangan.isEmpty ? 'ruangan' : ruangan[0].code,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
+                              isRuangan()
+                                ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      ruangan.isNotEmpty
+                                          ? ruangan[0].code
+                                          : tempat.isNotEmpty
+                                          ? tempat[0].name
+                                          : '',
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    Gedung_1[0]['status']!,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
+                                    Text(
+                                      ruangan.isEmpty ? '' : ruangan[0].status,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Container(
+                                  ],
+                                )
+                                : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      tempat.isNotEmpty
+                                          ? tempat[0].name
+                                          : '',
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              isRuangan()
+                              ? Container(
                                 width: 46,
                                 height: 22,
                                 decoration: BoxDecoration(
@@ -225,7 +251,7 @@ class RuanganState extends State<Ruangan> {
                                       size: 16,
                                     ),
                                     Text(
-                                      Gedung_1[0]['kapasitas'] ?? '',
+                                      ruangan.isEmpty ? '' : ruangan[0].capacity.toString(),
                                       style: const TextStyle(
                                         fontSize: 12,
                                         color: Color(0xFFFCA311),
@@ -233,7 +259,8 @@ class RuanganState extends State<Ruangan> {
                                     ),
                                   ],
                                 ),
-                              ),
+                              )
+                              : Container(),
                             ],
                           ),
                         ),
