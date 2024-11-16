@@ -28,33 +28,32 @@ class Kendaraan {
   @HiveField(10)
   late int tempatId;
 
-  Kendaraan({
-    required this.id,
-    required this.name,
-    required this.plat,
-    required this.status,
-    required this.condition,
-    required this.warranty,
-    required this.capacity,
-    required this.category,
-    required this.color,
-    required this.photo,
-    required this.tempatId
-  });
+  Kendaraan(
+      {required this.id,
+      required this.name,
+      required this.plat,
+      required this.status,
+      required this.condition,
+      required this.warranty,
+      required this.capacity,
+      required this.category,
+      required this.color,
+      required this.photo,
+      required this.tempatId});
 
   factory Kendaraan.fromJson(Map<String, dynamic> json) {
     return Kendaraan(
-      id: json['id'],
-      name: json['name'],
-      plat: json['plat'],
-      status: json['status'],
-      condition: json['condition'],
-      warranty: DateTime.parse(json['warranty']),
-      capacity: json['capacity'],
-      category: KendaraanCategory.values.firstWhere((e) => e.toString() == 'KendaraanCategory.${json['category']}'),
-      color: json['color'],
-      photo: json['photo'],
-      tempatId: json['tempat_id']
-    );
+        id: json['id'],
+        name: json['name'],
+        plat: json['plat'],
+        status: json['status'],
+        condition: json['condition'],
+        warranty: DateTime.parse(json['warranty']),
+        capacity: json['capacity'],
+        category: KendaraanCategory.values.firstWhere(
+            (e) => e.toString() == 'KendaraanCategory.${json['category']}'),
+        color: json['color'],
+        photo: json['photo'],
+        tempatId: json['tempat_id']);
   }
 }

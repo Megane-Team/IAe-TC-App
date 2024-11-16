@@ -42,16 +42,16 @@ class GedungState extends State<Gedung> {
         if (isKelasActive || isLabActive || isGudangActive) {
           filteredRuangan = [];
           if (isKelasActive) {
-            filteredRuangan.addAll(
-                originalRuanganList.where((item) => item.category == RuanganCategory.kelas));
+            filteredRuangan.addAll(originalRuanganList
+                .where((item) => item.category == RuanganCategory.kelas));
           }
           if (isLabActive) {
-            filteredRuangan.addAll(
-                originalRuanganList.where((item) => item.category == RuanganCategory.lab));
+            filteredRuangan.addAll(originalRuanganList
+                .where((item) => item.category == RuanganCategory.lab));
           }
           if (isGudangActive) {
-            filteredRuangan.addAll(
-                originalRuanganList.where((item) => item.category == RuanganCategory.gudang));
+            filteredRuangan.addAll(originalRuanganList
+                .where((item) => item.category == RuanganCategory.gudang));
           }
         } else {
           filteredRuangan = List.from(originalRuanganList);
@@ -60,34 +60,30 @@ class GedungState extends State<Gedung> {
         if (isKelasActive || isLabActive || isGudangActive) {
           filteredRuangan = [];
           if (isKelasActive) {
-            filteredRuangan.addAll(
-                originalRuanganList
-                    .where((item) => item.category == RuanganCategory.kelas)
-                    .where((element) => element.code.toLowerCase().contains(value.toLowerCase()))
-            );
+            filteredRuangan.addAll(originalRuanganList
+                .where((item) => item.category == RuanganCategory.kelas)
+                .where((element) =>
+                    element.code.toLowerCase().contains(value.toLowerCase())));
           }
           if (isLabActive) {
-            filteredRuangan.addAll(
-                originalRuanganList
-                    .where((item) => item.category == RuanganCategory.lab)
-                    .where((element) => element.code.toLowerCase().contains(value.toLowerCase()))
-            );
+            filteredRuangan.addAll(originalRuanganList
+                .where((item) => item.category == RuanganCategory.lab)
+                .where((element) =>
+                    element.code.toLowerCase().contains(value.toLowerCase())));
           }
           if (isGudangActive) {
-            filteredRuangan.addAll(
-                originalRuanganList
-                    .where((item) => item.category == RuanganCategory.gudang)
-                    .where((element) => element.code.toLowerCase().contains(value.toLowerCase()))
-            );
+            filteredRuangan.addAll(originalRuanganList
+                .where((item) => item.category == RuanganCategory.gudang)
+                .where((element) =>
+                    element.code.toLowerCase().contains(value.toLowerCase())));
           }
         } else {
           filteredRuangan = originalRuanganList
-              .where((element) => element.code.toLowerCase().contains(value.toLowerCase()))
+              .where((element) =>
+                  element.code.toLowerCase().contains(value.toLowerCase()))
               .toList();
         }
       }
-
-
     });
   }
 
@@ -211,7 +207,6 @@ class GedungState extends State<Gedung> {
                     setState(() {
                       isLabActive = !isLabActive;
                       _filterAndUpdateRuanganList('');
-
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -336,7 +331,8 @@ class GedungState extends State<Gedung> {
                               setState(() {
                                 var param1 = ruangan.id;
 
-                                context.push("/ruangan?id=$param1&category=ruangan");
+                                context.push(
+                                    "/ruangan?id=$param1&category=ruangan");
                               });
                             }
                           },
@@ -352,7 +348,8 @@ class GedungState extends State<Gedung> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
                                         child: FutureBuilder<Widget>(
-                                            future: Assets.ruangan(ruangan.photo),
+                                            future:
+                                                Assets.ruangan(ruangan.photo),
                                             builder: (context, snapshot) {
                                               if (snapshot.connectionState ==
                                                   ConnectionState.waiting) {

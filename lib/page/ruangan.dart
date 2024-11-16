@@ -62,7 +62,6 @@ class RuanganState extends State<Ruangan> {
     fetchData();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,15 +87,14 @@ class RuanganState extends State<Ruangan> {
                 future: isRuangan() && ruangan.isNotEmpty
                     ? Assets.ruangan(ruangan[0].photo)
                     : tempat.isNotEmpty
-                    ? Assets.tempat(tempat[0].photo)
-                    : Future.value(const Text('No data available')),
+                        ? Assets.tempat(tempat[0].photo)
+                        : Future.value(const Text('No data available')),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator(); // Show a loading indicator while waiting
                   } else if (snapshot.hasError) {
-                    return Image.asset(Assets.icons(
-                        'no_image')); // Show error message if any
+                    return Image.asset(
+                        Assets.icons('no_image')); // Show error message if any
                   } else if (snapshot.hasData) {
                     return snapshot
                         .data!; // Return the widget once the future completes
@@ -154,7 +152,6 @@ class RuanganState extends State<Ruangan> {
                             child: IconButton(
                               onPressed: () {
                                 // TODO: Create a search function
-
                               },
                               icon: const Icon(Icons.search),
                             ),
@@ -183,82 +180,94 @@ class RuanganState extends State<Ruangan> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               isRuangan()
-                                ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      ruangan.isNotEmpty
-                                          ? ruangan[0].code
-                                          : tempat.isNotEmpty
-                                          ? tempat[0].name
-                                          : '',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          ruangan.isNotEmpty
+                                              ? ruangan[0].code
+                                              : tempat.isNotEmpty
+                                                  ? tempat[0].name
+                                                  : '',
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        Text(
+                                          ruangan.isEmpty
+                                              ? ''
+                                              : ruangan[0].status,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          tempat.isNotEmpty
+                                              ? tempat[0].name
+                                              : '',
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      ruangan.isEmpty ? '' : ruangan[0].status,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                                : Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      tempat.isNotEmpty
-                                          ? tempat[0].name
-                                          : '',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               isRuangan()
-                              ? Container(
-                                width: 46,
-                                height: 22,
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0xFFFCA311)
-                                          .withOpacity(1),
-                                      spreadRadius: 1,
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 0),
-                                    ),
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.person,
-                                      color: Color(0xFFFCA311),
-                                      size: 16,
-                                    ),
-                                    Text(
-                                      ruangan.isEmpty ? '' : ruangan[0].capacity.toString(),
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFFFCA311),
+                                  ? Container(
+                                      width: 46,
+                                      height: 22,
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0xFFFCA311)
+                                                .withOpacity(1),
+                                            spreadRadius: 1,
+                                            blurRadius: 4,
+                                            offset: const Offset(0, 0),
+                                          ),
+                                        ],
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(20),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                              : Container(),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                            Icons.person,
+                                            color: Color(0xFFFCA311),
+                                            size: 16,
+                                          ),
+                                          Text(
+                                            ruangan.isEmpty
+                                                ? ''
+                                                : ruangan[0]
+                                                    .capacity
+                                                    .toString(),
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFFFCA311),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container(),
                             ],
                           ),
                         ),
@@ -276,9 +285,16 @@ class RuanganState extends State<Ruangan> {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: barang.map((item) => item.name).toSet().length,
+                              itemCount: barang
+                                  .map((item) => item.name)
+                                  .toSet()
+                                  .length,
                               itemBuilder: (context, index) {
-                                final uniqueNames = barang.map((item) => item.name).toSet().toList()..sort();
+                                final uniqueNames = barang
+                                    .map((item) => item.name)
+                                    .toSet()
+                                    .toList()
+                                  ..sort();
                                 return Container(
                                   margin: const EdgeInsets.only(bottom: 24),
                                   child: Column(
@@ -307,14 +323,24 @@ class RuanganState extends State<Ruangan> {
                                           physics:
                                               const NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
-                                          itemCount: barang.where((item) => item.name == uniqueNames[index]).length,
+                                          itemCount: barang
+                                              .where((item) =>
+                                                  item.name ==
+                                                  uniqueNames[index])
+                                              .length,
                                           itemBuilder: (context, index2) {
-                                            final items = barang.where((item) => item.name == uniqueNames[index]).toList()
+                                            final items = barang
+                                                .where((item) =>
+                                                    item.name ==
+                                                    uniqueNames[index])
+                                                .toList()
                                               ..sort((a, b) {
-                                                if (a.status == 'digunakan' && b.status != 'digunakan') {
+                                                if (a.status == 'digunakan' &&
+                                                    b.status != 'digunakan') {
                                                   return 1;
                                                 }
-                                                if (a.status != 'digunakan' && b.status == 'digunakan') {
+                                                if (a.status != 'digunakan' &&
+                                                    b.status == 'digunakan') {
                                                   return -1;
                                                 }
                                                 return a.id.compareTo(b.id);
@@ -351,10 +377,11 @@ class RuanganState extends State<Ruangan> {
                                                             16),
                                                   ),
                                                   elevation: 4,
-                                                  backgroundColor: items[index2].status ==
-                                                          'digunakan'
-                                                      ? Colors.black12
-                                                      : Colors.white,
+                                                  backgroundColor:
+                                                      items[index2].status ==
+                                                              'digunakan'
+                                                          ? Colors.black12
+                                                          : Colors.white,
                                                   shadowColor: Colors.black
                                                       .withOpacity(0.1),
                                                 ),
@@ -466,32 +493,32 @@ class RuanganState extends State<Ruangan> {
                                                   //                     .width,
                                                   //                 height: 218,
                                                   //                 child: SizedBox(
-              //                                                       width: 60,
-              //                                                       height: 46,
-              //                                                       child: ClipRRect(
-              //                                                         borderRadius:
-              //                                                             BorderRadius
-              //                                                                 .circular(10),
-              //                                                         child: FutureBuilder<Widget>(
-              //                                                           future: Assets.barang(barang[index2].photo),
-              //                                                           builder: (context, snapshot) {
-              //                                                             if (snapshot.connectionState ==
-              //                                                                 ConnectionState.waiting) {
-              //                                                               return const CircularProgressIndicator(); // Show a loading indicator while waiting
-              //                                                             } else if (snapshot.hasError) {
-              //                                                               return Image.asset(Assets.icons(
-              //                                                                   'no_image')); // Show error message if any
-              //                                                             } else if (snapshot.hasData) {
-              //                                                               return snapshot
-              //                                                                   .data!; // Return the widget once the future completes
-              //                                                             } else {
-              //                                                               return const Text(
-              //                                                                   'No data available'); // Show message if no data
-              //                                                             }
-              //                                                           }
-              //                                                         ),
-              //                                                       )
-              //                                                     ),
+                                                  //                                                       width: 60,
+                                                  //                                                       height: 46,
+                                                  //                                                       child: ClipRRect(
+                                                  //                                                         borderRadius:
+                                                  //                                                             BorderRadius
+                                                  //                                                                 .circular(10),
+                                                  //                                                         child: FutureBuilder<Widget>(
+                                                  //                                                           future: Assets.barang(barang[index2].photo),
+                                                  //                                                           builder: (context, snapshot) {
+                                                  //                                                             if (snapshot.connectionState ==
+                                                  //                                                                 ConnectionState.waiting) {
+                                                  //                                                               return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                  //                                                             } else if (snapshot.hasError) {
+                                                  //                                                               return Image.asset(Assets.icons(
+                                                  //                                                                   'no_image')); // Show error message if any
+                                                  //                                                             } else if (snapshot.hasData) {
+                                                  //                                                               return snapshot
+                                                  //                                                                   .data!; // Return the widget once the future completes
+                                                  //                                                             } else {
+                                                  //                                                               return const Text(
+                                                  //                                                                   'No data available'); // Show message if no data
+                                                  //                                                             }
+                                                  //                                                           }
+                                                  //                                                         ),
+                                                  //                                                       )
+                                                  //                                                     ),
                                                   //               ),
                                                   //               Row(
                                                   //                 children: [
@@ -587,33 +614,41 @@ class RuanganState extends State<Ruangan> {
                                                 child: Row(
                                                   children: [
                                                     SizedBox(
-                                                      width: 60,
-                                                      height: 46,
-                                                      // TODO: Change into get image from API
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        child: FutureBuilder<Widget>(
-                                                          future: Assets.barang(barang[index2].photo),
-                                                          builder: (context, snapshot) {
-                                                            if (snapshot.connectionState ==
-                                                                ConnectionState.waiting) {
-                                                              return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                            } else if (snapshot.hasError) {
-                                                              return Image.asset(Assets.icons(
-                                                                  'no_image')); // Show error message if any
-                                                            } else if (snapshot.hasData) {
-                                                              return snapshot
-                                                                  .data!; // Return the widget once the future completes
-                                                            } else {
-                                                              return const Text(
-                                                                  'No data available'); // Show message if no data
-                                                            }
-                                                          }
-                                                        ),
-                                                      )
-                                                    ),
+                                                        width: 60,
+                                                        height: 46,
+                                                        // TODO: Change into get image from API
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          child: FutureBuilder<
+                                                                  Widget>(
+                                                              future: Assets
+                                                                  .barang(barang[
+                                                                          index2]
+                                                                      .photo),
+                                                              builder: (context,
+                                                                  snapshot) {
+                                                                if (snapshot
+                                                                        .connectionState ==
+                                                                    ConnectionState
+                                                                        .waiting) {
+                                                                  return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                } else if (snapshot
+                                                                    .hasError) {
+                                                                  return Image.asset(
+                                                                      Assets.icons(
+                                                                          'no_image')); // Show error message if any
+                                                                } else if (snapshot
+                                                                    .hasData) {
+                                                                  return snapshot
+                                                                      .data!; // Return the widget once the future completes
+                                                                } else {
+                                                                  return const Text(
+                                                                      'No data available'); // Show message if no data
+                                                                }
+                                                              }),
+                                                        )),
                                                     const Gap(4),
                                                     Column(
                                                       mainAxisAlignment:
@@ -626,7 +661,8 @@ class RuanganState extends State<Ruangan> {
                                                         Row(
                                                           children: [
                                                             Text(
-                                                              items[index2].name,
+                                                              items[index2]
+                                                                  .name,
                                                               style: const TextStyle(
                                                                   color: Colors
                                                                       .black),
@@ -640,7 +676,8 @@ class RuanganState extends State<Ruangan> {
                                                           ],
                                                         ),
                                                         Text(
-                                                          items[index2].condition,
+                                                          items[index2]
+                                                              .condition,
                                                           style:
                                                               const TextStyle(
                                                                   color: Colors

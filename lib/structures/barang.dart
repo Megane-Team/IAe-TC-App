@@ -21,27 +21,25 @@ class Barang {
   @HiveField(8)
   late int ruanganId;
 
-  Barang({
-    required this.id,
-    required this.name,
-    required this.code,
-    required this.status,
-    required this.condition,
-    required this.warranty,
-    required this.photo,
-    required this.ruanganId
-  });
+  Barang(
+      {required this.id,
+      required this.name,
+      required this.code,
+      required this.status,
+      required this.condition,
+      required this.warranty,
+      required this.photo,
+      required this.ruanganId});
 
-  factory Barang.fromJson(Map<String, dynamic> json){
+  factory Barang.fromJson(Map<String, dynamic> json) {
     return Barang(
-      id: json['id'],
-      name: json['name'],
-      code: json['code'],
-      status: json['status'],
-      condition: json['condition'],
-      warranty: json['warranty'],
-      photo: json['photo'],
-      ruanganId: json['ruanganId']
-    );
+        id: json['id'],
+        name: json['name'],
+        code: json['code'],
+        status: json['status'],
+        condition: json['condition'],
+        warranty: json['warranty'],
+        photo: json['photo'],
+        ruanganId: json['ruanganId']);
   }
 }

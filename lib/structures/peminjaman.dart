@@ -49,10 +49,13 @@ class Peminjaman {
     return Peminjaman(
       id: json['id'],
       status: json['status'],
-      category: PeminjamanCategory.values.firstWhere((e) => e.toString() == 'PeminjamanCategory.${json['category']}'),
+      category: PeminjamanCategory.values.firstWhere(
+          (e) => e.toString() == 'PeminjamanCategory.${json['category']}'),
       borrowedDate: DateTime.parse(json['borrowedDate']),
       estimatedTime: DateTime.parse(json['estimatedTime']),
-      returnDate: json['returnDate'] != null ? DateTime.parse(json['returnDate']) : null,
+      returnDate: json['returnDate'] != null
+          ? DateTime.parse(json['returnDate'])
+          : null,
       objective: json['objective'],
       pasengger: json['pasengger'],
       userId: json['userId'],

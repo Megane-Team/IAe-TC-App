@@ -291,8 +291,8 @@ class BerandaState extends State<Beranda> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               FutureBuilder<List<Tempat>>(
-                                future:
-                                    readTempat(''), // Your future function to fetch data
+                                future: readTempat(
+                                    ''), // Your future function to fetch data
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
@@ -326,8 +326,8 @@ class BerandaState extends State<Beranda> {
                                                 context.push(
                                                     "/ruangan?id=$param1&category=parkiran");
                                               } else {
-                                                context.push(
-                                                    "/gedung?id=$param1");
+                                                context
+                                                    .push("/gedung?id=$param1");
                                               }
                                             });
                                           },
