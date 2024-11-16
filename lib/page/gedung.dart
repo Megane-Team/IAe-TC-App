@@ -346,29 +346,29 @@ class GedungState extends State<Gedung> {
                               SizedBox(
                                 child: Row(
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: 60,
                                       height: 46,
-                                      decoration: BoxDecoration(
+                                      child: ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
+                                        child: FutureBuilder<Widget>(
+                                            future: Assets.ruangan(ruangan.photo),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                              } else if (snapshot.hasError) {
+                                                return Image.asset(Assets.icons(
+                                                    'no_image')); // Show error message if any
+                                              } else if (snapshot.hasData) {
+                                                return snapshot
+                                                    .data!; // Return the widget once the future completes
+                                              } else {
+                                                return const Text(
+                                                    'No data available'); // Show message if no data
+                                              }
+                                            }),
                                       ),
-                                      child: FutureBuilder<Widget>(
-                                          future: Assets.ruangan(ruangan.photo),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                            } else if (snapshot.hasError) {
-                                              return Image.asset(Assets.icons(
-                                                  'no_image')); // Show error message if any
-                                            } else if (snapshot.hasData) {
-                                              return snapshot
-                                                  .data!; // Return the widget once the future completes
-                                            } else {
-                                              return const Text(
-                                                  'No data available'); // Show message if no data
-                                            }
-                                          }),
                                     ),
                                     const Gap(16),
                                     Column(

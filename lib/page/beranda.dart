@@ -343,16 +343,11 @@ class BerandaState extends State<Beranda> {
                                           ),
                                           child: Column(
                                             children: [
-                                              Container(
+                                              SizedBox(
                                                 width: MediaQuery.of(context)
                                                     .size
                                                     .width,
                                                 height: 106,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  color: Colors.black,
-                                                ),
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(12),
