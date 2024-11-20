@@ -12,11 +12,11 @@ class Ruangans {
   @HiveField(2)
   late String status;
   @HiveField(3)
-  late int capacity;
+  late int? capacity;
   @HiveField(4)
   late RuanganCategory? category;
   @HiveField(5)
-  late String photo;
+  late String? photo;
   @HiveField(6)
   late int tempatId;
 

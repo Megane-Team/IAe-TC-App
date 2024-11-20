@@ -79,7 +79,7 @@ class _NotifikasiState extends State<Notifikasi> {
             itemBuilder: (context, index) {
               var notif = Notif[index];
               return Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     top: BorderSide(
                       color: Colors.black,
@@ -101,21 +101,22 @@ class _NotifikasiState extends State<Notifikasi> {
                     ),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.only(right: 24, top: 20, bottom: 30),
+                    padding:
+                        const EdgeInsets.only(right: 24, top: 20, bottom: 30),
                     child: Row(
                       children: [
-                        Gap(6),
+                        const Gap(6),
                         if (!notif['isRead'])
                           Container(
                             width: 10,
                             height: 10,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.red,
                               shape: BoxShape.circle,
                             ),
                           )
                         else
-                          Gap(10),
+                          const Gap(10),
                         const Gap(6),
                         Expanded(
                           child: Column(
@@ -128,23 +129,23 @@ class _NotifikasiState extends State<Notifikasi> {
                                   Text(
                                       DateFormat('dd MMM yyyy')
                                           .format(notif['tanggal']),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 12, color: Colors.black)),
                                   Text(
                                       DateFormat('HH:mm')
                                           .format(notif['tanggal']),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 12, color: Colors.black)),
                                 ],
                               ),
-                              Gap(12),
+                              const Gap(12),
                               Text(getNotificationMessage(notif['kategori']),
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
-                              Gap(16),
-                              Text('Klik untuk detail peminjaman',
+                              const Gap(16),
+                              const Text('Klik untuk detail peminjaman',
                                   style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,

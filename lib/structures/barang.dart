@@ -17,7 +17,7 @@ class Barang {
   @HiveField(6)
   late String warranty;
   @HiveField(7)
-  late String photo;
+  late String? photo;
   @HiveField(8)
   late int ruanganId;
 
