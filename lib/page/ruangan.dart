@@ -9,6 +9,7 @@ import 'package:inventara/structures/barang.dart';
 import 'package:inventara/structures/kendaraan.dart';
 import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/structures/tempat.dart';
+import 'package:inventara/utils/actionWidget.dart';
 import 'package:inventara/utils/assets.dart';
 
 class Ruangan extends StatefulWidget {
@@ -87,20 +88,19 @@ class RuanganState extends State<Ruangan> {
                 future: isRuangan() && ruangan.isNotEmpty
                     ? Assets.ruangan(ruangan[0].photo)
                     : tempat.isNotEmpty
-                        ? Assets.tempat(tempat[0].photo)
+                        ? Assets.tempat(tempat[0].photo ?? '')
                         : Future.value(const Text('No data available')),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator(); // Show a loading indicator while waiting
                   } else if (snapshot.hasError) {
                     return Image.asset(
-                        Assets.icons('no_image')); // Show error message if any
+                        Assets.noImage()); // Show error message if any
                   } else if (snapshot.hasData) {
                     return snapshot
                         .data!; // Return the widget once the future completes
                   } else {
-                    return const Text(
-                        'No data available'); // Show message if no data
+                    return noData(); // Show message if no data
                   }
                 }),
           ),
@@ -506,8 +506,7 @@ class RuanganState extends State<Ruangan> {
                                                   //                                                                 ConnectionState.waiting) {
                                                   //                                                               return const CircularProgressIndicator(); // Show a loading indicator while waiting
                                                   //                                                             } else if (snapshot.hasError) {
-                                                  //                                                               return Image.asset(Assets.icons(
-                                                  //                                                                   'no_image')); // Show error message if any
+                                                  //                                                               return Image.asset(Assets.noImage()); // Show error message if any
                                                   //                                                             } else if (snapshot.hasData) {
                                                   //                                                               return snapshot
                                                   //                                                                   .data!; // Return the widget once the future completes
@@ -616,7 +615,6 @@ class RuanganState extends State<Ruangan> {
                                                     SizedBox(
                                                         width: 60,
                                                         height: 46,
-                                                        // TODO: Change into get image from API
                                                         child: ClipRRect(
                                                           borderRadius:
                                                               BorderRadius
@@ -637,8 +635,7 @@ class RuanganState extends State<Ruangan> {
                                                                 } else if (snapshot
                                                                     .hasError) {
                                                                   return Image.asset(
-                                                                      Assets.icons(
-                                                                          'no_image')); // Show error message if any
+                                                                      Assets.noImage()); // Show error message if any
                                                                 } else if (snapshot
                                                                     .hasData) {
                                                                   return snapshot
@@ -703,7 +700,7 @@ class RuanganState extends State<Ruangan> {
                     ],
                   ),
                 ),
-                Container(
+                isRuangan() ? Container(
                   padding: const EdgeInsets.only(right: 24, left: 24),
                   width: MediaQuery.of(context).size.width,
                   height: 80,
@@ -727,8 +724,8 @@ class RuanganState extends State<Ruangan> {
                       )
                     ],
                   ),
-                )
-              ],
+                ) : const SizedBox()
+              ]
             ),
           ),
         ],

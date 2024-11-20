@@ -6,8 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/structures/tempat_category.dart';
+import 'package:inventara/utils/actionWidget.dart';
 import 'package:inventara/utils/assets.dart';
 import 'package:inventara/utils/sessions.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Beranda extends StatefulWidget {
   const Beranda({super.key});
@@ -303,6 +305,9 @@ class BerandaState extends State<Beranda> {
                                           'Error: No data available, is internet connection available?'),
                                     );
                                   } else if (snapshot.hasData) {
+                                    if (snapshot.data!.isEmpty) {
+                                      return noData();
+                                    }
                                     return GridView.builder(
                                       shrinkWrap: true,
                                       physics:
@@ -365,8 +370,7 @@ class BerandaState extends State<Beranda> {
                                                           .hasError) {
                                                         log("Error: ${snapshot.error}");
                                                         return Image.asset(
-                                                            Assets.icons(
-                                                                'no_image')); // Show error message if any
+                                                            Assets.noImage()); // Show error message if any
                                                       } else if (snapshot
                                                           .hasData) {
                                                         return snapshot
@@ -391,7 +395,7 @@ class BerandaState extends State<Beranda> {
                                       },
                                     );
                                   } else {
-                                    return const Text('No data available');
+                                    return noData();
                                   }
                                 },
                               )

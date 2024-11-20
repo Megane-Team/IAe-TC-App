@@ -14,6 +14,14 @@ class Assets {
     return '$path/icons/$name.png';
   }
 
+  static String noImage() {
+    return '$path/icons/no_image.png';
+  }
+
+  static String noData() {
+    return '$path/icons/no_data.png';
+  }
+
   static Future<Widget> tempat(String name) async {
     final token = await Session.getToken();
 
