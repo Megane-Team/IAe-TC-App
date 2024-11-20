@@ -54,6 +54,6 @@ class Kendaraan {
             (e) => e.toString() == 'KendaraanCategory.${json['category']}'),
         color: json['color'],
         photo: json['photo'],
-        tempatId: json['tempat_id']);
+        tempatId: json['tempatId']);
   }
 }
