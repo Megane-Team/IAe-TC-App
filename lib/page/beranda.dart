@@ -83,7 +83,9 @@ class BerandaState extends State<Beranda> {
                 Icons.notifications_outlined,
                 size: 32,
               ),
-              onPressed: () async {},
+              onPressed: () async {
+                context.push('/notifikasi');
+              },
             )
           ],
         )),
