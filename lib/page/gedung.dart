@@ -354,8 +354,8 @@ class GedungState extends State<Gedung> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
                                         child: FutureBuilder<Widget>(
-                                            future:
-                                                Assets.ruangan(ruangan.photo ?? ''),
+                                            future: Assets.ruangan(
+                                                ruangan.photo ?? ''),
                                             builder: (context, snapshot) {
                                               if (snapshot.connectionState ==
                                                   ConnectionState.waiting) {
@@ -391,42 +391,44 @@ class GedungState extends State<Gedung> {
                                   ],
                                 ),
                               ),
-                              isRuanganHasCapacity(ruangan) ?
-                                Container(
-                                  width: 46,
-                                  height: 22,
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color(0xFFFCA311)
-                                            .withOpacity(1),
-                                        spreadRadius: 1,
-                                        blurRadius: 4,
-                                        offset: const Offset(0, 0),
-                                      )
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.person,
-                                        color: Color(0xFFFCA311),
-                                        size: 16,
+                              isRuanganHasCapacity(ruangan)
+                                  ? Container(
+                                      width: 46,
+                                      height: 22,
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0xFFFCA311)
+                                                .withOpacity(1),
+                                            spreadRadius: 1,
+                                            blurRadius: 4,
+                                            offset: const Offset(0, 0),
+                                          )
+                                        ],
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(20),
                                       ),
-                                      Text(
-                                        ruangan.capacity.toString(),
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFFFCA311)),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                            Icons.person,
+                                            color: Color(0xFFFCA311),
+                                            size: 16,
+                                          ),
+                                          Text(
+                                            ruangan.capacity.toString(),
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFFFCA311)),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ) :
-                                const SizedBox()
+                                    )
+                                  : const SizedBox()
                             ],
                           ),
                         ),

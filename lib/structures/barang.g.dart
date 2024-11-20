@@ -23,7 +23,7 @@ class BarangAdapter extends TypeAdapter<Barang> {
       status: fields[4] as String,
       condition: fields[5] as String,
       warranty: fields[6] as String,
-      photo: fields[7] as String,
+      photo: fields[7] as String?,
       ruanganId: fields[8] as int,
     );
   }
