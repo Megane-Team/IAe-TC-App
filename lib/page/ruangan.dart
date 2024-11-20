@@ -9,7 +9,7 @@ import 'package:inventara/structures/barang.dart';
 import 'package:inventara/structures/kendaraan.dart';
 import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/structures/tempat.dart';
-import 'package:inventara/utils/actionWidget.dart';
+import 'package:inventara/utils/actionwidget.dart';
 import 'package:inventara/utils/assets.dart';
 
 class Ruangan extends StatefulWidget {

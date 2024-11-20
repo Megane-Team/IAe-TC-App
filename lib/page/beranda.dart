@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/structures/tempat_category.dart';
-import 'package:inventara/utils/actionWidget.dart';
+import 'package:inventara/utils/actionwidget.dart';
 import 'package:inventara/utils/assets.dart';
 import 'package:inventara/utils/sessions.dart';
 
