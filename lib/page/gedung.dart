@@ -8,7 +8,7 @@ import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/structures/ruangan_category.dart';
 import 'package:inventara/structures/tempat.dart';
-import 'package:inventara/utils/actionWidget.dart';
+import 'package:inventara/utils/actionwidget.dart';
 import 'package:inventara/utils/assets.dart';
 
 class Gedung extends StatefulWidget {
