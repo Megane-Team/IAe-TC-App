@@ -360,7 +360,8 @@ class GedungState extends State<Gedung> {
                                                   ConnectionState.waiting) {
                                                 return const CircularProgressIndicator(); // Show a loading indicator while waiting
                                               } else if (snapshot.hasError) {
-                                                return Image.asset(Assets.noImage()); // Show error message if any
+                                                return Image.asset(Assets
+                                                    .noImage()); // Show error message if any
                                               } else if (snapshot.hasData) {
                                                 return snapshot
                                                     .data!; // Return the widget once the future completes

@@ -369,8 +369,8 @@ class BerandaState extends State<Beranda> {
                                                       } else if (snapshot
                                                           .hasError) {
                                                         log("Error: ${snapshot.error}");
-                                                        return Image.asset(
-                                                            Assets.noImage()); // Show error message if any
+                                                        return Image.asset(Assets
+                                                            .noImage()); // Show error message if any
                                                       } else if (snapshot
                                                           .hasData) {
                                                         return snapshot
