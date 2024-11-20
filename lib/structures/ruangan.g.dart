@@ -6,17 +6,17 @@ part of 'ruangan.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class RuanganAdapter extends TypeAdapter<Ruangan> {
+class RuangansAdapter extends TypeAdapter<Ruangans> {
   @override
   final int typeId = 6;
 
   @override
-  Ruangan read(BinaryReader reader) {
+  Ruangans read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Ruangan(
+    return Ruangans(
       id: fields[0] as int,
       code: fields[1] as String,
       status: fields[2] as String,
@@ -28,7 +28,7 @@ class RuanganAdapter extends TypeAdapter<Ruangan> {
   }
 
   @override
-  void write(BinaryWriter writer, Ruangan obj) {
+  void write(BinaryWriter writer, Ruangans obj) {
     writer
       ..writeByte(7)
       ..writeByte(0)
@@ -53,7 +53,7 @@ class RuanganAdapter extends TypeAdapter<Ruangan> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is RuanganAdapter &&
+      other is RuangansAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

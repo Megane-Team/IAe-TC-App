@@ -4,7 +4,7 @@ import 'package:inventara/structures/ruangan_category.dart';
 part 'ruangan.g.dart';
 
 @HiveType(typeId: 6)
-class Ruangan {
+class Ruangans {
   @HiveField(0)
   late int id;
   @HiveField(1)
@@ -20,7 +20,7 @@ class Ruangan {
   @HiveField(6)
   late int tempatId;
 
-  Ruangan({
+  Ruangans({
     required this.id,
     required this.code,
     required this.status,
@@ -30,8 +30,8 @@ class Ruangan {
     required this.tempatId,
   });
 
-  factory Ruangan.fromJson(Map<String, dynamic> json) {
-    return Ruangan(
+  factory Ruangans.fromJson(Map<String, dynamic> json) {
+    return Ruangans(
       id: json['id'],
       code: json['code'],
       status: json['status'],
