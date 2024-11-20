@@ -12,7 +12,7 @@ class Tempat {
   @HiveField(2)
   late TempatCategory? category;
   @HiveField(3)
-  late String photo;
+  late String? photo;
 
   Tempat({
     required this.id,

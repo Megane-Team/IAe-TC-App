@@ -1,56 +1,62 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'kendaraan.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserAdapter extends TypeAdapter<User> {
+class KendaraanAdapter extends TypeAdapter<Kendaraan> {
   @override
-  final int typeId = 0;
+  final int typeId = 10;
 
   @override
-  User read(BinaryReader reader) {
+  Kendaraan read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return User(
+    return Kendaraan(
       id: fields[0] as int,
       name: fields[1] as String,
-      email: fields[2] as String,
-      role: fields[3] as Role?,
-      division: fields[4] as String,
-      address: fields[5] as String,
-      photo: fields[6] as String?,
-      phone: fields[7] as String,
-      createdAt: fields[9] as DateTime,
+      plat: fields[2] as String,
+      status: fields[3] as String,
+      condition: fields[4] as String,
+      warranty: fields[5] as DateTime,
+      capacity: fields[6] as int,
+      category: fields[7] as KendaraanCategory?,
+      color: fields[8] as String,
+      photo: fields[9] as String,
+      tempatId: fields[10] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, User obj) {
+  void write(BinaryWriter writer, Kendaraan obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.email)
+      ..write(obj.plat)
       ..writeByte(3)
-      ..write(obj.role)
+      ..write(obj.status)
       ..writeByte(4)
-      ..write(obj.division)
+      ..write(obj.condition)
       ..writeByte(5)
-      ..write(obj.address)
+      ..write(obj.warranty)
       ..writeByte(6)
-      ..write(obj.photo)
+      ..write(obj.capacity)
       ..writeByte(7)
-      ..write(obj.phone)
+      ..write(obj.category)
       ..writeByte(8)
-      ..write(obj.createdAt);
+      ..write(obj.color)
+      ..writeByte(9)
+      ..write(obj.photo)
+      ..writeByte(10)
+      ..write(obj.tempatId);
   }
 
   @override
@@ -59,7 +65,7 @@ class UserAdapter extends TypeAdapter<User> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserAdapter &&
+      other is KendaraanAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

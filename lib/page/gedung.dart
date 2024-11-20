@@ -1,14 +1,19 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
+import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/ruangan.dart';
+import 'package:inventara/structures/ruangan_category.dart';
+import 'package:inventara/structures/tempat.dart';
+import 'package:inventara/utils/actionwidget.dart';
 import 'package:inventara/utils/assets.dart';
 
 class Gedung extends StatefulWidget {
   final String id;
-  final String name;
-  const Gedung({required this.name, required this.id, super.key});
+  const Gedung({required this.id, super.key});
 
   @override
   State<Gedung> createState() => GedungState();
@@ -18,29 +23,69 @@ class GedungState extends State<Gedung> {
   bool isKelasActive = false;
   bool isGudangActive = false;
   bool isLabActive = false;
-  late List<Ruangan> ruanganList = [];
-  late List<Ruangan> originalRuanganList = [];
+  late List<Ruangans> filteredRuangan = [];
+  late List<Ruangans> originalRuanganList = [];
+  late List<Tempat> gedung = [];
 
   void fetchData() async {
     var ruangan = await readRuangan(widget.id);
+    gedung = await readTempatbyId(widget.id);
     setState(() {
       originalRuanganList = ruangan;
-      ruanganList = List.from(originalRuanganList);
-      listSort(ruanganList);
+      filteredRuangan = List.from(originalRuanganList);
+      _filterAndUpdateRuanganList('');
     });
   }
 
-  void listSort(List<Ruangan> list) {
-    if (isKelasActive) {
-      ruanganList.sort(
-          (a, b) => a.category.toString().compareTo(b.category.toString()));
-    } else if (isLabActive) {
-      ruanganList.sort(
-          (a, b) => a.category.toString().compareTo(b.category.toString()));
-    } else if (isGudangActive) {
-      ruanganList.sort(
-          (a, b) => a.category.toString().compareTo(b.category.toString()));
-    }
+  void _filterAndUpdateRuanganList(String value) {
+    setState(() {
+      if (value.isEmpty) {
+        if (isKelasActive || isLabActive || isGudangActive) {
+          filteredRuangan = [];
+          if (isKelasActive) {
+            filteredRuangan.addAll(originalRuanganList
+                .where((item) => item.category == RuanganCategory.kelas));
+          }
+          if (isLabActive) {
+            filteredRuangan.addAll(originalRuanganList
+                .where((item) => item.category == RuanganCategory.lab));
+          }
+          if (isGudangActive) {
+            filteredRuangan.addAll(originalRuanganList
+                .where((item) => item.category == RuanganCategory.gudang));
+          }
+        } else {
+          filteredRuangan = List.from(originalRuanganList);
+        }
+      } else {
+        if (isKelasActive || isLabActive || isGudangActive) {
+          filteredRuangan = [];
+          if (isKelasActive) {
+            filteredRuangan.addAll(originalRuanganList
+                .where((item) => item.category == RuanganCategory.kelas)
+                .where((element) =>
+                    element.code.toLowerCase().contains(value.toLowerCase())));
+          }
+          if (isLabActive) {
+            filteredRuangan.addAll(originalRuanganList
+                .where((item) => item.category == RuanganCategory.lab)
+                .where((element) =>
+                    element.code.toLowerCase().contains(value.toLowerCase())));
+          }
+          if (isGudangActive) {
+            filteredRuangan.addAll(originalRuanganList
+                .where((item) => item.category == RuanganCategory.gudang)
+                .where((element) =>
+                    element.code.toLowerCase().contains(value.toLowerCase())));
+          }
+        } else {
+          filteredRuangan = originalRuanganList
+              .where((element) =>
+                  element.code.toLowerCase().contains(value.toLowerCase()))
+              .toList();
+        }
+      }
+    });
   }
 
   @override
@@ -53,6 +98,7 @@ class GedungState extends State<Gedung> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -63,18 +109,17 @@ class GedungState extends State<Gedung> {
                   color: Colors.black.withOpacity(0.1),
                   spreadRadius: 1,
                   blurRadius: 4,
-                  offset: const Offset(0, 0),
                 )
               ], color: Colors.white, shape: BoxShape.circle),
               child: IconButton(
                 onPressed: () {
-                  context.go('/beranda');
+                  context.pop();
                 },
                 icon: const Icon(Icons.navigate_before),
               ),
             ),
             Text(
-              widget.name,
+              gedung.isEmpty ? 'Gedung' : gedung[0].name,
               style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
@@ -127,17 +172,7 @@ class GedungState extends State<Gedung> {
                 ),
               ),
               onChanged: (value) {
-                setState(() {
-                  if (value.isEmpty) {
-                    ruanganList = List.from(originalRuanganList);
-                  } else {
-                    ruanganList = originalRuanganList
-                        .where((element) => element.code
-                            .toLowerCase()
-                            .contains(value.toLowerCase()))
-                        .toList();
-                  }
-                });
+                _filterAndUpdateRuanganList(value);
               },
             ),
           ),
@@ -150,7 +185,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isKelasActive = !isKelasActive;
-                      fetchData();
+                      _filterAndUpdateRuanganList('');
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -172,7 +207,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isLabActive = !isLabActive;
-                      fetchData();
+                      _filterAndUpdateRuanganList('');
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -194,7 +229,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isGudangActive = !isGudangActive;
-                      fetchData();
+                      _filterAndUpdateRuanganList('');
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -216,7 +251,7 @@ class GedungState extends State<Gedung> {
           ),
           const Gap(20),
           Expanded(
-            child: FutureBuilder<List<Ruangan>>(
+            child: FutureBuilder<List<Ruangans>>(
               future: readRuangan(widget.id),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -228,10 +263,14 @@ class GedungState extends State<Gedung> {
                         'Error: No data available. Is internet connection available?'),
                   );
                 } else if (snapshot.hasData) {
+                  // check if the data is empty
+                  if (snapshot.data!.isEmpty) {
+                    return noData();
+                  }
                   return ListView.builder(
-                    itemCount: ruanganList.length,
+                    itemCount: filteredRuangan.length,
                     itemBuilder: (context, index) {
-                      var ruangan = ruanganList[index];
+                      var ruangan = filteredRuangan[index];
                       return Container(
                         height: 61,
                         margin: const EdgeInsets.only(
@@ -293,7 +332,14 @@ class GedungState extends State<Gedung> {
                                   );
                                 },
                               );
-                            } else {}
+                            } else {
+                              setState(() {
+                                var param1 = ruangan.id;
+
+                                context.push(
+                                    "/ruangan?id=$param1&category=ruangan");
+                              });
+                            }
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -301,29 +347,30 @@ class GedungState extends State<Gedung> {
                               SizedBox(
                                 child: Row(
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: 60,
                                       height: 46,
-                                      decoration: BoxDecoration(
+                                      child: ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
+                                        child: FutureBuilder<Widget>(
+                                            future:
+                                                Assets.ruangan(ruangan.photo),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                              } else if (snapshot.hasError) {
+                                                return Image.asset(Assets
+                                                    .noImage()); // Show error message if any
+                                              } else if (snapshot.hasData) {
+                                                return snapshot
+                                                    .data!; // Return the widget once the future completes
+                                              } else {
+                                                return const Text(
+                                                    'No data available'); // Show message if no data
+                                              }
+                                            }),
                                       ),
-                                      child: FutureBuilder<Widget>(
-                                          future: Assets.ruangan(ruangan.photo),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                            } else if (snapshot.hasError) {
-                                              return Image.asset(Assets.icons(
-                                                  'no_image')); // Show error message if any
-                                            } else if (snapshot.hasData) {
-                                              return snapshot
-                                                  .data!; // Return the widget once the future completes
-                                            } else {
-                                              return const Text(
-                                                  'No data available'); // Show message if no data
-                                            }
-                                          }),
                                     ),
                                     const Gap(16),
                                     Column(

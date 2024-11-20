@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/structures/tempat_category.dart';
+import 'package:inventara/utils/actionwidget.dart';
 import 'package:inventara/utils/assets.dart';
 import 'package:inventara/utils/sessions.dart';
 
@@ -36,7 +37,7 @@ class BerandaState extends State<Beranda> {
   late List<Tempat> originalTempatList;
 
   void fetchData() async {
-    var tempat = await readTempat();
+    var tempat = await readTempat('');
     setState(() {
       originalTempatList = tempat;
       tempatList = List.from(originalTempatList);
@@ -291,8 +292,8 @@ class BerandaState extends State<Beranda> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               FutureBuilder<List<Tempat>>(
-                                future:
-                                    readTempat(), // Your future function to fetch data
+                                future: readTempat(
+                                    ''), // Your future function to fetch data
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
@@ -303,6 +304,9 @@ class BerandaState extends State<Beranda> {
                                           'Error: No data available, is internet connection available?'),
                                     );
                                   } else if (snapshot.hasData) {
+                                    if (snapshot.data!.isEmpty) {
+                                      return noData();
+                                    }
                                     return GridView.builder(
                                       shrinkWrap: true,
                                       physics:
@@ -320,15 +324,14 @@ class BerandaState extends State<Beranda> {
                                           onPressed: () {
                                             setState(() {
                                               var param1 = tempat.id;
-                                              var param2 = tempat.name;
 
                                               if (tempat.category ==
                                                   TempatCategory.parkiran) {
-                                                context.go(
-                                                    "/ruangan?id=$param1&name=$param2");
+                                                context.push(
+                                                    "/ruangan?id=$param1&category=parkiran");
                                               } else {
-                                                context.go(
-                                                    "/gedung?id=$param1&name=$param2");
+                                                context
+                                                    .push("/gedung?id=$param1");
                                               }
                                             });
                                           },
@@ -344,16 +347,11 @@ class BerandaState extends State<Beranda> {
                                           ),
                                           child: Column(
                                             children: [
-                                              Container(
+                                              SizedBox(
                                                 width: MediaQuery.of(context)
                                                     .size
                                                     .width,
                                                 height: 106,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  color: Colors.black,
-                                                ),
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(12),
@@ -370,9 +368,8 @@ class BerandaState extends State<Beranda> {
                                                       } else if (snapshot
                                                           .hasError) {
                                                         log("Error: ${snapshot.error}");
-                                                        return Image.asset(
-                                                            Assets.icons(
-                                                                'no_image')); // Show error message if any
+                                                        return Image.asset(Assets
+                                                            .noImage()); // Show error message if any
                                                       } else if (snapshot
                                                           .hasData) {
                                                         return snapshot
@@ -397,7 +394,7 @@ class BerandaState extends State<Beranda> {
                                       },
                                     );
                                   } else {
-                                    return const Text('No data available');
+                                    return noData();
                                   }
                                 },
                               )
