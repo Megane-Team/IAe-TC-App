@@ -9,6 +9,7 @@ import 'package:inventara/structures/tempat_category.dart';
 import 'package:inventara/utils/actionwidget.dart';
 import 'package:inventara/utils/assets.dart';
 import 'package:inventara/utils/sessions.dart';
+import 'package:inventara/page/notifikasi.dart';
 
 class Beranda extends StatefulWidget {
   const Beranda({super.key});
@@ -80,11 +81,32 @@ class BerandaState extends State<Beranda> {
               ],
             ),
             IconButton(
-              icon: const Icon(
-                Icons.notifications_outlined,
-                size: 32,
+              icon: Stack(
+                children: [
+                  const Icon(
+                    Icons.notifications_outlined,
+                    size: 32,
+                  ),
+                  if (Notifikasi.hasUnreadNotifications(Notif))
+                    Positioned(
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 12,
+                          minHeight: 12,
+                        ),
+                      ),
+                    ),
+                ],
               ),
-              onPressed: () async {},
+              onPressed: () async {
+                context.push('/notifikasi');
+              },
             )
           ],
         )),
