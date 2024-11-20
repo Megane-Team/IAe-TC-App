@@ -21,7 +21,7 @@ class User {
   late String? photo;
   @HiveField(7)
   late String phone;
-  @HiveField(9)
+  @HiveField(8)
   late DateTime createdAt;
 
   User(
