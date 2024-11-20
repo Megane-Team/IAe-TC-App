@@ -26,7 +26,7 @@ class KendaraanAdapter extends TypeAdapter<Kendaraan> {
       capacity: fields[6] as int,
       category: fields[7] as KendaraanCategory?,
       color: fields[8] as String,
-      photo: fields[9] as String,
+      photo: fields[9] as String?,
       tempatId: fields[10] as int,
     );
   }

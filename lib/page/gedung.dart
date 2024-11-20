@@ -27,6 +27,10 @@ class GedungState extends State<Gedung> {
   late List<Ruangans> originalRuanganList = [];
   late List<Tempat> gedung = [];
 
+  bool isRuanganHasCapacity(Ruangans ruangan) {
+    return ruangan.capacity != null;
+  }
+
   void fetchData() async {
     var ruangan = await readRuangan(widget.id);
     gedung = await readTempatbyId(widget.id);
@@ -258,10 +262,7 @@ class GedungState extends State<Gedung> {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   // send error message to terminal
-                  return const Center(
-                    child: Text(
-                        'Error: No data available. Is internet connection available?'),
-                  );
+                  return noData();
                 } else if (snapshot.hasData) {
                   // check if the data is empty
                   if (snapshot.data!.isEmpty) {
@@ -354,7 +355,7 @@ class GedungState extends State<Gedung> {
                                         borderRadius: BorderRadius.circular(8),
                                         child: FutureBuilder<Widget>(
                                             future:
-                                                Assets.ruangan(ruangan.photo),
+                                                Assets.ruangan(ruangan.photo ?? ''),
                                             builder: (context, snapshot) {
                                               if (snapshot.connectionState ==
                                                   ConnectionState.waiting) {
@@ -390,40 +391,42 @@ class GedungState extends State<Gedung> {
                                   ],
                                 ),
                               ),
-                              Container(
-                                width: 46,
-                                height: 22,
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0xFFFCA311)
-                                          .withOpacity(1),
-                                      spreadRadius: 1,
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 0),
-                                    )
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.person,
-                                      color: Color(0xFFFCA311),
-                                      size: 16,
-                                    ),
-                                    Text(
-                                      ruangan.capacity.toString(),
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFFFCA311)),
-                                    ),
-                                  ],
-                                ),
-                              )
+                              isRuanganHasCapacity(ruangan) ?
+                                Container(
+                                  width: 46,
+                                  height: 22,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0xFFFCA311)
+                                            .withOpacity(1),
+                                        spreadRadius: 1,
+                                        blurRadius: 4,
+                                        offset: const Offset(0, 0),
+                                      )
+                                    ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.person,
+                                        color: Color(0xFFFCA311),
+                                        size: 16,
+                                      ),
+                                      Text(
+                                        ruangan.capacity.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFFFCA311)),
+                                      ),
+                                    ],
+                                  ),
+                                ) :
+                                const SizedBox()
                             ],
                           ),
                         ),

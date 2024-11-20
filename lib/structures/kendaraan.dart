@@ -24,7 +24,7 @@ class Kendaraan {
   @HiveField(8)
   late String color;
   @HiveField(9)
-  late String photo;
+  late String? photo;
   @HiveField(10)
   late int tempatId;
 
