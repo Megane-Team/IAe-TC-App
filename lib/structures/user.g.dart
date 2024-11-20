@@ -25,7 +25,7 @@ class UserAdapter extends TypeAdapter<User> {
       address: fields[5] as String,
       photo: fields[6] as String?,
       phone: fields[7] as String,
-      createdAt: fields[9] as DateTime,
+      createdAt: fields[8] as DateTime,
     );
   }
 
