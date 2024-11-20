@@ -11,17 +11,7 @@ import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/utils/actionwidget.dart';
 import 'package:inventara/utils/assets.dart';
-import 'package:inventara/actions/barang/read_barang_action.dart';
-import 'package:inventara/actions/kendaraan/read_kendaraan_action.dart';
-import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
-import 'package:inventara/actions/tempat/read_tempat_action.dart';
-import 'package:inventara/structures/barang.dart';
-import 'package:inventara/structures/kendaraan.dart';
-import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/structures/ruangan_category.dart';
-import 'package:inventara/structures/tempat.dart';
-import 'package:inventara/utils/actionwidget.dart';
-import 'package:inventara/utils/assets.dart';
 import 'package:inventara/utils/extension.dart';
 
 class Ruangan extends StatefulWidget {
@@ -308,12 +298,14 @@ class RuanganState extends State<Ruangan> {
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         itemCount: barang
-                                            .map((item) => item.name.capitalize())
+                                            .map((item) =>
+                                                item.name.capitalize())
                                             .toSet()
                                             .length,
                                         itemBuilder: (context, index) {
                                           final uniqueNames = barang
-                                              .map((item) => item.name.capitalize())
+                                              .map((item) =>
+                                                  item.name.capitalize())
                                               .toSet()
                                               .toList()
                                             ..sort();
@@ -351,14 +343,16 @@ class RuanganState extends State<Ruangan> {
                                                     shrinkWrap: true,
                                                     itemCount: barang
                                                         .where((item) =>
-                                                            item.name.capitalize() ==
+                                                            item.name
+                                                                .capitalize() ==
                                                             uniqueNames[index])
                                                         .length,
                                                     itemBuilder:
                                                         (context, index2) {
                                                       final items = barang
                                                           .where((item) =>
-                                                              item.name.capitalize() ==
+                                                              item.name
+                                                                  .capitalize() ==
                                                               uniqueNames[
                                                                   index])
                                                           .toList()
@@ -747,12 +741,20 @@ class RuanganState extends State<Ruangan> {
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       itemCount: kendaraan
-                                          .map((item) => item.category.toString().split('.').last.capitalize())
+                                          .map((item) => item.category
+                                              .toString()
+                                              .split('.')
+                                              .last
+                                              .capitalize())
                                           .toSet()
                                           .length,
                                       itemBuilder: (context, index) {
                                         final uniqueNames = kendaraan
-                                            .map((item) => item.category.toString().split('.').last.capitalize())
+                                            .map((item) => item.category
+                                                .toString()
+                                                .split('.')
+                                                .last
+                                                .capitalize())
                                             .toSet()
                                             .toList()
                                           ..sort();
@@ -787,27 +789,31 @@ class RuanganState extends State<Ruangan> {
                                                   shrinkWrap: true,
                                                   itemCount: kendaraan
                                                       .where((item) =>
-                                                          item.category.toString().split('.').last.capitalize() ==
+                                                          item.category
+                                                              .toString()
+                                                              .split('.')
+                                                              .last
+                                                              .capitalize() ==
                                                           uniqueNames[index])
                                                       .length,
                                                   itemBuilder:
                                                       (context, index2) {
                                                     final items = kendaraan
                                                         .where((item) =>
-                                                            item.category.toString().split('.').last.capitalize() ==
+                                                            item.category
+                                                                .toString()
+                                                                .split('.')
+                                                                .last
+                                                                .capitalize() ==
                                                             uniqueNames[index])
                                                         .toList()
                                                       ..sort((a, b) {
-                                                        if (a.status ==
-                                                                'DG' &&
-                                                            b.status !=
-                                                                'DG') {
+                                                        if (a.status == 'DG' &&
+                                                            b.status != 'DG') {
                                                           return 1;
                                                         }
-                                                        if (a.status !=
-                                                                'DG' &&
-                                                            b.status ==
-                                                                'DG') {
+                                                        if (a.status != 'DG' &&
+                                                            b.status == 'DG') {
                                                           return -1;
                                                         }
                                                         return a.id
