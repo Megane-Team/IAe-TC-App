@@ -1,12 +1,20 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:inventara/constants/variables.dart';
 import 'package:inventara/main.dart';
 import 'package:inventara/structures/barang.dart';
 import 'package:inventara/utils/sessions.dart';
 
-Future<List<Barang>> readBarang(String id) async {
+Future<List<Barang>> readBarang(String id, BuildContext context) async {
   var token = await Session.getToken();
+
+  if (token == null) {
+    Session.unset();
+    context.go('login');
+    throw Exception('Unauthorized');
+  }
 
   final response = await App.api.get(
       apiBaseURl.resolve('/ruangans/$id/barangs'),
