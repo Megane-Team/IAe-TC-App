@@ -14,17 +14,28 @@ class Session {
       throw Exception('Invalid token');
     }
 
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+
     await secureStore.write(key: 'token', value: token);
     await store.put('user', user);
+    await store.put('timestamp', timestamp);
+
     return user;
   }
 
   static Future<void> unset() async {
     await secureStore.delete(key: 'token');
     await store.delete('user');
+    await store.delete('timestamp');
   }
 
   static User? get() {
+    final timestamp = store.get('timestamp');
+    if (timestamp == null ||
+        DateTime.now().millisecondsSinceEpoch - timestamp > 86400000) {
+      unset();
+      return null;
+    }
     return store.get('user');
   }
 
@@ -40,13 +51,20 @@ class Session {
       return null;
     }
 
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
     await store.put('user', user);
+    await store.put('timestamp', timestamp);
+
     return user;
   }
 
   static Future<String?> getToken() async {
-    final token = await secureStore.read(key: 'token');
-
-    return token;
+    final timestamp = store.get('timestamp');
+    if (timestamp == null ||
+        DateTime.now().millisecondsSinceEpoch - timestamp > 86400000) {
+      unset();
+      return null;
+    }
+    return await secureStore.read(key: 'token');
   }
 }

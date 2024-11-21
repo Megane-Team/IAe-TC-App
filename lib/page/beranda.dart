@@ -39,7 +39,7 @@ class BerandaState extends State<Beranda> {
   TextEditingController searchController = TextEditingController();
 
   void fetchData() async {
-    var tempat = await readTempat('');
+    var tempat = await readTempat('', context);
     setState(() {
       originalTempatList = tempat;
       filteredTempat = List.from(originalTempatList);
@@ -317,8 +317,8 @@ class BerandaState extends State<Beranda> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               FutureBuilder<List<Tempat>>(
-                                future: readTempat(
-                                    ''), // Your future function to fetch data
+                                future: readTempat('',
+                                    context), // Your future function to fetch data
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {

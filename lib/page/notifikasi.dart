@@ -82,7 +82,7 @@ class _NotifikasiState extends State<Notifikasi> {
                 decoration: const BoxDecoration(
                   border: Border(
                     top: BorderSide(
-                      color: Colors.black,
+                      color: Colors.black38,
                     ),
                   ),
                 ),

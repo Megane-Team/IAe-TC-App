@@ -33,7 +33,7 @@ class GedungState extends State<Gedung> {
   }
 
   void fetchData() async {
-    var ruangan = await readRuangan(widget.id);
+    var ruangan = await readRuangan(widget.id, context);
     gedung = await readTempatbyId(widget.id);
     setState(() {
       originalRuanganList = ruangan;
@@ -44,7 +44,6 @@ class GedungState extends State<Gedung> {
 
   void _filterAndUpdateRuanganList(String value) {
     setState(() {
-      print(value);
       if (isKelasActive || isLabActive || isGudangActive) {
         filteredRuangan = [];
         if (isKelasActive) {
@@ -239,7 +238,7 @@ class GedungState extends State<Gedung> {
           const Gap(20),
           Expanded(
             child: FutureBuilder<List<Ruangans>>(
-              future: readRuangan(widget.id),
+              future: readRuangan(widget.id, context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
