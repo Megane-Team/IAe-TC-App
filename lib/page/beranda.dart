@@ -34,26 +34,42 @@ String getTime() {
 class BerandaState extends State<Beranda> {
   bool isGedungActive = false;
   bool isParkiranActive = false;
-  late List<Tempat> tempatList;
+  late List<Tempat> filteredTempat;
   late List<Tempat> originalTempatList;
+  TextEditingController searchController = TextEditingController();
 
   void fetchData() async {
     var tempat = await readTempat('');
     setState(() {
       originalTempatList = tempat;
-      tempatList = List.from(originalTempatList);
-      listSort(tempatList);
+      filteredTempat = List.from(originalTempatList);
+      _filterAndUpdateTempatList(searchController.text);
     });
   }
 
-  void listSort(List<Tempat> list) async {
-    if (isParkiranActive == true) {
-      tempatList.sort(
-          (a, b) => b.category.toString().compareTo(a.category.toString()));
-    } else if (isGedungActive == true) {
-      tempatList.sort(
-          (a, b) => a.category.toString().compareTo(b.category.toString()));
-    }
+  void _filterAndUpdateTempatList(String value) {
+    setState(() {
+      if (isParkiranActive || isGedungActive) {
+        filteredTempat = [];
+        if (isGedungActive) {
+          filteredTempat.addAll(originalTempatList
+              .where((i) => i.category == TempatCategory.gedung)
+              .where(
+                  (e) => e.name.toLowerCase().contains(value.toLowerCase())));
+        }
+        if (isParkiranActive) {
+          filteredTempat.addAll(originalTempatList
+              .where((i) => i.category == TempatCategory.parkiran)
+              .where(
+                  (e) => e.name.toLowerCase().contains(value.toLowerCase())));
+        }
+      } else {
+        filteredTempat = originalTempatList
+            .where((element) =>
+                element.name.toLowerCase().contains(value.toLowerCase()))
+            .toList();
+      }
+    });
   }
 
   @override
@@ -177,6 +193,7 @@ class BerandaState extends State<Beranda> {
                       ],
                     ),
                     child: TextField(
+                      controller: searchController,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                         hintStyle: const TextStyle(
@@ -200,17 +217,7 @@ class BerandaState extends State<Beranda> {
                         ),
                       ),
                       onChanged: (value) {
-                        setState(() {
-                          if (value.isEmpty) {
-                            tempatList = List.from(originalTempatList);
-                          } else {
-                            tempatList = originalTempatList
-                                .where((element) => element.name
-                                    .toLowerCase()
-                                    .contains(value.toLowerCase()))
-                                .toList();
-                          }
-                        });
+                        _filterAndUpdateTempatList(value);
                       },
                     ),
                   ),
@@ -233,10 +240,8 @@ class BerandaState extends State<Beranda> {
                                 onPressed: () {
                                   setState(() {
                                     isGedungActive = !isGedungActive;
-                                    if (isParkiranActive = true) {
-                                      isParkiranActive = false;
-                                    }
-                                    fetchData();
+                                    _filterAndUpdateTempatList(
+                                        searchController.text);
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -264,10 +269,8 @@ class BerandaState extends State<Beranda> {
                               onPressed: () {
                                 setState(() {
                                   isParkiranActive = !isParkiranActive;
-                                  if (isGedungActive = true) {
-                                    isGedungActive = false;
-                                  }
-                                  fetchData();
+                                  _filterAndUpdateTempatList(
+                                      searchController.text);
                                 });
                               },
                               style: ElevatedButton.styleFrom(
@@ -336,9 +339,9 @@ class BerandaState extends State<Beranda> {
                                         crossAxisSpacing: 24,
                                         mainAxisSpacing: 32,
                                       ),
-                                      itemCount: tempatList.length,
+                                      itemCount: filteredTempat.length,
                                       itemBuilder: (context, index) {
-                                        var tempat = tempatList[index];
+                                        var tempat = filteredTempat[index];
                                         return ElevatedButton(
                                           onPressed: () {
                                             setState(() {
