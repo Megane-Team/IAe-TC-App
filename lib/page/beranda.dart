@@ -317,8 +317,8 @@ class BerandaState extends State<Beranda> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               FutureBuilder<List<Tempat>>(
-                                future: readTempat(
-                                    '', context), // Your future function to fetch data
+                                future: readTempat('',
+                                    context), // Your future function to fetch data
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {

@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:inventara/actions/users/read_user_action.dart';
 import 'package:inventara/structures/user.dart';
@@ -33,7 +31,8 @@ class Session {
 
   static User? get() {
     final timestamp = store.get('timestamp');
-    if (timestamp == null || DateTime.now().millisecondsSinceEpoch - timestamp > 86400000) {
+    if (timestamp == null ||
+        DateTime.now().millisecondsSinceEpoch - timestamp > 86400000) {
       unset();
       return null;
     }
@@ -61,7 +60,8 @@ class Session {
 
   static Future<String?> getToken() async {
     final timestamp = store.get('timestamp');
-    if (timestamp == null || DateTime.now().millisecondsSinceEpoch - timestamp > 86400000) {
+    if (timestamp == null ||
+        DateTime.now().millisecondsSinceEpoch - timestamp > 86400000) {
       unset();
       return null;
     }
