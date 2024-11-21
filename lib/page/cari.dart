@@ -78,3 +78,83 @@ class CariState extends State<Cari> {
     );
   }
 }
+List<Map<String, String>> Peminjaman = [
+  {
+    'name': 'User 1',
+    'Divisi': 'HC3000',
+    'estimasi peminjaman': '31-11-2024',
+  },
+];
+
+List<Map<String, String>> Kelas_1 = [
+  {
+    'name': 'Kursi',
+    'kode_barang': '1',
+    'photo': 'assets/images/logos/inventara.png',
+    'kondisi': 'Bagus',
+    'status': 'Tidak Digunakan',
+  },
+  {
+    'name': 'Kursi',
+    'kode_barang': '2',
+    'photo': 'assets/images/logos/inventara.png',
+    'kondisi': 'Bagus',
+    'status': 'Digunakan',
+  },
+  {
+    'name': 'Meja',
+    'kode_barang': '3',
+    'photo': 'assets/images/logos/inventara.png',
+    'kondisi': 'Kurang Baik',
+    'status': 'Digunakan',
+  },
+  {
+    'name': 'Meja',
+    'kode_barang': '4',
+    'photo': 'assets/images/logos/inventara.png',
+    'kondisi': 'Bagus',
+    'status': 'Tidak Digunakan',
+  },
+  {
+    'name': 'Kursi',
+    'kode_barang': '1',
+    'photo': 'assets/images/logos/inventara.png',
+    'kondisi': 'Bagus',
+    'status': 'Tidak Digunakan',
+  },
+  {
+    'name': 'Kursi',
+    'kode_barang': '2',
+    'photo': 'assets/images/logos/inventara.png',
+    'kondisi': 'Bagus',
+    'status': 'Digunakan',
+  },
+  {
+    'name': 'Meja',
+    'kode_barang': '3',
+    'photo': 'assets/images/logos/inventara.png',
+    'kondisi': 'Kurang Baik',
+    'status': 'Digunakan',
+  },
+  {
+    'name': 'Meja',
+    'kode_barang': '4',
+    'photo': 'assets/images/logos/inventara.png',
+    'kondisi': 'Bagus',
+    'status': 'Tidak Digunakan',
+  },
+  {
+    'name': 'Meja',
+    'kode_barang': '3',
+    'photo': 'assets/images/logos/inventara.png',
+    'kondisi': 'Kurang Baik',
+    'status': 'Digunakan',
+  },
+  {
+    'name': 'Meja',
+    'kode_barang': '4',
+    'photo': 'assets/images/logos/inventara.png',
+    'kondisi': 'Bagus',
+    'status': 'Tidak Digunakan',
+  },
+];
