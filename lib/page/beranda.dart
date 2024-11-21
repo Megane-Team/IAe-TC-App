@@ -53,20 +53,20 @@ class BerandaState extends State<Beranda> {
         filteredTempat = [];
         if (isGedungActive) {
           filteredTempat.addAll(originalTempatList
-            .where((i) => i.category == TempatCategory.gedung)
-            .where((e) =>
-              e.name.toLowerCase().contains(value.toLowerCase())));
+              .where((i) => i.category == TempatCategory.gedung)
+              .where(
+                  (e) => e.name.toLowerCase().contains(value.toLowerCase())));
         }
         if (isParkiranActive) {
           filteredTempat.addAll(originalTempatList
-            .where((i) => i.category == TempatCategory.parkiran)
-            .where((e) =>
-              e.name.toLowerCase().contains(value.toLowerCase())));
+              .where((i) => i.category == TempatCategory.parkiran)
+              .where(
+                  (e) => e.name.toLowerCase().contains(value.toLowerCase())));
         }
       } else {
         filteredTempat = originalTempatList
             .where((element) =>
-            element.name.toLowerCase().contains(value.toLowerCase()))
+                element.name.toLowerCase().contains(value.toLowerCase()))
             .toList();
       }
     });
@@ -240,7 +240,8 @@ class BerandaState extends State<Beranda> {
                                 onPressed: () {
                                   setState(() {
                                     isGedungActive = !isGedungActive;
-                                    _filterAndUpdateTempatList(searchController.text);
+                                    _filterAndUpdateTempatList(
+                                        searchController.text);
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -268,7 +269,8 @@ class BerandaState extends State<Beranda> {
                               onPressed: () {
                                 setState(() {
                                   isParkiranActive = !isParkiranActive;
-                                  _filterAndUpdateTempatList(searchController.text);
+                                  _filterAndUpdateTempatList(
+                                      searchController.text);
                                 });
                               },
                               style: ElevatedButton.styleFrom(

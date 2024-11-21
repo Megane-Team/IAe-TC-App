@@ -51,24 +51,24 @@ class GedungState extends State<Gedung> {
           filteredRuangan.addAll(originalRuanganList
               .where((item) => item.category == RuanganCategory.kelas)
               .where((element) =>
-              element.code.toLowerCase().contains(value.toLowerCase())));
+                  element.code.toLowerCase().contains(value.toLowerCase())));
         }
         if (isLabActive) {
           filteredRuangan.addAll(originalRuanganList
               .where((item) => item.category == RuanganCategory.lab)
               .where((element) =>
-              element.code.toLowerCase().contains(value.toLowerCase())));
+                  element.code.toLowerCase().contains(value.toLowerCase())));
         }
         if (isGudangActive) {
           filteredRuangan.addAll(originalRuanganList
               .where((item) => item.category == RuanganCategory.gudang)
               .where((element) =>
-              element.code.toLowerCase().contains(value.toLowerCase())));
+                  element.code.toLowerCase().contains(value.toLowerCase())));
         }
       } else {
         filteredRuangan = originalRuanganList
             .where((element) =>
-            element.code.toLowerCase().contains(value.toLowerCase()))
+                element.code.toLowerCase().contains(value.toLowerCase()))
             .toList();
       }
     });
