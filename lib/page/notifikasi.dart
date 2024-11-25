@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:gap/gap.dart';
+import 'package:inventara/actions/notifikasi/read_notifikasi_action.dart';
+import 'package:inventara/structures/notifikasi.dart';
 
 class Notifikasi extends StatefulWidget {
   const Notifikasi({super.key});
@@ -8,12 +10,14 @@ class Notifikasi extends StatefulWidget {
   @override
   State<Notifikasi> createState() => _NotifikasiState();
 
-  static bool hasUnreadNotifications(List<Map<String, dynamic>> notifications) {
-    return notifications.any((notif) => notif['isRead'] == false);
+  static bool hasUnreadNotifications(List<Notifikasis> notifications) {
+    return notifications.any((notif) => notif.isRead == false);
   }
 }
 
 class _NotifikasiState extends State<Notifikasi> {
+  late List<Notifikasis> listNotif;
+
   String getNotificationMessage(String kategori) {
     switch (kategori) {
       case 'PB':
@@ -33,6 +37,14 @@ class _NotifikasiState extends State<Notifikasi> {
       default:
         return 'Notifikasi tidak dikenal';
     }
+  }
+
+  void fetchData() async {
+    final notifikasis = await readNotifikasi();
+    setState(() {
+      listNotif = notifikasis;
+    });
+
   }
 
   @override
@@ -75,9 +87,9 @@ class _NotifikasiState extends State<Notifikasi> {
         body: Padding(
           padding: const EdgeInsets.only(top: 16),
           child: ListView.builder(
-            itemCount: Notif.length,
+            itemCount: listNotif.length,
             itemBuilder: (context, index) {
-              var notif = Notif[index];
+              var notif = listNotif[index];
               return Container(
                 decoration: const BoxDecoration(
                   border: Border(
@@ -89,7 +101,7 @@ class _NotifikasiState extends State<Notifikasi> {
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      notif['isRead'] = true;
+                      notif.isRead = true;
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -106,7 +118,7 @@ class _NotifikasiState extends State<Notifikasi> {
                     child: Row(
                       children: [
                         const Gap(6),
-                        if (!notif['isRead'])
+                        if (!notif.isRead)
                           Container(
                             width: 10,
                             height: 10,
@@ -128,18 +140,18 @@ class _NotifikasiState extends State<Notifikasi> {
                                 children: [
                                   Text(
                                       DateFormat('dd MMM yyyy')
-                                          .format(notif['tanggal']),
+                                          .format(notif.createdAt),
                                       style: const TextStyle(
                                           fontSize: 12, color: Colors.black)),
                                   Text(
                                       DateFormat('HH:mm')
-                                          .format(notif['tanggal']),
+                                          .format(notif.createdAt),
                                       style: const TextStyle(
                                           fontSize: 12, color: Colors.black)),
                                 ],
                               ),
                               const Gap(12),
-                              Text(getNotificationMessage(notif['kategori']),
+                              Text(getNotificationMessage(notif.category.toString()),
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -163,41 +175,3 @@ class _NotifikasiState extends State<Notifikasi> {
         ));
   }
 }
-
-List<Map<String, dynamic>> Notif = [
-  {
-    'kategori': 'PB',
-    'tanggal': DateTime.parse('2024-01-03T19:00:00'),
-    'isRead': false,
-  },
-  {
-    'kategori': 'DK',
-    'tanggal': DateTime.parse('2024-01-03T15:00:00'),
-    'isRead': false,
-  },
-  {
-    'kategori': 'PG',
-    'tanggal': DateTime.parse('2024-01-03T14:00:00'),
-    'isRead': false,
-  },
-  {
-    'kategori': 'PDB',
-    'tanggal': DateTime.parse('2024-01-03T13:00:00'),
-    'isRead': false,
-  },
-  {
-    'kategori': 'PDT',
-    'tanggal': DateTime.parse('2024-01-03T12:00:00'),
-    'isRead': false,
-  },
-  {
-    'kategori': 'JT',
-    'tanggal': DateTime.parse('2024-01-03T11:00:00'),
-    'isRead': false,
-  },
-  {
-    'kategori': 'DO',
-    'tanggal': DateTime.parse('2024-01-03T10:00:00'),
-    'isRead': false,
-  }
-];

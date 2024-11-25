@@ -6,17 +6,17 @@ part of 'notifikasi.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class NotifikasiAdapter extends TypeAdapter<Notifikasi> {
+class NotifikasiAdapter extends TypeAdapter<Notifikasis> {
   @override
   final int typeId = 12;
 
   @override
-  Notifikasi read(BinaryReader reader) {
+  Notifikasis read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Notifikasi(
+    return Notifikasis(
       id: fields[0] as int,
       category: fields[1] as NotifikasiCategory,
       isRead: fields[2] as bool,
@@ -26,7 +26,7 @@ class NotifikasiAdapter extends TypeAdapter<Notifikasi> {
   }
 
   @override
-  void write(BinaryWriter writer, Notifikasi obj) {
+  void write(BinaryWriter writer, Notifikasis obj) {
     writer
       ..writeByte(5)
       ..writeByte(0)

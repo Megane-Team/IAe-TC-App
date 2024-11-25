@@ -4,7 +4,7 @@ import 'package:inventara/structures/notifikasi_category.dart';
 part 'notifikasi.g.dart';
 
 @HiveType(typeId: 12)
-class Notifikasi {
+class Notifikasis {
   @HiveField(0)
   late int id;
   @HiveField(1)
@@ -16,7 +16,7 @@ class Notifikasi {
   @HiveField(4)
   late DateTime createdAt;
 
-  Notifikasi({
+  Notifikasis({
     required this.id,
     required this.category,
     required this.isRead,
@@ -24,8 +24,8 @@ class Notifikasi {
     required this.createdAt,
   });
 
-  factory Notifikasi.fromJson(Map<String, dynamic> json) {
-    return Notifikasi(
+  factory Notifikasis.fromJson(Map<String, dynamic> json) {
+    return Notifikasis(
       id: json['id'],
       category: NotifikasiCategory.values.firstWhere(
           (e) => e.toString() == 'NotifikasiCategory.${json['category']}'),

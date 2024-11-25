@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:inventara/actions/notifikasi/read_notifikasi_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
+import 'package:inventara/structures/notifikasi.dart';
 import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/structures/tempat_category.dart';
 import 'package:inventara/utils/actionwidget.dart';
@@ -36,10 +38,12 @@ class BerandaState extends State<Beranda> {
   bool isParkiranActive = false;
   late List<Tempat> filteredTempat;
   late List<Tempat> originalTempatList;
+  late List<Notifikasis> notif;
   TextEditingController searchController = TextEditingController();
 
   void fetchData() async {
     var tempat = await readTempat('', context);
+    notif = await readNotifikasi();
     setState(() {
       originalTempatList = tempat;
       filteredTempat = List.from(originalTempatList);
@@ -103,21 +107,38 @@ class BerandaState extends State<Beranda> {
                     Icons.notifications_outlined,
                     size: 32,
                   ),
-                  if (Notifikasi.hasUnreadNotifications(Notif))
-                    Positioned(
-                      right: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(1),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        constraints: const BoxConstraints(
-                          minWidth: 12,
-                          minHeight: 12,
-                        ),
-                      ),
-                    ),
+                  FutureBuilder(
+                      future: readNotifikasi(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return const Text('Error');
+                        } else if (snapshot.hasData) {
+                          var notif = snapshot.data as List<Notifikasis>;
+                          if (notif.isEmpty) {
+                            return const SizedBox();
+                          }
+                          return Positioned(
+                            right: 0,
+                            top: 0,
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Text(
+                                notif.length.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 12),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return const Text('No data');
+                        }
+                      }),
                 ],
               ),
               onPressed: () async {
