@@ -7,6 +7,8 @@ import 'package:inventara/router.dart';
 import 'package:inventara/structures/barang.dart';
 import 'package:inventara/structures/kendaraan.dart';
 import 'package:inventara/structures/kendaraan_category.dart';
+import 'package:inventara/structures/notifikasi_category.dart';
+import 'package:inventara/structures/notifikasi.dart';
 import 'package:inventara/structures/peminjaman.dart';
 import 'package:inventara/structures/peminjaman_category.dart';
 import 'package:inventara/structures/role.dart';
@@ -36,9 +38,6 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  print('FCM Token: $fcmToken');
-
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   Hive.init(appDir.path);
@@ -54,6 +53,8 @@ Future<void> main() async {
   Hive.registerAdapter(PeminjamanCategoryAdapter());
   Hive.registerAdapter(KendaraanAdapter());
   Hive.registerAdapter(KendaraanCategoryAdapter());
+  Hive.registerAdapter(NotifikasiAdapter());
+  Hive.registerAdapter(NotifikasiCategoryAdapter());
 
   await Hive.openBox('session', compactionStrategy: (int total, int deleted) {
     return deleted > 10;

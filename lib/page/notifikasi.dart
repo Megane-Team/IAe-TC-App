@@ -170,34 +170,34 @@ List<Map<String, dynamic>> Notif = [
     'tanggal': DateTime.parse('2024-01-03T19:00:00'),
     'isRead': false,
   },
-  // {
-  //   'kategori': 'DK',
-  //   'tanggal': DateTime.parse('2024-01-03T15:00:00'),
-  //   'isRead': false,
-  // },
-  // {
-  //   'kategori': 'PG',
-  //   'tanggal': DateTime.parse('2024-01-03T14:00:00'),
-  //   'isRead': false,
-  // },
-  // {
-  //   'kategori': 'PDB',
-  //   'tanggal': DateTime.parse('2024-01-03T13:00:00'),
-  //   'isRead': false,
-  // },
-  // {
-  //   'kategori': 'PDT',
-  //   'tanggal': DateTime.parse('2024-01-03T12:00:00'),
-  //   'isRead': false,
-  // },
-  // {
-  //   'kategori': 'JT',
-  //   'tanggal': DateTime.parse('2024-01-03T11:00:00'),
-  //   'isRead': false,
-  // },
-  // {
-  //   'kategori': 'DO',
-  //   'tanggal': DateTime.parse('2024-01-03T10:00:00'),
-  //   'isRead': false,
-  // }
+  {
+    'kategori': 'DK',
+    'tanggal': DateTime.parse('2024-01-03T15:00:00'),
+    'isRead': false,
+  },
+  {
+    'kategori': 'PG',
+    'tanggal': DateTime.parse('2024-01-03T14:00:00'),
+    'isRead': false,
+  },
+  {
+    'kategori': 'PDB',
+    'tanggal': DateTime.parse('2024-01-03T13:00:00'),
+    'isRead': false,
+  },
+  {
+    'kategori': 'PDT',
+    'tanggal': DateTime.parse('2024-01-03T12:00:00'),
+    'isRead': false,
+  },
+  {
+    'kategori': 'JT',
+    'tanggal': DateTime.parse('2024-01-03T11:00:00'),
+    'isRead': false,
+  },
+  {
+    'kategori': 'DO',
+    'tanggal': DateTime.parse('2024-01-03T10:00:00'),
+    'isRead': false,
+  }
 ];

@@ -14,7 +14,7 @@ class User {
   @HiveField(3)
   late Role? role;
   @HiveField(4)
-  late String division;
+  late String unit;
   @HiveField(5)
   late String address;
   @HiveField(6)
@@ -29,7 +29,7 @@ class User {
       required this.name,
       required this.email,
       required this.role,
-      required this.division,
+      required this.unit,
       required this.address,
       required this.photo,
       required this.phone,
@@ -42,7 +42,7 @@ class User {
         email: json['email'],
         role: Role.values
             .firstWhere((e) => e.toString() == 'Role.${json['role']}'),
-        division: json['division'],
+        unit: json['unit'],
         address: json['address'],
         photo: json['photo'],
         phone: json['phoneNumber'],
