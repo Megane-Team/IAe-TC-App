@@ -174,9 +174,7 @@ class GedungState extends State<Gedung> {
                   borderSide: BorderSide.none,
                 ),
               ),
-              onChanged: (value) {
-
-              },
+              onChanged: (value) {},
             ),
           ),
           const Gap(12),
