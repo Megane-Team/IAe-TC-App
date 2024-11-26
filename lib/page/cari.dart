@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:inventara/actions/barang/read_barang_action.dart';
 
 class Cari extends StatefulWidget {
   const Cari({super.key});
@@ -152,7 +151,7 @@ class CariState extends State<Cari> {
                                 )).toList(),
                           ),
                           actions: [
-                            Container(
+                            SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
