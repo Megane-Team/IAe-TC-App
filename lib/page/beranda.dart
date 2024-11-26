@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/notifikasi/read_notifikasi_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
+import 'package:inventara/structures/notifikasi.dart';
 import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/structures/tempat_category.dart';
 import 'package:inventara/utils/actionwidget.dart';
@@ -21,13 +22,9 @@ class Beranda extends StatefulWidget {
 var user = Session.get();
 
 String getTime() {
-  var timeNow = DateTime.now().hour;
-  if (timeNow < 12) {
-    return 'pagi';
-  }
-  if (timeNow < 17) {
-    return 'siang';
-  }
+  var hour = DateTime.now().hour;
+  if (hour < 12) return 'pagi';
+  if (hour < 17) return 'siang';
   return 'malam';
 }
 
@@ -37,43 +34,31 @@ class BerandaState extends State<Beranda> {
   late List<Tempat> filteredTempat;
   late List<Tempat> originalTempatList;
   TextEditingController searchController = TextEditingController();
-  bool isLoading = true;
 
   void fetchData() async {
     var tempat = await readTempat('', context);
-    originalTempatList = tempat;
-    filteredTempat = List.from(originalTempatList);
-    _filterAndUpdateTempatList(searchController.text);
+    setState(() {
+      originalTempatList = tempat;
+      filteredTempat = List.from(originalTempatList);
+      _filterAndUpdateTempatList(searchController.text);
+    });
   }
 
   void _filterAndUpdateTempatList(String value) {
     setState(() {
-      if (isParkiranActive || isGedungActive) {
-        filteredTempat = [];
-        if (isGedungActive) {
-          filteredTempat.addAll(originalTempatList
-              .where((i) => i.category == TempatCategory.gedung)
-              .where(
-                  (e) => e.name.toLowerCase().contains(value.toLowerCase())));
-        }
-        if (isParkiranActive) {
-          filteredTempat.addAll(originalTempatList
-              .where((i) => i.category == TempatCategory.parkiran)
-              .where(
-                  (e) => e.name.toLowerCase().contains(value.toLowerCase())));
-        }
-      } else {
-        filteredTempat = originalTempatList
-            .where((element) =>
-                element.name.toLowerCase().contains(value.toLowerCase()))
-            .toList();
-      }
+      filteredTempat = originalTempatList.where((e) {
+        var matchesCategory = (isGedungActive && e.category == TempatCategory.gedung) ||
+            (isParkiranActive && e.category == TempatCategory.parkiran) ||
+            (!isGedungActive && !isParkiranActive);
+        return matchesCategory && e.name.toLowerCase().contains(value.toLowerCase());
+      }).toList();
     });
   }
 
   @override
   void initState() {
     super.initState();
+    fetchData();
   }
 
   @override
@@ -102,41 +87,27 @@ class BerandaState extends State<Beranda> {
                     size: 32,
                   ),
                   FutureBuilder(
-                    future: readNotifikasi(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return const Text('Error');
-                      } else if (snapshot.hasData) {
-                        var notif = snapshot.data!;
-                        if (notif.isEmpty) {
+                      future: readNotifikasi(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return const Text('Error');
+                        } else if (snapshot.hasData && snapshot.data!.isNotEmpty && snapshot.data!.any((e) => !e.isRead)) {
+                          return Positioned(
+                            right: 0,
+                            top: 0,
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                              child: Text(snapshot.data!.length.toString(), style: const TextStyle(color: Colors.white, fontSize: 12)),
+                            ),
+                          );
+                        } else {
                           return const SizedBox();
                         }
-                        if (notif.any((e) => e.isRead != false)) {
-                          return const SizedBox();
-                        }
-                        return Positioned(
-                          right: 0,
-                          top: 0,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Text(
-                              notif.length.toString(),
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 12),
-                            ),
-                          ),
-                        );
-                      } else {
-                        return const SizedBox();
-                      }
-                    }),
+                      }),
                 ],
               ),
               onPressed: () async {
@@ -257,11 +228,9 @@ class BerandaState extends State<Beranda> {
                           children: [
                             ElevatedButton(
                                 onPressed: () {
-                                  setState(() {
                                     isGedungActive = !isGedungActive;
                                     _filterAndUpdateTempatList(
                                         searchController.text);
-                                  });
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: isGedungActive
@@ -286,11 +255,9 @@ class BerandaState extends State<Beranda> {
                             const Gap(18),
                             ElevatedButton(
                               onPressed: () {
-                                setState(() {
-                                  isParkiranActive = !isParkiranActive;
-                                  _filterAndUpdateTempatList(
-                                      searchController.text);
-                                });
+                                isParkiranActive = !isParkiranActive;
+                                _filterAndUpdateTempatList(
+                                    searchController.text);
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: isParkiranActive
@@ -348,9 +315,6 @@ class BerandaState extends State<Beranda> {
                                     if (snapshot.data!.isEmpty) {
                                       return noData();
                                     }
-                                    var tempat = snapshot.data!;
-                                    originalTempatList = tempat;
-                                    filteredTempat = List.from(originalTempatList);
                                     return GridView.builder(
                                       shrinkWrap: true,
                                       physics:
@@ -366,6 +330,7 @@ class BerandaState extends State<Beranda> {
                                         var tempat = filteredTempat[index];
                                         return ElevatedButton(
                                           onPressed: () {
+                                            setState(() {
                                               var param1 = tempat.id;
 
                                               if (tempat.category ==
@@ -376,6 +341,7 @@ class BerandaState extends State<Beranda> {
                                                 context
                                                     .push("/gedung?id=$param1");
                                               }
+                                            });
                                           },
                                           style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
