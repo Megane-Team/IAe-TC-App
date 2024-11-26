@@ -8,9 +8,8 @@ import 'package:inventara/utils/sessions.dart';
 Future<List<Notifikasis>> readNotifikasi() async {
   final token = await Session.getToken();
 
-  final response = await App.api.get(
-    apiBaseURl.resolve('/notifikasi'),
-    headers: {'authorization': 'Bearer $token'});
+  final response = await App.api.get(apiBaseURl.resolve('/notifikasi'),
+      headers: {'authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
@@ -20,6 +19,7 @@ Future<List<Notifikasis>> readNotifikasi() async {
 
     return notifikasis;
   } else {
-    throw Exception('Failed to get notifikasi. Is internet connection available?');
+    throw Exception(
+        'Failed to get notifikasi. Is internet connection available?');
   }
 }

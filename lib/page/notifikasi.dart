@@ -76,19 +76,18 @@ class _NotifikasiState extends State<Notifikasi> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: FutureBuilder(
-            future: readNotifikasi(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState ==
-                ConnectionState.waiting) {
-                return const CircularProgressIndicator(); // Show a loading indicator while waiting
-              } else if (snapshot.hasError) {
-                return noData();
-              } else if (snapshot.hasData) {
-                if (snapshot.data!.isEmpty) {
+            padding: const EdgeInsets.only(top: 16),
+            child: FutureBuilder(
+              future: readNotifikasi(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                } else if (snapshot.hasError) {
                   return noData();
-                }
+                } else if (snapshot.hasData) {
+                  if (snapshot.data!.isEmpty) {
+                    return noData();
+                  }
                   listNotif = snapshot.data!;
                   return ListView.builder(
                     itemCount: listNotif.length,
@@ -117,8 +116,8 @@ class _NotifikasiState extends State<Notifikasi> {
                             ),
                           ),
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(right: 24, top: 20, bottom: 30),
+                            padding: const EdgeInsets.only(
+                                right: 24, top: 20, bottom: 30),
                             child: Row(
                               children: [
                                 const Gap(6),
@@ -136,7 +135,8 @@ class _NotifikasiState extends State<Notifikasi> {
                                 const Gap(6),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         mainAxisAlignment:
@@ -146,17 +146,20 @@ class _NotifikasiState extends State<Notifikasi> {
                                               DateFormat('dd MMM yyyy')
                                                   .format(notif.createdAt),
                                               style: const TextStyle(
-                                                  fontSize: 12, color: Colors.black)),
+                                                  fontSize: 12,
+                                                  color: Colors.black)),
                                           Text(
                                               DateFormat('HH:mm')
                                                   .format(notif.createdAt),
                                               style: const TextStyle(
-                                                  fontSize: 12, color: Colors.black)),
+                                                  fontSize: 12,
+                                                  color: Colors.black)),
                                         ],
                                       ),
                                       const Gap(12),
-
-                                      Text(getNotificationMessage(notif.category),
+                                      Text(
+                                          getNotificationMessage(
+                                              notif.category),
                                           style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
@@ -177,11 +180,9 @@ class _NotifikasiState extends State<Notifikasi> {
                       );
                     },
                   );
-            }
-            return const SizedBox();
-            },
-        )
-      )
-    );
+                }
+                return const SizedBox();
+              },
+            )));
   }
 }

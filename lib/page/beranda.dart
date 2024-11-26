@@ -109,7 +109,8 @@ class BerandaState extends State<Beranda> {
                   FutureBuilder(
                       future: readNotifikasi(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         } else if (snapshot.hasError) {
                           return const Text('Error');
