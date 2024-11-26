@@ -16,7 +16,7 @@ class NotifikasiCategoryAdapter extends TypeAdapter<NotifikasiCategory> {
       case 0:
         return NotifikasiCategory.PB;
       case 1:
-        return NotifikasiCategory.DK;
+        return NotifikasiCategory.PD;
       case 2:
         return NotifikasiCategory.PG;
       case 3:
@@ -40,7 +40,7 @@ class NotifikasiCategoryAdapter extends TypeAdapter<NotifikasiCategory> {
       case NotifikasiCategory.PB:
         writer.writeByte(0);
         break;
-      case NotifikasiCategory.DK:
+      case NotifikasiCategory.PD:
         writer.writeByte(1);
         break;
       case NotifikasiCategory.PG:
