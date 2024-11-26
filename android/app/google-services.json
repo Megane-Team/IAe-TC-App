@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "281401742100",
+    "project_id": "inventara-backend-notification",
+    "storage_bucket": "inventara-backend-notification.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281401742100:android:617139e94b801ec8fea801",
+        "android_client_info": {
+          "package_name": "com.example.inventara"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUfWJXq7x5ZCQJYv5RBn3QgB0qTr2c_Js"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -59,6 +59,7 @@ class LoginState extends State<Login> {
                         children: [
                           TextFormField(
                             controller: _emailController,
+                            cursorColor: Colors.black54,
                             decoration: const InputDecoration(
                               labelText: 'Email',
                               labelStyle: TextStyle(color: Colors.black54),
@@ -85,6 +86,7 @@ class LoginState extends State<Login> {
                           const SizedBox(height: 24),
                           TextFormField(
                             controller: _passwordController,
+                            cursorColor: Colors.black54,
                             obscureText: !showPassword,
                             decoration: InputDecoration(
                                 labelText: 'Password',

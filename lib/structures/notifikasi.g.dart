@@ -1,41 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'tempat.dart';
+part of 'notifikasi.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TempatAdapter extends TypeAdapter<Tempat> {
+class NotifikasiAdapter extends TypeAdapter<Notifikasis> {
   @override
-  final int typeId = 3;
+  final int typeId = 12;
 
   @override
-  Tempat read(BinaryReader reader) {
+  Notifikasis read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Tempat(
+    return Notifikasis(
       id: fields[0] as int,
-      name: fields[1] as String,
-      category: fields[2] as TempatCategory?,
-      photo: fields[3] as String?,
+      category: fields[1] as NotifikasiCategory,
+      isRead: fields[2] as bool,
+      userId: fields[3] as int,
+      createdAt: fields[4] as DateTime,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Tempat obj) {
+  void write(BinaryWriter writer, Notifikasis obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
       ..write(obj.category)
+      ..writeByte(2)
+      ..write(obj.isRead)
       ..writeByte(3)
-      ..write(obj.photo);
+      ..write(obj.userId)
+      ..writeByte(4)
+      ..write(obj.createdAt);
   }
 
   @override
@@ -44,7 +47,7 @@ class TempatAdapter extends TypeAdapter<Tempat> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TempatAdapter &&
+      other is NotifikasiAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

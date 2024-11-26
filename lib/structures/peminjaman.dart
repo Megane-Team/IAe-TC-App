@@ -18,16 +18,18 @@ class Peminjaman {
   @HiveField(5)
   late DateTime? returnDate;
   @HiveField(6)
-  late String objective;
+  late String destination;
   @HiveField(7)
-  late int? pasengger;
+  late String objective;
   @HiveField(8)
-  late int userId;
+  late int? pasengger;
   @HiveField(9)
-  late int? ruanganId;
+  late int userId;
   @HiveField(10)
-  late int? barangId;
+  late int? ruanganId;
   @HiveField(11)
+  late int? barangId;
+  @HiveField(12)
   late int? kendaraanId;
 
   Peminjaman({
@@ -37,6 +39,7 @@ class Peminjaman {
     required this.borrowedDate,
     required this.estimatedTime,
     required this.returnDate,
+    required this.destination,
     required this.objective,
     required this.pasengger,
     required this.userId,
@@ -56,6 +59,7 @@ class Peminjaman {
       returnDate: json['returnDate'] != null
           ? DateTime.parse(json['returnDate'])
           : null,
+      destination: json['destination'],
       objective: json['objective'],
       pasengger: json['pasengger'],
       userId: json['userId'],
