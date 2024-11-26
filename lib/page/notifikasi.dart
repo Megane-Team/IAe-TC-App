@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:gap/gap.dart';
 import 'package:inventara/actions/notifikasi/read_notifikasi_action.dart';
@@ -62,7 +63,9 @@ class _NotifikasiState extends State<Notifikasi> {
                 ),
                 child: IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    setState(() {
+                      context.pop();
+                    });
                   },
                   icon: const Icon(Icons.navigate_before, color: Colors.black),
                 ),
