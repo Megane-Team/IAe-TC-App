@@ -11,7 +11,6 @@ import 'package:inventara/structures/tempat_category.dart';
 import 'package:inventara/utils/actionwidget.dart';
 import 'package:inventara/utils/assets.dart';
 import 'package:inventara/utils/sessions.dart';
-import 'package:inventara/page/notifikasi.dart';
 
 class Beranda extends StatefulWidget {
   const Beranda({super.key});
@@ -115,8 +114,8 @@ class BerandaState extends State<Beranda> {
                         } else if (snapshot.hasError) {
                           return const Text('Error');
                         } else if (snapshot.hasData) {
-                          var notif = snapshot.data as List<Notifikasis>;
-                          if (notif.isEmpty) {
+                          notif = snapshot.data!;
+                          if (notif.any((e) => e.isRead != false)) {
                             return const SizedBox();
                           }
                           return Positioned(
@@ -136,7 +135,7 @@ class BerandaState extends State<Beranda> {
                             ),
                           );
                         } else {
-                          return const Text('No data');
+                          return const SizedBox();
                         }
                       }),
                 ],
