@@ -4,7 +4,6 @@ import 'package:inventara/utils/sessions.dart';
 
 void updateNotifikasi(int id) async {
   var token = await Session.getToken();
-  await App.api.get(
-      apiBaseURl.resolve('notifikasi/updateRead/$id'),
+  await App.api.get(apiBaseURl.resolve('notifikasi/updateRead/$id'),
       headers: {'authorization': 'Bearer $token'});
 }
