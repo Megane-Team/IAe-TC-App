@@ -8,6 +8,7 @@ import 'package:inventara/structures/kendaraan.dart';
 import 'package:inventara/utils/sessions.dart';
 
 Future<List<Kendaraan>> readKendaraan(String id, BuildContext context) async {
+  print('readKendaraan triggered');
   var token = await Session.getToken();
 
   if (token == null) {

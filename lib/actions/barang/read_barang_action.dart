@@ -8,6 +8,7 @@ import 'package:inventara/structures/barang.dart';
 import 'package:inventara/utils/sessions.dart';
 
 Future<List<Barang>> readBarang(String id, BuildContext context) async {
+  print('readBarang triggered');
   var token = await Session.getToken();
 
   if (token == null) {
