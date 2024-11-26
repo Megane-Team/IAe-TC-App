@@ -7,6 +7,7 @@ import 'package:inventara/page/keranjang.dart';
 import 'package:inventara/page/riwayat.dart';
 import 'package:inventara/page/notifikasi.dart';
 import 'package:inventara/page/konfirmasiAsset.dart';
+import 'package:inventara/page/cari.dart';
 
 final appRouter = GoRouter(initialLocation: '/KonfirmasiA', routes: [
   GoRoute(path: '/Login', builder: (context, state) => const Login()),
@@ -14,6 +15,7 @@ final appRouter = GoRouter(initialLocation: '/KonfirmasiA', routes: [
   GoRoute(path: '/Riwayat', builder: (context, state) => const Riwayat()),
   GoRoute(path: '/Notifikasi', builder: (context, state) => const Notifikasi()),
   GoRoute(path: '/KonfirmasiA', builder: (context, state) => const Konfirmasiasset()),
+  GoRoute(path: '/Cari', builder: (context, state) => const Cari()),
   GoRoute(
       path: '/Gedung',
       builder: (context, state) => Gedung(

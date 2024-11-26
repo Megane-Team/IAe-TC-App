@@ -35,16 +35,15 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                 ),
               ),
               const Text(
-                'Riwayat',
+                'Konfirmasi',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               ),
               const Gap(40),
             ],
           )),
       body: Column(
-        children: const [
-          Gap(16),
-          Text('Konfirmasi Asset'),
+        children: [
+
         ],
       ),
     );

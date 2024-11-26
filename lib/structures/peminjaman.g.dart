@@ -23,19 +23,20 @@ class PeminjamanAdapter extends TypeAdapter<Peminjaman> {
       borrowedDate: fields[3] as DateTime,
       estimatedTime: fields[4] as DateTime,
       returnDate: fields[5] as DateTime?,
-      objective: fields[6] as String,
-      pasengger: fields[7] as int?,
-      userId: fields[8] as int,
-      ruanganId: fields[9] as int?,
-      barangId: fields[10] as int?,
-      kendaraanId: fields[11] as int?,
+      destination: fields[6] as String,
+      objective: fields[7] as String,
+      pasengger: fields[8] as int?,
+      userId: fields[9] as int,
+      ruanganId: fields[10] as int?,
+      barangId: fields[11] as int?,
+      kendaraanId: fields[12] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Peminjaman obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -49,16 +50,18 @@ class PeminjamanAdapter extends TypeAdapter<Peminjaman> {
       ..writeByte(5)
       ..write(obj.returnDate)
       ..writeByte(6)
-      ..write(obj.objective)
+      ..write(obj.destination)
       ..writeByte(7)
-      ..write(obj.pasengger)
+      ..write(obj.objective)
       ..writeByte(8)
-      ..write(obj.userId)
+      ..write(obj.pasengger)
       ..writeByte(9)
-      ..write(obj.ruanganId)
+      ..write(obj.userId)
       ..writeByte(10)
-      ..write(obj.barangId)
+      ..write(obj.ruanganId)
       ..writeByte(11)
+      ..write(obj.barangId)
+      ..writeByte(12)
       ..write(obj.kendaraanId);
   }
 
