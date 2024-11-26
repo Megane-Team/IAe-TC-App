@@ -44,14 +44,14 @@ class RuanganState extends State<Ruangan> {
 
     if (isRuangan()) {
       ruangan = await readRuanganbyId(widget.id);
-      final barangs = await readBarang(widget.id);
+      final barangs = await readBarang(widget.id, context);
       setState(() {
         barang = barangs;
       });
       return;
     } else {
       tempat = await readTempatbyId(widget.id);
-      final kendaraans = await readKendaraan(widget.id);
+      final kendaraans = await readKendaraan(widget.id, context);
       setState(() {
         kendaraan = kendaraans;
       });

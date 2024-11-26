@@ -19,9 +19,9 @@ class UserAdapter extends TypeAdapter<User> {
     return User(
       id: fields[0] as int,
       name: fields[1] as String,
-      email: fields[2] as String,
+      email: fields[2] as String?,
       role: fields[3] as Role?,
-      division: fields[4] as String,
+      unit: fields[4] as String,
       address: fields[5] as String,
       photo: fields[6] as String?,
       phone: fields[7] as String,
@@ -42,7 +42,7 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(3)
       ..write(obj.role)
       ..writeByte(4)
-      ..write(obj.division)
+      ..write(obj.unit)
       ..writeByte(5)
       ..write(obj.address)
       ..writeByte(6)

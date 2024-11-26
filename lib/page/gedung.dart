@@ -26,68 +26,49 @@ class GedungState extends State<Gedung> {
   late List<Ruangans> filteredRuangan = [];
   late List<Ruangans> originalRuanganList = [];
   late List<Tempat> gedung = [];
+  TextEditingController searchController = TextEditingController();
 
   bool isRuanganHasCapacity(Ruangans ruangan) {
     return ruangan.capacity != null;
   }
 
   void fetchData() async {
-    var ruangan = await readRuangan(widget.id);
+    var ruangan = await readRuangan(widget.id, context);
     gedung = await readTempatbyId(widget.id);
     setState(() {
       originalRuanganList = ruangan;
       filteredRuangan = List.from(originalRuanganList);
-      _filterAndUpdateRuanganList('');
+      _filterAndUpdateRuanganList(searchController.text);
     });
   }
 
   void _filterAndUpdateRuanganList(String value) {
     setState(() {
-      if (value.isEmpty) {
-        if (isKelasActive || isLabActive || isGudangActive) {
-          filteredRuangan = [];
-          if (isKelasActive) {
-            filteredRuangan.addAll(originalRuanganList
-                .where((item) => item.category == RuanganCategory.kelas));
-          }
-          if (isLabActive) {
-            filteredRuangan.addAll(originalRuanganList
-                .where((item) => item.category == RuanganCategory.lab));
-          }
-          if (isGudangActive) {
-            filteredRuangan.addAll(originalRuanganList
-                .where((item) => item.category == RuanganCategory.gudang));
-          }
-        } else {
-          filteredRuangan = List.from(originalRuanganList);
+      if (isKelasActive || isLabActive || isGudangActive) {
+        filteredRuangan = [];
+        if (isKelasActive) {
+          filteredRuangan.addAll(originalRuanganList
+              .where((item) => item.category == RuanganCategory.kelas)
+              .where((element) =>
+                  element.code.toLowerCase().contains(value.toLowerCase())));
+        }
+        if (isLabActive) {
+          filteredRuangan.addAll(originalRuanganList
+              .where((item) => item.category == RuanganCategory.lab)
+              .where((element) =>
+                  element.code.toLowerCase().contains(value.toLowerCase())));
+        }
+        if (isGudangActive) {
+          filteredRuangan.addAll(originalRuanganList
+              .where((item) => item.category == RuanganCategory.gudang)
+              .where((element) =>
+                  element.code.toLowerCase().contains(value.toLowerCase())));
         }
       } else {
-        if (isKelasActive || isLabActive || isGudangActive) {
-          filteredRuangan = [];
-          if (isKelasActive) {
-            filteredRuangan.addAll(originalRuanganList
-                .where((item) => item.category == RuanganCategory.kelas)
-                .where((element) =>
-                    element.code.toLowerCase().contains(value.toLowerCase())));
-          }
-          if (isLabActive) {
-            filteredRuangan.addAll(originalRuanganList
-                .where((item) => item.category == RuanganCategory.lab)
-                .where((element) =>
-                    element.code.toLowerCase().contains(value.toLowerCase())));
-          }
-          if (isGudangActive) {
-            filteredRuangan.addAll(originalRuanganList
-                .where((item) => item.category == RuanganCategory.gudang)
-                .where((element) =>
-                    element.code.toLowerCase().contains(value.toLowerCase())));
-          }
-        } else {
-          filteredRuangan = originalRuanganList
-              .where((element) =>
-                  element.code.toLowerCase().contains(value.toLowerCase()))
-              .toList();
-        }
+        filteredRuangan = originalRuanganList
+            .where((element) =>
+                element.code.toLowerCase().contains(value.toLowerCase()))
+            .toList();
       }
     });
   }
@@ -123,7 +104,7 @@ class GedungState extends State<Gedung> {
               ),
             ),
             Text(
-              gedung.isEmpty ? 'Gedung' : gedung[0].name,
+              gedung.isEmpty ? '' : gedung[0].name,
               style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
@@ -152,6 +133,7 @@ class GedungState extends State<Gedung> {
               ],
             ),
             child: TextField(
+              controller: searchController,
               cursorColor: Colors.black,
               decoration: InputDecoration(
                 hintStyle: const TextStyle(
@@ -186,7 +168,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isKelasActive = !isKelasActive;
-                      _filterAndUpdateRuanganList('');
+                      _filterAndUpdateRuanganList(searchController.text);
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -208,7 +190,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isLabActive = !isLabActive;
-                      _filterAndUpdateRuanganList('');
+                      _filterAndUpdateRuanganList(searchController.text);
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -230,7 +212,7 @@ class GedungState extends State<Gedung> {
                   onPressed: () {
                     setState(() {
                       isGudangActive = !isGudangActive;
-                      _filterAndUpdateRuanganList('');
+                      _filterAndUpdateRuanganList(searchController.text);
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -253,7 +235,7 @@ class GedungState extends State<Gedung> {
           const Gap(20),
           Expanded(
             child: FutureBuilder<List<Ruangans>>(
-              future: readRuangan(widget.id),
+              future: readRuangan(widget.id, context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
