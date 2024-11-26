@@ -19,7 +19,7 @@ class UserAdapter extends TypeAdapter<User> {
     return User(
       id: fields[0] as int,
       name: fields[1] as String,
-      email: fields[2] as String,
+      email: fields[2] as String?,
       role: fields[3] as Role?,
       unit: fields[4] as String,
       address: fields[5] as String,

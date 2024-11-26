@@ -10,7 +10,7 @@ class User {
   @HiveField(1)
   late String name;
   @HiveField(2)
-  late String email;
+  late String? email;
   @HiveField(3)
   late Role? role;
   @HiveField(4)
