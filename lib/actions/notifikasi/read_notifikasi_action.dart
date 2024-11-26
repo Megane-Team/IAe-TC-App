@@ -6,7 +6,6 @@ import 'package:inventara/structures/notifikasi.dart';
 import 'package:inventara/utils/sessions.dart';
 
 Future<List<Notifikasis>> readNotifikasi() async {
-  print('readNotifikasi triggered');
   final token = await Session.getToken();
 
   final response = await App.api.get(apiBaseURl.resolve('/notifikasi'),

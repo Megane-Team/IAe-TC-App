@@ -5,7 +5,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/notifikasi/read_notifikasi_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
-import 'package:inventara/structures/notifikasi.dart';
 import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/structures/tempat_category.dart';
 import 'package:inventara/utils/actionwidget.dart';
@@ -47,10 +46,12 @@ class BerandaState extends State<Beranda> {
   void _filterAndUpdateTempatList(String value) {
     setState(() {
       filteredTempat = originalTempatList.where((e) {
-        var matchesCategory = (isGedungActive && e.category == TempatCategory.gedung) ||
-            (isParkiranActive && e.category == TempatCategory.parkiran) ||
-            (!isGedungActive && !isParkiranActive);
-        return matchesCategory && e.name.toLowerCase().contains(value.toLowerCase());
+        var matchesCategory =
+            (isGedungActive && e.category == TempatCategory.gedung) ||
+                (isParkiranActive && e.category == TempatCategory.parkiran) ||
+                (!isGedungActive && !isParkiranActive);
+        return matchesCategory &&
+            e.name.toLowerCase().contains(value.toLowerCase());
       }).toList();
     });
   }
@@ -94,14 +95,19 @@ class BerandaState extends State<Beranda> {
                           return const CircularProgressIndicator();
                         } else if (snapshot.hasError) {
                           return const Text('Error');
-                        } else if (snapshot.hasData && snapshot.data!.isNotEmpty && snapshot.data!.any((e) => !e.isRead)) {
+                        } else if (snapshot.hasData &&
+                            snapshot.data!.isNotEmpty &&
+                            snapshot.data!.any((e) => !e.isRead)) {
                           return Positioned(
                             right: 0,
                             top: 0,
                             child: Container(
                               padding: const EdgeInsets.all(4),
-                              decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                              child: Text(snapshot.data!.length.toString(), style: const TextStyle(color: Colors.white, fontSize: 12)),
+                              decoration: const BoxDecoration(
+                                  color: Colors.red, shape: BoxShape.circle),
+                              child: Text(snapshot.data!.length.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 12)),
                             ),
                           );
                         } else {
@@ -228,9 +234,9 @@ class BerandaState extends State<Beranda> {
                           children: [
                             ElevatedButton(
                                 onPressed: () {
-                                    isGedungActive = !isGedungActive;
-                                    _filterAndUpdateTempatList(
-                                        searchController.text);
+                                  isGedungActive = !isGedungActive;
+                                  _filterAndUpdateTempatList(
+                                      searchController.text);
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: isGedungActive

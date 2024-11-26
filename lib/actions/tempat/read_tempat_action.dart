@@ -8,7 +8,6 @@ import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/utils/sessions.dart';
 
 Future<List<Tempat>> readTempat(String? id, BuildContext context) async {
-  print('readTempat triggered');
   final token = await Session.getToken();
 
   if (token == null) {

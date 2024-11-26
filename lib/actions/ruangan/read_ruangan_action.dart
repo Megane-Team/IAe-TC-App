@@ -8,7 +8,6 @@ import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/utils/sessions.dart';
 
 Future<List<Ruangans>> readRuangan(String id, BuildContext context) async {
-  print('readRuangan triggered');
   final token = await Session.getToken();
 
   if (token == null) {
