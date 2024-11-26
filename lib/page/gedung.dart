@@ -119,6 +119,7 @@ class GedungState extends State<Gedung> {
       body: Column(
         children: [
           Container(
+            margin: const EdgeInsets.only(top: 12),
             width: MediaQuery.of(context).size.width - 48,
             height: 40,
             decoration: BoxDecoration(
@@ -156,7 +157,9 @@ class GedungState extends State<Gedung> {
                   borderSide: BorderSide.none,
                 ),
               ),
-              onChanged: (value) {},
+              onChanged: (value) {
+                _filterAndUpdateRuanganList(value);
+              },
             ),
           ),
           const Gap(12),
