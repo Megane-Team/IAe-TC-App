@@ -22,7 +22,7 @@ class _NotifikasiState extends State<Notifikasi> {
     switch (kategori) {
       case NotifikasiCategory.PB:
         return 'Kamu berhasil mengajukan peminjaman!';
-      case NotifikasiCategory.DK:
+      case NotifikasiCategory.PD:
         return 'Peminjaman mu telah di konfirmasi!';
       case NotifikasiCategory.PG:
         return 'Pengajuan peminjaman mu gagal coba lagi nanti!';
