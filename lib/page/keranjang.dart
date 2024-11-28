@@ -48,16 +48,21 @@ class KeranjangState extends State<Keranjang> {
 
       if (item.category == PeminjamanCategory.barang) {
         var barangItem = barang.firstWhere((b) => b.id == item.barangId);
-        tempatId = ruangan.firstWhere((r) => r.id == barangItem.ruanganId).tempatId;
+        tempatId =
+            ruangan.firstWhere((r) => r.id == barangItem.ruanganId).tempatId;
       } else if (item.category == PeminjamanCategory.kendaraan) {
-        tempatId = kendaraan.firstWhere((k) => k.id == item.kendaraanId).tempatId;
+        tempatId =
+            kendaraan.firstWhere((k) => k.id == item.kendaraanId).tempatId;
       }
 
       if (tempatId != null && !tempatIds.contains(tempatId)) {
         tempatIds.add(tempatId);
       }
     }
-    return tempatIds.map((id) => tempat.firstWhere((t) => t.id == id).name).toList()..sort((a, b) => a.compareTo(b));
+    return tempatIds
+        .map((id) => tempat.firstWhere((t) => t.id == id).name)
+        .toList()
+      ..sort((a, b) => a.compareTo(b));
   }
 
   String tempatNameUsed(Peminjaman peminjaman) {
@@ -65,9 +70,11 @@ class KeranjangState extends State<Keranjang> {
 
     if (peminjaman.category == PeminjamanCategory.barang) {
       var barangItem = barang.firstWhere((b) => b.id == peminjaman.barangId);
-      tempatId = ruangan.firstWhere((r) => r.id == barangItem.ruanganId).tempatId;
+      tempatId =
+          ruangan.firstWhere((r) => r.id == barangItem.ruanganId).tempatId;
     } else if (peminjaman.category == PeminjamanCategory.kendaraan) {
-      tempatId = kendaraan.firstWhere((k) => k.id == peminjaman.kendaraanId).tempatId;
+      tempatId =
+          kendaraan.firstWhere((k) => k.id == peminjaman.kendaraanId).tempatId;
     }
 
     return tempat.firstWhere((t) => t.id == tempatId).name;
@@ -145,462 +152,331 @@ class KeranjangState extends State<Keranjang> {
                 },
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
+                    padding:
+                        const EdgeInsets.only(top: 24, left: 24, right: 24),
                     child: Column(
                       children: [
                         FutureBuilder(
-                          future: readBarang('', context),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Center(
-                                child: Text(snapshot.error.toString()),
-                              );
-                            } else if (snapshot.hasData) {
-                              barang = snapshot.data!;
-                              return FutureBuilder(
-                                future: readRuangan('', context),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Center(
-                                      child: Text(snapshot.error.toString()),
-                                    );
-                                  } else if (snapshot.hasData) {
-                                    ruangan = snapshot.data!;
-                                    return FutureBuilder(
-                                      future: readKendaraan('', context),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return const Center(
-                                            child: CircularProgressIndicator(),
-                                          );
-                                        } else if (snapshot.hasError) {
-                                          return Center(
-                                            child: Text(
-                                                snapshot.error.toString()),
-                                          );
-                                        } else if (snapshot.hasData) {
-                                          kendaraan = snapshot.data!;
-                                          return FutureBuilder(
-                                            future: readTempat('', context),
+                            future: readBarang('', context),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Center(
+                                  child: Text(snapshot.error.toString()),
+                                );
+                              } else if (snapshot.hasData) {
+                                barang = snapshot.data!;
+                                return FutureBuilder(
+                                    future: readRuangan('', context),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      } else if (snapshot.hasError) {
+                                        return Center(
+                                          child:
+                                              Text(snapshot.error.toString()),
+                                        );
+                                      } else if (snapshot.hasData) {
+                                        ruangan = snapshot.data!;
+                                        return FutureBuilder(
+                                            future: readKendaraan('', context),
                                             builder: (context, snapshot) {
                                               if (snapshot.connectionState ==
                                                   ConnectionState.waiting) {
                                                 return const Center(
-                                                  child: CircularProgressIndicator(),
+                                                  child:
+                                                      CircularProgressIndicator(),
                                                 );
                                               } else if (snapshot.hasError) {
                                                 return Center(
-                                                  child: Text(
-                                                      snapshot.error
-                                                          .toString()),
+                                                  child: Text(snapshot.error
+                                                      .toString()),
                                                 );
                                               } else if (snapshot.hasData) {
-                                                tempat = snapshot.data!;
+                                                kendaraan = snapshot.data!;
                                                 return FutureBuilder(
-                                                    future: readDraftPeminjaman(),
-                                                    builder: (context,
-                                                        snapshot) {
+                                                    future:
+                                                        readTempat('', context),
+                                                    builder:
+                                                        (context, snapshot) {
                                                       if (snapshot
-                                                          .connectionState ==
+                                                              .connectionState ==
                                                           ConnectionState
                                                               .waiting) {
                                                         return const Center(
-                                                          child: CircularProgressIndicator(),
+                                                          child:
+                                                              CircularProgressIndicator(),
                                                         );
-                                                      } else
-                                                      if (snapshot.hasError) {
+                                                      } else if (snapshot
+                                                          .hasError) {
                                                         return Center(
-                                                          child: Text(
-                                                              snapshot.error
-                                                                  .toString()),
+                                                          child: Text(snapshot
+                                                              .error
+                                                              .toString()),
                                                         );
-                                                      } else
-                                                      if (snapshot.hasData) {
-                                                        var peminjaman = snapshot
-                                                            .data!;
-                                                        return ListView.builder(
-                                                          shrinkWrap: true,
-                                                          physics: const NeverScrollableScrollPhysics(),
-                                                          itemCount: tempatNamesUsed(
-                                                              peminjaman)
-                                                              .length,
-                                                          itemBuilder: (context,
-                                                              index) {
-                                                            final uniqueAsal = tempatNamesUsed(
-                                                                peminjaman);
-                                                            return Container(
-                                                              decoration: BoxDecoration(
-                                                                color: Colors
-                                                                    .white,
-                                                                borderRadius: BorderRadius
-                                                                    .circular(
-                                                                    8),
-                                                                boxShadow: [
-                                                                  BoxShadow(
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                        0.1),
-                                                                    spreadRadius: 1,
-                                                                    blurRadius: 4,
-                                                                    offset: const Offset(
-                                                                        0, 0),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              padding: const EdgeInsets
-                                                                  .only(
-                                                                  left: 8,
-                                                                  right: 8,
-                                                                  top: 8,
-                                                                  bottom: 24),
-                                                              margin: const EdgeInsets
-                                                                  .only(
-                                                                  bottom: 20),
-                                                              child: Column(
-                                                                crossAxisAlignment: CrossAxisAlignment
-                                                                    .start,
-                                                                children: [
-                                                                  Text(
-                                                                    uniqueAsal[index],
-                                                                    style: const TextStyle(
-                                                                      fontSize: 20,
-                                                                      fontWeight: FontWeight
-                                                                          .w500,
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                      padding: const EdgeInsets
+                                                      } else if (snapshot
+                                                          .hasData) {
+                                                        tempat = snapshot.data!;
+                                                        return FutureBuilder(
+                                                            future:
+                                                                readDraftPeminjaman(),
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              if (snapshot
+                                                                      .connectionState ==
+                                                                  ConnectionState
+                                                                      .waiting) {
+                                                                return const Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(),
+                                                                );
+                                                              } else if (snapshot
+                                                                  .hasError) {
+                                                                return Center(
+                                                                  child: Text(
+                                                                      snapshot
+                                                                          .error
+                                                                          .toString()),
+                                                                );
+                                                              } else if (snapshot
+                                                                  .hasData) {
+                                                                var peminjaman =
+                                                                    snapshot
+                                                                        .data!;
+                                                                return ListView
+                                                                    .builder(
+                                                                  shrinkWrap:
+                                                                      true,
+                                                                  physics:
+                                                                      const NeverScrollableScrollPhysics(),
+                                                                  itemCount:
+                                                                      tempatNamesUsed(
+                                                                              peminjaman)
+                                                                          .length,
+                                                                  itemBuilder:
+                                                                      (context,
+                                                                          index) {
+                                                                    final uniqueAsal =
+                                                                        tempatNamesUsed(
+                                                                            peminjaman);
+                                                                    return Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(8),
+                                                                        boxShadow: [
+                                                                          BoxShadow(
+                                                                            color:
+                                                                                Colors.black.withOpacity(0.1),
+                                                                            spreadRadius:
+                                                                                1,
+                                                                            blurRadius:
+                                                                                4,
+                                                                            offset:
+                                                                                const Offset(0, 0),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      padding: const EdgeInsets.only(
+                                                                          left:
+                                                                              8,
+                                                                          right:
+                                                                              8,
+                                                                          top:
+                                                                              8,
+                                                                          bottom:
+                                                                              24),
+                                                                      margin: const EdgeInsets
                                                                           .only(
-                                                                          left: 4),
-                                                                      child: ListView
-                                                                          .builder(
-                                                                        shrinkWrap: true,
-                                                                        physics:
-                                                                        const NeverScrollableScrollPhysics(),
-                                                                        itemCount: peminjaman
-                                                                            .where((
-                                                                            item) =>
-                                                                        tempatNameUsed(
-                                                                            item) ==
-                                                                            uniqueAsal[index])
-                                                                            .length,
-                                                                        itemBuilder: (
-                                                                            context,
-                                                                            subIndex) {
-                                                                          final itemsInTempat = peminjaman
-                                                                              .where((
-                                                                              item) =>
-                                                                          tempatNameUsed(
-                                                                              item) ==
-                                                                              uniqueAsal[index])
-                                                                              .toList();
-                                                                          final item = itemsInTempat[subIndex];
-                                                                          return Container(
-                                                                            margin: const EdgeInsets
-                                                                                .only(
-                                                                                top: 4),
-                                                                            padding:
-                                                                            const EdgeInsets
-                                                                                .only(
-                                                                                left: 12),
-                                                                            width:
-                                                                            MediaQuery
-                                                                                .of(
-                                                                                context)
-                                                                                .size
-                                                                                .width,
-                                                                            height: 60,
-                                                                            decoration: BoxDecoration(
-                                                                                color: Colors
-                                                                                    .white,
-                                                                                boxShadow: [
-                                                                                  BoxShadow(
-                                                                                    color: Colors
-                                                                                        .black
-                                                                                        .withOpacity(
-                                                                                        0.1),
-                                                                                    spreadRadius: 1,
-                                                                                    blurRadius: 4,
-                                                                                    offset: const Offset(
-                                                                                        0,
-                                                                                        0),
-                                                                                  )
-                                                                                ],
-                                                                                border: const Border(
-                                                                                  left: BorderSide(
-                                                                                    color: Color(
-                                                                                        0xFFFCA311),
-                                                                                    width: 3,
-                                                                                  ),
-                                                                                )),
-                                                                            child: Row(
-                                                                              mainAxisAlignment:
-                                                                              MainAxisAlignment
-                                                                                  .spaceBetween,
-                                                                              crossAxisAlignment:
-                                                                              CrossAxisAlignment
-                                                                                  .center,
-                                                                              children: [
-                                                                                Row(
-                                                                                  children: [
-                                                                                    Container(
-                                                                                      width: 60,
-                                                                                      decoration: BoxDecoration(
-                                                                                        borderRadius:
-                                                                                        BorderRadius
-                                                                                            .circular(
-                                                                                            8),
-                                                                                      ),
-                                                                                      child: FutureBuilder(
-                                                                                        future: itemPhoto(item),
-                                                                                        builder: (context, snapshot) {
-                                                                                          if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                                            return const Center(
-                                                                                              child: CircularProgressIndicator(),
-                                                                                            );
-                                                                                          } else if (snapshot.hasError) {
-                                                                                            return snapshot.data!;
-                                                                                          } else if (snapshot.hasData) {
-                                                                                            return snapshot.data!;
-                                                                                          } else {
-                                                                                            return snapshot.data!;
-                                                                                          }
-                                                                                        },
-                                                                                      ),
-                                                                                    ),
-                                                                                    const Gap(
-                                                                                        10),
-                                                                                    Column(
-                                                                                      crossAxisAlignment:
-                                                                                      CrossAxisAlignment
-                                                                                          .start,
-                                                                                      mainAxisAlignment:
-                                                                                      MainAxisAlignment
-                                                                                          .center,
+                                                                          bottom:
+                                                                              20),
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text(
+                                                                            uniqueAsal[index],
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              fontSize: 20,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                          ),
+                                                                          Padding(
+                                                                              padding: const EdgeInsets.only(left: 4),
+                                                                              child: ListView.builder(
+                                                                                shrinkWrap: true,
+                                                                                physics: const NeverScrollableScrollPhysics(),
+                                                                                itemCount: peminjaman.where((item) => tempatNameUsed(item) == uniqueAsal[index]).length,
+                                                                                itemBuilder: (context, subIndex) {
+                                                                                  final itemsInTempat = peminjaman.where((item) => tempatNameUsed(item) == uniqueAsal[index]).toList();
+                                                                                  final item = itemsInTempat[subIndex];
+                                                                                  return Container(
+                                                                                    margin: const EdgeInsets.only(top: 4),
+                                                                                    padding: const EdgeInsets.only(left: 12),
+                                                                                    width: MediaQuery.of(context).size.width,
+                                                                                    height: 60,
+                                                                                    decoration: BoxDecoration(
+                                                                                        color: Colors.white,
+                                                                                        boxShadow: [
+                                                                                          BoxShadow(
+                                                                                            color: Colors.black.withOpacity(0.1),
+                                                                                            spreadRadius: 1,
+                                                                                            blurRadius: 4,
+                                                                                            offset: const Offset(0, 0),
+                                                                                          )
+                                                                                        ],
+                                                                                        border: const Border(
+                                                                                          left: BorderSide(
+                                                                                            color: Color(0xFFFCA311),
+                                                                                            width: 3,
+                                                                                          ),
+                                                                                        )),
+                                                                                    child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                      crossAxisAlignment: CrossAxisAlignment.center,
                                                                                       children: [
-                                                                                        if (item
-                                                                                            .category ==
-                                                                                            PeminjamanCategory
-                                                                                                .barang) ...[
-                                                                                          Text(
-                                                                                            '${barang
-                                                                                                .firstWhere((
-                                                                                                b) =>
-                                                                                            b
-                                                                                                .id ==
-                                                                                                item
-                                                                                                    .barangId)
-                                                                                                .name} (${barang
-                                                                                                .firstWhere((
-                                                                                                b) =>
-                                                                                            b
-                                                                                                .id ==
-                                                                                                item
-                                                                                                    .barangId)
-                                                                                                .code})',
-                                                                                            style: const TextStyle(
-                                                                                                fontSize:
-                                                                                                16,
-                                                                                                fontWeight:
-                                                                                                FontWeight
-                                                                                                    .w500),
-                                                                                          ),
-                                                                                          Text(
-                                                                                            ruangan
-                                                                                                .firstWhere((
-                                                                                                r) =>
-                                                                                            r
-                                                                                                .id ==
-                                                                                                barang
-                                                                                                    .firstWhere((
-                                                                                                    b) =>
-                                                                                                b
-                                                                                                    .id ==
-                                                                                                    item
-                                                                                                        .barangId)
-                                                                                                    .ruanganId)
-                                                                                                .code,
-                                                                                            style: const TextStyle(
-                                                                                                fontSize:
-                                                                                                12,
-                                                                                                color: Colors
-                                                                                                    .black54),
-                                                                                          ),
-                                                                                        ] else
-                                                                                          if (item
-                                                                                              .category ==
-                                                                                              PeminjamanCategory
-                                                                                                  .ruangan) ...[
-                                                                                            Text(
-                                                                                              ruangan
-                                                                                                  .firstWhere((
-                                                                                                  r) =>
-                                                                                              r
-                                                                                                  .id ==
-                                                                                                  item
-                                                                                                      .ruanganId)
-                                                                                                  .code,
-                                                                                              style: const TextStyle(
-                                                                                                  fontSize:
-                                                                                                  16,
-                                                                                                  fontWeight:
-                                                                                                  FontWeight
-                                                                                                      .w500),
-                                                                                            ),
-                                                                                            Text(
-                                                                                              ruangan
-                                                                                                  .firstWhere((
-                                                                                                  r) =>
-                                                                                              r
-                                                                                                  .id ==
-                                                                                                  item
-                                                                                                      .ruanganId)
-                                                                                                  .status,
-                                                                                              style: const TextStyle(
-                                                                                                  fontSize:
-                                                                                                  12,
-                                                                                                  color: Colors
-                                                                                                      .black54),
-                                                                                            ),
-                                                                                          ] else
-                                                                                            if (item
-                                                                                                .category ==
-                                                                                                PeminjamanCategory
-                                                                                                    .kendaraan) ...[
-                                                                                              Text(
-                                                                                                kendaraan
-                                                                                                    .firstWhere((
-                                                                                                    k) =>
-                                                                                                k
-                                                                                                    .id ==
-                                                                                                    item
-                                                                                                        .kendaraanId)
-                                                                                                    .name,
-                                                                                                style: const TextStyle(
-                                                                                                    fontSize:
-                                                                                                    16,
-                                                                                                    fontWeight:
-                                                                                                    FontWeight
-                                                                                                        .w500),
+                                                                                        Row(
+                                                                                          children: [
+                                                                                            Container(
+                                                                                              width: 60,
+                                                                                              decoration: BoxDecoration(
+                                                                                                borderRadius: BorderRadius.circular(8),
                                                                                               ),
-                                                                                              Text(
-                                                                                                kendaraan
-                                                                                                    .firstWhere((
-                                                                                                    k) =>
-                                                                                                k
-                                                                                                    .id ==
-                                                                                                    item
-                                                                                                        .kendaraanId)
-                                                                                                    .category
-                                                                                                    .toString()
-                                                                                                    .split(
-                                                                                                    '.')
-                                                                                                    .last,
-                                                                                                style: const TextStyle(
-                                                                                                    fontSize:
-                                                                                                    12,
-                                                                                                    color: Colors
-                                                                                                        .black54),
+                                                                                              child: FutureBuilder(
+                                                                                                future: itemPhoto(item),
+                                                                                                builder: (context, snapshot) {
+                                                                                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                                    return const Center(
+                                                                                                      child: CircularProgressIndicator(),
+                                                                                                    );
+                                                                                                  } else if (snapshot.hasError) {
+                                                                                                    return snapshot.data!;
+                                                                                                  } else if (snapshot.hasData) {
+                                                                                                    return snapshot.data!;
+                                                                                                  } else {
+                                                                                                    return snapshot.data!;
+                                                                                                  }
+                                                                                                },
                                                                                               ),
-                                                                                            ]
+                                                                                            ),
+                                                                                            const Gap(10),
+                                                                                            Column(
+                                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                                                              children: [
+                                                                                                if (item.category == PeminjamanCategory.barang) ...[
+                                                                                                  Text(
+                                                                                                    '${barang.firstWhere((b) => b.id == item.barangId).name} (${barang.firstWhere((b) => b.id == item.barangId).code})',
+                                                                                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                                                                                  ),
+                                                                                                  Text(
+                                                                                                    ruangan.firstWhere((r) => r.id == barang.firstWhere((b) => b.id == item.barangId).ruanganId).code,
+                                                                                                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                                                                                                  ),
+                                                                                                ] else if (item.category == PeminjamanCategory.ruangan) ...[
+                                                                                                  Text(
+                                                                                                    ruangan.firstWhere((r) => r.id == item.ruanganId).code,
+                                                                                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                                                                                  ),
+                                                                                                  Text(
+                                                                                                    ruangan.firstWhere((r) => r.id == item.ruanganId).status,
+                                                                                                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                                                                                                  ),
+                                                                                                ] else if (item.category == PeminjamanCategory.kendaraan) ...[
+                                                                                                  Text(
+                                                                                                    kendaraan.firstWhere((k) => k.id == item.kendaraanId).name,
+                                                                                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                                                                                  ),
+                                                                                                  Text(
+                                                                                                    kendaraan.firstWhere((k) => k.id == item.kendaraanId).category.toString().split('.').last,
+                                                                                                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                                                                                                  ),
+                                                                                                ]
+                                                                                              ],
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                        IconButton(
+                                                                                          onPressed: () {
+                                                                                            // show an pop up confirmation
+                                                                                            showDialog(
+                                                                                              context: context,
+                                                                                              builder: (context) {
+                                                                                                return AlertDialog(
+                                                                                                  title: const Text('Konfirmasi'),
+                                                                                                  content: const Text('Apakah anda yakin ingin menghapus item ini?'),
+                                                                                                  actions: [
+                                                                                                    TextButton(
+                                                                                                      onPressed: () {
+                                                                                                        Navigator.of(context).pop();
+                                                                                                      },
+                                                                                                      child: const Text(
+                                                                                                        'Batal',
+                                                                                                        style: TextStyle(color: Colors.black54),
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    TextButton(
+                                                                                                      onPressed: () async {
+                                                                                                        await deletePeminjaman(item.id);
+                                                                                                        Navigator.of(context).pop();
+                                                                                                        setState(() {});
+                                                                                                      },
+                                                                                                      child: const Text(
+                                                                                                        'Hapus',
+                                                                                                        style: TextStyle(color: Colors.red),
+                                                                                                      ),
+                                                                                                    )
+                                                                                                  ],
+                                                                                                );
+                                                                                              },
+                                                                                            );
+                                                                                          },
+                                                                                          icon: const Icon(
+                                                                                            Icons.delete,
+                                                                                            color: Colors.red,
+                                                                                          ),
+                                                                                        )
                                                                                       ],
                                                                                     ),
-                                                                                  ],
-                                                                                ),
-                                                                                IconButton(
-                                                                                  onPressed: () {
-                                                                                    // show an pop up confirmation
-                                                                                    showDialog(
-                                                                                      context: context,
-                                                                                      builder: (context) {
-                                                                                        return AlertDialog(
-                                                                                          title: const Text(
-                                                                                              'Konfirmasi'),
-                                                                                          content: const Text(
-                                                                                              'Apakah anda yakin ingin menghapus item ini?'),
-                                                                                          actions: [
-                                                                                            TextButton(
-                                                                                              onPressed: () {
-                                                                                                Navigator.of(context).pop();
-                                                                                              },
-                                                                                              child: const Text(
-                                                                                                'Batal',
-                                                                                                style: TextStyle(
-                                                                                                    color: Colors
-                                                                                                        .black54),
-                                                                                              ),
-                                                                                            ),
-                                                                                            TextButton(
-                                                                                              onPressed: () async {
-                                                                                                await deletePeminjaman(item.id);
-                                                                                                Navigator.of(context).pop();
-                                                                                                setState(() {});
-                                                                                              },
-                                                                                              child: const Text(
-                                                                                                'Hapus',
-                                                                                                style: TextStyle(
-                                                                                                    color: Colors
-                                                                                                        .red),
-                                                                                              ),
-                                                                                            )
-                                                                                          ],
-                                                                                        );
-                                                                                      },
-                                                                                    );
-                                                                                  },
-                                                                                  icon: const Icon(
-                                                                                    Icons
-                                                                                        .delete,
-                                                                                    color: Colors
-                                                                                        .red,
-                                                                                  ),
-                                                                                )
-                                                                              ],
-                                                                            ),
-                                                                          );
-                                                                        },
-                                                                      ))
-                                                                ],
-                                                              ),
-                                                            );
-                                                          },
-                                                        );
+                                                                                  );
+                                                                                },
+                                                                              ))
+                                                                        ],
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                );
+                                                              } else {
+                                                                return const SizedBox();
+                                                              }
+                                                            });
                                                       } else {
                                                         return const SizedBox();
                                                       }
-                                                    }
-                                                );
+                                                    });
                                               } else {
                                                 return const SizedBox();
                                               }
-                                            }
-                                          );
-                                        } else {
-                                          return const SizedBox();
-                                        }
+                                            });
+                                      } else {
+                                        return const SizedBox();
                                       }
-                                    );
-                                  } else {
-                                    return const SizedBox();
-                                  }
-                                }
-                              );
-                            } else {
-                              return const SizedBox();
-                            }
-                          }
-                        ),
+                                    });
+                              } else {
+                                return const SizedBox();
+                              }
+                            }),
                       ],
                     ),
                   ),

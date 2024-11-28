@@ -16,15 +16,14 @@ Future<List<Kendaraan>> readKendaraan(String id, BuildContext context) async {
     throw Exception('Unauthorized');
   }
 
-  final response = await App.api.get(
-      apiBaseURl.resolve('/kendaraans/$id'),
+  final response = await App.api.get(apiBaseURl.resolve('/kendaraans/$id'),
       headers: {'authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final List<dynamic> data = responseData['data'];
     final List<Kendaraan> kendaraans =
-    data.map((item) => Kendaraan.fromJson(item)).toList();
+        data.map((item) => Kendaraan.fromJson(item)).toList();
 
     return kendaraans;
   } else if (response.statusCode == 401) {
@@ -35,7 +34,8 @@ Future<List<Kendaraan>> readKendaraan(String id, BuildContext context) async {
   }
 }
 
-Future<List<Kendaraan>> readKendaraanByGedungId(String id, BuildContext context) async {
+Future<List<Kendaraan>> readKendaraanByGedungId(
+    String id, BuildContext context) async {
   var token = await Session.getToken();
 
   if (token == null) {
