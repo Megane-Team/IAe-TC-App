@@ -138,11 +138,14 @@ class BerandaState extends State<Beranda> {
                         TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
               ),
               const Gap(20),
-              const ListTile(
-                leading: Icon(
+              ListTile(
+                onTap: () {
+                  context.push('/keranjang');
+                },
+                leading: const Icon(
                   Icons.shopping_cart_outlined,
                 ),
-                title: Text('Keranjang Peminjaman'),
+                title: const Text('Keranjang Peminjaman'),
               ),
               const ListTile(
                 leading: Icon(

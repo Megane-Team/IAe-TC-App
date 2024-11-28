@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:inventara/structures/peminjaman_status.dart';
 import 'peminjaman_category.dart';
 
 part 'peminjaman.g.dart';
@@ -8,7 +9,7 @@ class Peminjaman {
   @HiveField(0)
   late int id;
   @HiveField(1)
-  late String status;
+  late PeminjamanStatus status;
   @HiveField(2)
   late PeminjamanCategory category;
   @HiveField(3)
@@ -18,7 +19,7 @@ class Peminjaman {
   @HiveField(5)
   late DateTime? returnDate;
   @HiveField(6)
-  late String destination;
+  late String? destination;
   @HiveField(7)
   late String objective;
   @HiveField(8)
@@ -51,7 +52,8 @@ class Peminjaman {
   factory Peminjaman.fromJson(Map<String, dynamic> json) {
     return Peminjaman(
       id: json['id'],
-      status: json['status'],
+      status: PeminjamanStatus.values.firstWhere(
+          (e) => e.toString() == 'PeminjamanStatus.${json['status']}'),
       category: PeminjamanCategory.values.firstWhere(
           (e) => e.toString() == 'PeminjamanCategory.${json['category']}'),
       borrowedDate: DateTime.parse(json['borrowedDate']),
