@@ -6,7 +6,7 @@ part of 'notifikasi.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class NotifikasiAdapter extends TypeAdapter<Notifikasis> {
+class NotifikasisAdapter extends TypeAdapter<Notifikasis> {
   @override
   final int typeId = 12;
 
@@ -47,7 +47,7 @@ class NotifikasiAdapter extends TypeAdapter<Notifikasis> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is NotifikasiAdapter &&
+      other is NotifikasisAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

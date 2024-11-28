@@ -32,7 +32,7 @@ class Assets {
       );
 
       if (response.statusCode == 404) {
-        return Image.asset(Assets.icons('no_image'));
+        return Image.asset(Assets.noImage());
       }
 
       return Image.network(
@@ -41,7 +41,7 @@ class Assets {
         fit: BoxFit.fill,
       );
     } catch (e) {
-      return Image.asset(Assets.icons('no_image'));
+      return Image.asset(Assets.noImage());
     }
   }
 
@@ -55,7 +55,7 @@ class Assets {
       );
 
       if (response.statusCode == 404) {
-        return Image.asset(Assets.icons('no_image'));
+        return Image.asset(Assets.noImage());
       }
 
       return Image.network(
@@ -64,7 +64,7 @@ class Assets {
         fit: BoxFit.fill,
       );
     } catch (e) {
-      return Image.asset(Assets.icons('no_image'));
+      return Image.asset(Assets.noImage());
     }
   }
 
@@ -78,7 +78,7 @@ class Assets {
       );
 
       if (response.statusCode == 404) {
-        return Image.asset(Assets.icons('no_image'));
+        return Image.asset(Assets.noImage());
       }
 
       return Image.network(
@@ -87,7 +87,7 @@ class Assets {
         fit: BoxFit.fill,
       );
     } catch (e) {
-      return Image.asset(Assets.icons('no_image'));
+      return Image.asset(Assets.noImage());
     }
   }
 
@@ -101,7 +101,7 @@ class Assets {
       );
 
       if (response.statusCode == 404) {
-        return Image.asset(Assets.icons('no_image'));
+        return Image.asset(Assets.noImage());
       }
 
       return Image.network(
@@ -110,7 +110,7 @@ class Assets {
         fit: BoxFit.fill,
       );
     } catch (e) {
-      return Image.asset(Assets.icons('no_image'));
+      return Image.asset(Assets.noImage());
     }
   }
 }

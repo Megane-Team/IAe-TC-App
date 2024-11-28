@@ -7,7 +7,7 @@ import 'package:inventara/main.dart';
 import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/utils/sessions.dart';
 
-Future<List<Ruangans>> readRuangan(String id, BuildContext context) async {
+Future<List<Ruangans>> readRuangan(String? id, BuildContext context) async {
   final token = await Session.getToken();
 
   if (token == null) {
@@ -16,8 +16,7 @@ Future<List<Ruangans>> readRuangan(String id, BuildContext context) async {
     throw Exception('Unauthorized');
   }
 
-  final response = await App.api.get(
-      apiBaseURl.resolve('/tempats/$id/ruangans'),
+  final response = await App.api.get(apiBaseURl.resolve('/ruangans/$id'),
       headers: {'authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {
@@ -32,11 +31,19 @@ Future<List<Ruangans>> readRuangan(String id, BuildContext context) async {
   }
 }
 
-Future<List<Ruangans>> readRuanganbyId(String id) async {
+Future<List<Ruangans>> readRuanganFromGedungId(
+    String? id, BuildContext context) async {
   final token = await Session.getToken();
 
-  final response = await App.api.get(apiBaseURl.resolve('/ruangans/$id'),
-      headers: {'authorization': 'Bearer $token '});
+  if (token == null) {
+    Session.unset();
+    context.go('login');
+    throw Exception('Unauthorized');
+  }
+
+  final response = await App.api.get(
+      apiBaseURl.resolve('/tempats/$id/ruangans'),
+      headers: {'authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
