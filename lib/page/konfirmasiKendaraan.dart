@@ -4,19 +4,22 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-class Konfirmasiasset extends StatefulWidget {
-  const Konfirmasiasset({super.key});
+class Konfirmasikendaraan extends StatefulWidget {
+  const Konfirmasikendaraan({super.key});
 
   @override
-  State<Konfirmasiasset> createState() => KonfimasiassetState();
+  State<Konfirmasikendaraan> createState() => KonfimasikendaraanState();
 }
 
-class KonfimasiassetState extends State<Konfirmasiasset> {
+class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
   DateTime peminjamanDateTime = DateTime.now();
   DateTime pengembalianDateTime = DateTime.now();
   final TextEditingController _peminjamanController = TextEditingController();
   final TextEditingController _pengembalianController = TextEditingController();
   final TextEditingController _tujuanController = TextEditingController();
+  final TextEditingController _tempatTujuanController = TextEditingController();
+  final TextEditingController _jumlahPenumpangController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -65,6 +68,51 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
             Padding(
               padding: const EdgeInsets.only(left: 24, right: 24),
               child: Text(
+                'Tempat Tujuan',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Gap(4),
+            Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey),
+                ),
+                child: TextField(
+                  controller: _tempatTujuanController,
+                  cursorColor: Colors.black,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  decoration: InputDecoration(
+                    hintStyle: const TextStyle(
+                        color: Colors.black54,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w100),
+                    hintText: 'Masukan teks...',
+                    border: InputBorder.none,
+                    filled: false,
+                    fillColor: Colors.white,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Gap(16),
+            Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24),
+              child: Text(
                 'Tanggal dan Waktu Mulai Peminjaman',
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
               ),
@@ -94,7 +142,7 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                               color: Colors.black54,
                               fontSize: 12,
                               fontWeight: FontWeight.w100),
-                          hintText: 'Pilih Tanggal Mulai...',
+                          hintText: 'Pilih tanggal mulai...',
                           border: InputBorder.none,
                           filled: false,
                           fillColor: Colors.white,
@@ -146,7 +194,7 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                 ),
               ),
             ),
-            const Gap(20), // Add some space between the two containers
+            const Gap(16),
             Padding(
               padding: const EdgeInsets.only(left: 24, right: 24),
               child: Text(
@@ -179,7 +227,7 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                               color: Colors.black54,
                               fontSize: 12,
                               fontWeight: FontWeight.w100),
-                          hintText: 'Pilih Tanggal Akhir...',
+                          hintText: 'Pilih tanggal akhir...',
                           border: InputBorder.none,
                           filled: false,
                           fillColor: Colors.white,
@@ -230,11 +278,57 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                 ),
               ),
             ),
-            const Gap(20),
+            const Gap(16),
             Padding(
               padding: const EdgeInsets.only(left: 24, right: 24),
               child: Text(
-                'Tujuan peminjaman',
+                'Jumlah Penumpang',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Gap(4),
+            Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey),
+                ),
+                child: TextField(
+                  controller: _jumlahPenumpangController,
+                  cursorColor: Colors.black,
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  decoration: InputDecoration(
+                    hintStyle: const TextStyle(
+                        color: Colors.black54,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w100),
+                    hintText: 'Masukan angka...',
+                    border: InputBorder.none,
+                    filled: false,
+                    fillColor: Colors.white,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Gap(16),
+            Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24),
+              child: Text(
+                'Tujuan Peminjaman',
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
               ),
             ),
@@ -303,7 +397,9 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                     onPressed: () {
                       if (_peminjamanController.text.isEmpty ||
                           _pengembalianController.text.isEmpty ||
-                          _tujuanController.text.isEmpty) {
+                          _tujuanController.text.isEmpty ||
+                          _jumlahPenumpangController.text.isEmpty ||
+                          _tempatTujuanController.text.isEmpty) {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
