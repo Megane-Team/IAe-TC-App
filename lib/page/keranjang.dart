@@ -48,7 +48,11 @@ class KeranjangState extends State<Keranjang> {
     for (var item in peminjaman) {
       int? tempatId;
 
-      if (item.category == PeminjamanCategory.barang) {
+      if (item.category == PeminjamanCategory.ruangan) {
+        tempatId = ruangan
+            .firstWhere((r) => r.id == item.ruanganId)
+            .tempatId;
+      } else if (item.category == PeminjamanCategory.barang) {
         var barangItem = barang.firstWhere((b) => b.id == item.barangId);
         tempatId =
             ruangan.firstWhere((r) => r.id == barangItem.ruanganId).tempatId;
@@ -167,11 +171,11 @@ class KeranjangState extends State<Keranjang> {
                               );
                             } else if (snapshot.hasError) {
                               return Center(
-                                child: Text(snapshot.error.toString()),
+                                child: SizedBox(),
                               );
                             } else {
                               return FutureBuilder<List<Peminjaman>>(
-                                future: readDraftPeminjaman(),
+                                future: readPeminjaman(),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState == ConnectionState.waiting) {
                                     return const Center(

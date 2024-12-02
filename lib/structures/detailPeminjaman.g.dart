@@ -1,53 +1,53 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'peminjaman.dart';
+part of 'detailPeminjaman.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PeminjamanAdapter extends TypeAdapter<Peminjaman> {
+class DetailPeminjamanAdapter extends TypeAdapter<DetailPeminjaman> {
   @override
-  final int typeId = 8;
+  final int typeId = 15;
 
   @override
-  Peminjaman read(BinaryReader reader) {
+  DetailPeminjaman read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Peminjaman(
+    return DetailPeminjaman(
       id: fields[0] as int,
-      category: fields[1] as PeminjamanCategory,
-      userId: fields[2] as int,
-      ruanganId: fields[3] as int?,
-      barangId: fields[4] as int?,
-      kendaraanId: fields[5] as int?,
-      detailPeminjamanId: fields[6] as int?,
-      createdAt: fields[7] as DateTime,
+      status: fields[1] as PeminjamanStatus,
+      borrowedDate: fields[2] as DateTime?,
+      estimatedTime: fields[3] as DateTime?,
+      returnedDate: fields[4] as DateTime?,
+      objective: fields[5] as String,
+      destination: fields[6] as String?,
+      passenger: fields[7] as int?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Peminjaman obj) {
+  void write(BinaryWriter writer, DetailPeminjaman obj) {
     writer
       ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.category)
+      ..write(obj.status)
       ..writeByte(2)
-      ..write(obj.userId)
+      ..write(obj.borrowedDate)
       ..writeByte(3)
-      ..write(obj.ruanganId)
+      ..write(obj.estimatedTime)
       ..writeByte(4)
-      ..write(obj.barangId)
+      ..write(obj.returnedDate)
       ..writeByte(5)
-      ..write(obj.kendaraanId)
+      ..write(obj.objective)
       ..writeByte(6)
-      ..write(obj.detailPeminjamanId)
+      ..write(obj.destination)
       ..writeByte(7)
-      ..write(obj.createdAt);
+      ..write(obj.passenger);
   }
 
   @override
@@ -56,7 +56,7 @@ class PeminjamanAdapter extends TypeAdapter<Peminjaman> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PeminjamanAdapter &&
+      other is DetailPeminjamanAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

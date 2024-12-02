@@ -94,7 +94,7 @@ class BerandaState extends State<Beranda> {
                             ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         } else if (snapshot.hasError) {
-                          return const Text('Error');
+                          return const SizedBox();
                         } else if (snapshot.hasData &&
                             snapshot.data!.isNotEmpty &&
                             snapshot.data!.any((e) => !e.isRead)) {

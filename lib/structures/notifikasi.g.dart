@@ -21,14 +21,15 @@ class NotifikasisAdapter extends TypeAdapter<Notifikasis> {
       category: fields[1] as NotifikasiCategory,
       isRead: fields[2] as bool,
       userId: fields[3] as int,
-      createdAt: fields[4] as DateTime,
+      notifikasiId: fields[4] as int,
+      createdAt: fields[5] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, Notifikasis obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -38,6 +39,8 @@ class NotifikasisAdapter extends TypeAdapter<Notifikasis> {
       ..writeByte(3)
       ..write(obj.userId)
       ..writeByte(4)
+      ..write(obj.notifikasiId)
+      ..writeByte(5)
       ..write(obj.createdAt);
   }
 
