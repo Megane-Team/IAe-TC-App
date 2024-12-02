@@ -7,7 +7,7 @@ enum NotifikasiCategory {
   @HiveField(0)
   PB,
   @HiveField(1)
-  DK,
+  PD,
   @HiveField(2)
   PG,
   @HiveField(3)

@@ -43,15 +43,15 @@ class RuanganState extends State<Ruangan> {
     category = widget.category;
 
     if (isRuangan()) {
-      ruangan = await readRuanganbyId(widget.id);
-      final barangs = await readBarang(widget.id, context);
+      ruangan = await readRuanganFromGedungId(widget.id, context);
+      final barangs = await readBarangFromRuanganId(widget.id, context);
       setState(() {
         barang = barangs;
       });
       return;
     } else {
-      tempat = await readTempatbyId(widget.id);
-      final kendaraans = await readKendaraan(widget.id, context);
+      tempat = await readTempat(widget.id, context);
+      final kendaraans = await readKendaraanByGedungId(widget.id, context);
       setState(() {
         kendaraan = kendaraans;
       });
@@ -157,7 +157,7 @@ class RuanganState extends State<Ruangan> {
                           ),
                           child: IconButton(
                             onPressed: () {
-                              // TODO: Create a search function
+                              context.push('/cari');
                             },
                             icon: const Icon(Icons.search),
                           ),

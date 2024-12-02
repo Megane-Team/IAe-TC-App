@@ -18,12 +18,12 @@ class PeminjamanAdapter extends TypeAdapter<Peminjaman> {
     };
     return Peminjaman(
       id: fields[0] as int,
-      status: fields[1] as String,
+      status: fields[1] as PeminjamanStatus,
       category: fields[2] as PeminjamanCategory,
       borrowedDate: fields[3] as DateTime,
       estimatedTime: fields[4] as DateTime,
       returnDate: fields[5] as DateTime?,
-      destination: fields[6] as String,
+      destination: fields[6] as String?,
       objective: fields[7] as String,
       pasengger: fields[8] as int?,
       userId: fields[9] as int,
