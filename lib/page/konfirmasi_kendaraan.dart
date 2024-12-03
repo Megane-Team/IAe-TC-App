@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
+    as dtp;
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -160,34 +162,46 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                     IconButton(
                       icon: const Icon(Icons.calendar_month),
                       onPressed: () {
-                        DatePicker.showDateTimePicker(
-                          context,
-                          showTitleActions: true,
-                          minTime: DateTime(2024, 1, 1),
-                          maxTime: DateTime(2050, 12, 31),
-                          currentTime: peminjamanDateTime,
-                          locale: LocaleType.id,
-                          onChanged: (date) {
-                            print('Changed Date: $date');
-                          },
-                          onConfirm: (date) {
-                            if (_pengembalianController.text.isNotEmpty &&
-                                date.isAfter(pengembalianDateTime)) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      'Tanggal mulai tidak boleh sesudah tanggal akhir.'),
-                                ),
-                              );
-                            } else {
-                              setState(() {
-                                peminjamanDateTime = date;
-                                _peminjamanController.text =
-                                    DateFormat('yyyy-MM-dd HH:mm').format(date);
-                              });
-                            }
-                          },
-                        );
+                        DatePicker.showDateTimePicker(context,
+                            showTitleActions: true,
+                            minTime: DateTime(2024, 1, 1),
+                            maxTime: DateTime(2050, 12, 31),
+                            currentTime: peminjamanDateTime,
+                            locale: LocaleType.id,
+                            theme: dtp.DatePickerTheme(
+                              doneStyle: const TextStyle(
+                                color: Color(0xFFFCA311),
+                              ),
+                            ), onChanged: (date) {
+                          print('Changed Date: $date');
+                        }, onConfirm: (date) {
+                          DateTime tomorrow =
+                              DateTime.now().add(Duration(days: 1));
+                          DateTime startOfTomorrow = DateTime(
+                              tomorrow.year, tomorrow.month, tomorrow.day);
+                          if (date.isBefore(startOfTomorrow)) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Tanggal peminjaman harus 1 hari setelah pengajuan.'),
+                              ),
+                            );
+                          } else if (_pengembalianController.text.isNotEmpty &&
+                              date.isAfter(pengembalianDateTime)) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Tanggal peminjaman tidak boleh sesudah tanggal akhir peminjaman.'),
+                              ),
+                            );
+                          } else {
+                            setState(() {
+                              peminjamanDateTime = date;
+                              _peminjamanController.text =
+                                  DateFormat('yyyy-MM-dd HH:mm').format(date);
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -252,11 +266,17 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                           maxTime: DateTime(2050, 12, 31),
                           currentTime: pengembalianDateTime,
                           locale: LocaleType.id,
+                          theme: dtp.DatePickerTheme(
+                            doneStyle: const TextStyle(
+                              color: Color(0xFFFCA311),
+                            ),
+                          ),
                           onChanged: (date) {
                             print('Changed Date: $date');
                           },
                           onConfirm: (date) {
-                            if (date.isBefore(peminjamanDateTime)) {
+                            if (_peminjamanController.text.isNotEmpty &&
+                                date.isBefore(peminjamanDateTime)) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
