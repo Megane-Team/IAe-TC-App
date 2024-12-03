@@ -19,7 +19,7 @@ class RuangansAdapter extends TypeAdapter<Ruangans> {
     return Ruangans(
       id: fields[0] as int,
       code: fields[1] as String,
-      status: fields[2] as String,
+      status: fields[2] as bool,
       capacity: fields[3] as int?,
       category: fields[4] as RuanganCategory?,
       photo: fields[5] as String?,

@@ -327,7 +327,7 @@ class BerandaState extends State<Beranda> {
                                     return noData();
                                   } else if (snapshot.hasData) {
                                     if (snapshot.data!.isEmpty) {
-                                      return noData();
+                                      return SizedBox();
                                     }
                                     return GridView.builder(
                                       shrinkWrap: true,

@@ -91,11 +91,9 @@ class RuanganState extends State<Ruangan> {
                     ? Assets.ruangan(ruangan[0].photo ?? '')
                     : tempat.isNotEmpty
                         ? Assets.tempat(tempat[0].photo ?? '')
-                        : Future.value(const Center(
-                            child: Text(
-                            'Data tidak tersedia!\n Coba cek jaringanmu!',
-                            textAlign: TextAlign.center,
-                          ))),
+                        : Future.value(Center(
+                            child: Image.asset(Assets.noImage()),
+                          )),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator(); // Show a loading indicator while waiting
@@ -205,7 +203,7 @@ class RuanganState extends State<Ruangan> {
                                       Text(
                                         ruangan.isEmpty
                                             ? ''
-                                            : ruangan[0].status == 'TDG'
+                                            : ruangan[0].status == false
                                                 ? 'Tidak Digunakan'
                                                 : 'Digunakan',
                                         style: const TextStyle(
@@ -358,15 +356,15 @@ class RuanganState extends State<Ruangan> {
                                                           .toList()
                                                         ..sort((a, b) {
                                                           if (a.status ==
-                                                                  'DG' &&
+                                                                  true &&
                                                               b.status !=
-                                                                  'DG') {
+                                                                  true) {
                                                             return 1;
                                                           }
                                                           if (a.status !=
-                                                                  'DG' &&
+                                                                  true &&
                                                               b.status ==
-                                                                  'DG') {
+                                                                  false) {
                                                             return -1;
                                                           }
                                                           return a.id
@@ -419,7 +417,7 @@ class RuanganState extends State<Ruangan> {
                                                             backgroundColor: items[
                                                                             index2]
                                                                         .status ==
-                                                                    'digunakan'
+                                                                    true
                                                                 ? Colors.black12
                                                                 : Colors.white,
                                                             shadowColor: Colors
@@ -808,12 +806,12 @@ class RuanganState extends State<Ruangan> {
                                                             uniqueNames[index])
                                                         .toList()
                                                       ..sort((a, b) {
-                                                        if (a.status == 'DG' &&
-                                                            b.status != 'DG') {
+                                                        if (a.status == true &&
+                                                            b.status != true) {
                                                           return 1;
                                                         }
-                                                        if (a.status != 'DG' &&
-                                                            b.status == 'DG') {
+                                                        if (a.status != true   &&
+                                                            b.status == true) {
                                                           return -1;
                                                         }
                                                         return a.id
@@ -865,7 +863,7 @@ class RuanganState extends State<Ruangan> {
                                                           backgroundColor: items[
                                                                           index2]
                                                                       .status ==
-                                                                  'digunakan'
+                                                                  true
                                                               ? Colors.black12
                                                               : Colors.white,
                                                           shadowColor: Colors
@@ -1071,7 +1069,7 @@ class RuanganState extends State<Ruangan> {
                                                           //                             ElevatedButton(
                                                           //                           onPressed:
                                                           //                               () {
-                                                          //                             Navigator.pop(context);
+                                                          //                             context.pop();
                                                           //                           },
                                                           //                           style:
                                                           //                               ElevatedButton.styleFrom(

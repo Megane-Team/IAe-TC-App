@@ -11,7 +11,7 @@ class Barang {
   @HiveField(3)
   late String code;
   @HiveField(4)
-  late String status;
+  late bool status;
   @HiveField(5)
   late String condition;
   @HiveField(6)

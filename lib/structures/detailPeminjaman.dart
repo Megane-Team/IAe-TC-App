@@ -14,23 +14,26 @@ class DetailPeminjaman {
   @HiveField(3)
   late DateTime? estimatedTime;
   @HiveField(4)
-  late DateTime? returnedDate;
+  late DateTime? returnDate;
   @HiveField(5)
   late String objective;
   @HiveField(6)
   late String? destination;
   @HiveField(7)
   late int? passenger;
+  @HiveField(8)
+  late DateTime createdAt;
 
   DetailPeminjaman({
     required this.id,
     required this.status,
     required this.borrowedDate,
     required this.estimatedTime,
-    required this.returnedDate,
+    required this.returnDate,
     required this.objective,
     required this.destination,
     required this.passenger,
+    required this.createdAt,
   });
 
   factory DetailPeminjaman.fromJson(Map<String, dynamic> json) {
@@ -40,10 +43,11 @@ class DetailPeminjaman {
           (e) => e.toString() == 'PeminjamanStatus.${json['status']}'),
       borrowedDate: DateTime.parse(json['borrowedDate']),
       estimatedTime: DateTime.parse(json['estimatedTime']),
-      returnedDate: DateTime.parse(json['returnedDate']),
+      returnDate: DateTime.parse(json['returnDate']),
       objective: json['objective'],
       destination: json['destination'],
       passenger: json['passenger'],
+      createdAt: DateTime.parse(json['createdAt']),
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/barang/read_barang_action.dart';
 import 'package:inventara/actions/kendaraan/read_kendaraan_action.dart';
 import 'package:inventara/actions/peminjaman/delete_peminjaman_action.dart';
-import 'package:inventara/actions/peminjaman/read_draft_peminjaman_action.dart';
+import 'package:inventara/actions/peminjaman/read_peminjaman_action.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/barang.dart';
@@ -49,9 +49,7 @@ class KeranjangState extends State<Keranjang> {
       int? tempatId;
 
       if (item.category == PeminjamanCategory.ruangan) {
-        tempatId = ruangan
-            .firstWhere((r) => r.id == item.ruanganId)
-            .tempatId;
+        tempatId = ruangan.firstWhere((r) => r.id == item.ruanganId).tempatId;
       } else if (item.category == PeminjamanCategory.barang) {
         var barangItem = barang.firstWhere((b) => b.id == item.barangId);
         tempatId =
@@ -165,7 +163,8 @@ class KeranjangState extends State<Keranjang> {
                         FutureBuilder<void>(
                           future: fetchDataFuture,
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
@@ -175,9 +174,10 @@ class KeranjangState extends State<Keranjang> {
                               );
                             } else {
                               return FutureBuilder<List<Peminjaman>>(
-                                future: readPeminjaman(),
+                                future: readDraftPeminjaman(),
                                 builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
                                     return const Center(
                                       child: CircularProgressIndicator(),
                                     );
@@ -189,27 +189,38 @@ class KeranjangState extends State<Keranjang> {
                                     var peminjaman = snapshot.data!;
                                     return ListView.builder(
                                       shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: tempatNamesUsed(peminjaman).length,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount:
+                                          tempatNamesUsed(peminjaman).length,
                                       itemBuilder: (context, index) {
-                                        final uniqueAsal = tempatNamesUsed(peminjaman);
+                                        final uniqueAsal =
+                                            tempatNamesUsed(peminjaman);
                                         return Container(
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.circular(8),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.black.withOpacity(0.1),
+                                                color: Colors.black
+                                                    .withOpacity(0.1),
                                                 spreadRadius: 1,
                                                 blurRadius: 4,
                                                 offset: const Offset(0, 0),
                                               )
                                             ],
                                           ),
-                                          padding: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 24),
-                                          margin: const EdgeInsets.only(bottom: 20),
+                                          padding: const EdgeInsets.only(
+                                              left: 8,
+                                              right: 8,
+                                              top: 8,
+                                              bottom: 24),
+                                          margin:
+                                              const EdgeInsets.only(bottom: 20),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 uniqueAsal[index],
@@ -219,95 +230,203 @@ class KeranjangState extends State<Keranjang> {
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.only(left: 4),
+                                                padding: const EdgeInsets.only(
+                                                    left: 4),
                                                 child: ListView.builder(
                                                   shrinkWrap: true,
-                                                  physics: const NeverScrollableScrollPhysics(),
-                                                  itemCount: peminjaman.where((item) => tempatNameUsed(item) == uniqueAsal[index]).length,
-                                                  itemBuilder: (context, subIndex) {
-                                                    final itemsInTempat = peminjaman.where((item) => tempatNameUsed(item) == uniqueAsal[index]).toList();
-                                                    final item = itemsInTempat[subIndex];
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  itemCount: peminjaman
+                                                      .where((item) =>
+                                                          tempatNameUsed(
+                                                              item) ==
+                                                          uniqueAsal[index])
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, subIndex) {
+                                                    final itemsInTempat =
+                                                        peminjaman
+                                                            .where((item) =>
+                                                                tempatNameUsed(
+                                                                    item) ==
+                                                                uniqueAsal[
+                                                                    index])
+                                                            .toList();
+                                                    final item =
+                                                        itemsInTempat[subIndex];
                                                     return Container(
-                                                      margin: const EdgeInsets.only(top: 4),
-                                                      padding: const EdgeInsets.only(left: 12),
-                                                      width: MediaQuery.of(context).size.width,
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              top: 4),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 12),
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
                                                       height: 60,
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         boxShadow: [
                                                           BoxShadow(
-                                                            color: Colors.black.withOpacity(0.1),
+                                                            color: Colors.black
+                                                                .withOpacity(
+                                                                    0.1),
                                                             spreadRadius: 1,
                                                             blurRadius: 4,
-                                                            offset: const Offset(0, 0),
+                                                            offset:
+                                                                const Offset(
+                                                                    0, 0),
                                                           )
                                                         ],
                                                         border: const Border(
                                                           left: BorderSide(
-                                                            color: Color(0xFFFCA311),
+                                                            color: Color(
+                                                                0xFFFCA311),
                                                             width: 3,
                                                           ),
                                                         ),
                                                       ),
                                                       child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
                                                         children: [
                                                           Row(
                                                             children: [
                                                               Container(
                                                                 width: 60,
-                                                                decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(8),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8),
                                                                 ),
-                                                                child: FutureBuilder(
-                                                                  future: itemPhoto(item),
-                                                                  builder: (context, snapshot) {
-                                                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                child:
+                                                                    FutureBuilder(
+                                                                  future:
+                                                                      itemPhoto(
+                                                                          item),
+                                                                  builder: (context,
+                                                                      snapshot) {
+                                                                    if (snapshot
+                                                                            .connectionState ==
+                                                                        ConnectionState
+                                                                            .waiting) {
                                                                       return const Center(
-                                                                        child: CircularProgressIndicator(),
+                                                                        child:
+                                                                            CircularProgressIndicator(),
                                                                       );
-                                                                    } else if (snapshot.hasError) {
-                                                                      return snapshot.data!;
-                                                                    } else if (snapshot.hasData) {
-                                                                      return snapshot.data!;
+                                                                    } else if (snapshot
+                                                                        .hasError) {
+                                                                      return snapshot
+                                                                          .data!;
+                                                                    } else if (snapshot
+                                                                        .hasData) {
+                                                                      return snapshot
+                                                                          .data!;
                                                                     } else {
-                                                                      return snapshot.data!;
+                                                                      return snapshot
+                                                                          .data!;
                                                                     }
                                                                   },
                                                                 ),
                                                               ),
                                                               const Gap(10),
                                                               Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
                                                                 children: [
-                                                                  if (item.category == PeminjamanCategory.barang) ...[
+                                                                  if (item.category ==
+                                                                      PeminjamanCategory
+                                                                          .barang) ...[
                                                                     Text(
                                                                       '${barang.firstWhere((b) => b.id == item.barangId).name} (${barang.firstWhere((b) => b.id == item.barangId).code})',
-                                                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight:
+                                                                              FontWeight.w500),
                                                                     ),
                                                                     Text(
-                                                                      ruangan.firstWhere((r) => r.id == barang.firstWhere((b) => b.id == item.barangId).ruanganId).code,
-                                                                      style: const TextStyle(fontSize: 12, color: Colors.black54),
+                                                                      ruangan
+                                                                          .firstWhere((r) =>
+                                                                              r.id ==
+                                                                              barang.firstWhere((b) => b.id == item.barangId).ruanganId)
+                                                                          .code,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.black54),
                                                                     ),
-                                                                  ] else if (item.category == PeminjamanCategory.ruangan) ...[
+                                                                  ] else if (item
+                                                                          .category ==
+                                                                      PeminjamanCategory
+                                                                          .ruangan) ...[
                                                                     Text(
-                                                                      ruangan.firstWhere((r) => r.id == item.ruanganId).code,
-                                                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                                                      ruangan
+                                                                          .firstWhere((r) =>
+                                                                              r.id ==
+                                                                              item.ruanganId)
+                                                                          .code,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight:
+                                                                              FontWeight.w500),
                                                                     ),
                                                                     Text(
-                                                                      ruangan.firstWhere((r) => r.id == item.ruanganId).status,
-                                                                      style: const TextStyle(fontSize: 12, color: Colors.black54),
+                                                                      ruangan
+                                                                          .firstWhere((r) =>
+                                                                              r.id ==
+                                                                              item.ruanganId)
+                                                                          .status ? 'Tidak digunakan' : 'Digunakan',
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.black54),
                                                                     ),
-                                                                  ] else if (item.category == PeminjamanCategory.kendaraan) ...[
+                                                                  ] else if (item
+                                                                          .category ==
+                                                                      PeminjamanCategory
+                                                                          .kendaraan) ...[
                                                                     Text(
-                                                                      kendaraan.firstWhere((k) => k.id == item.kendaraanId).name,
-                                                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                                                      kendaraan
+                                                                          .firstWhere((k) =>
+                                                                              k.id ==
+                                                                              item.kendaraanId)
+                                                                          .name,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight:
+                                                                              FontWeight.w500),
                                                                     ),
                                                                     Text(
-                                                                      kendaraan.firstWhere((k) => k.id == item.kendaraanId).category.toString().split('.').last,
-                                                                      style: const TextStyle(fontSize: 12, color: Colors.black54),
+                                                                      kendaraan
+                                                                          .firstWhere((k) =>
+                                                                              k.id ==
+                                                                              item.kendaraanId)
+                                                                          .category
+                                                                          .toString()
+                                                                          .split('.')
+                                                                          .last,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.black54),
                                                                     ),
                                                                   ]
                                                                 ],
@@ -318,30 +437,45 @@ class KeranjangState extends State<Keranjang> {
                                                             onPressed: () {
                                                               // show an pop up confirmation
                                                               showDialog(
-                                                                context: context,
-                                                                builder: (context) {
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
                                                                   return AlertDialog(
-                                                                    title: const Text('Konfirmasi'),
-                                                                    content: const Text('Apakah anda yakin ingin menghapus item ini?'),
+                                                                    title: const Text(
+                                                                        'Konfirmasi'),
+                                                                    content:
+                                                                        const Text(
+                                                                            'Apakah anda yakin ingin menghapus item ini?'),
                                                                     actions: [
                                                                       TextButton(
-                                                                        onPressed: () {
-                                                                          Navigator.of(context).pop();
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
                                                                         },
-                                                                        child: const Text(
+                                                                        child:
+                                                                            const Text(
                                                                           'Batal',
-                                                                          style: TextStyle(color: Colors.black54),
+                                                                          style:
+                                                                              TextStyle(color: Colors.black54),
                                                                         ),
                                                                       ),
                                                                       TextButton(
-                                                                        onPressed: () async {
-                                                                          await deletePeminjaman(item.id);
-                                                                          Navigator.of(context).pop();
-                                                                          setState(() {});
+                                                                        onPressed:
+                                                                            () async {
+                                                                          await deletePeminjaman(
+                                                                              item.id);
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                          setState(
+                                                                              () {});
                                                                         },
-                                                                        child: const Text(
+                                                                        child:
+                                                                            const Text(
                                                                           'Hapus',
-                                                                          style: TextStyle(color: Colors.red),
+                                                                          style:
+                                                                              TextStyle(color: Colors.red),
                                                                         ),
                                                                       )
                                                                     ],

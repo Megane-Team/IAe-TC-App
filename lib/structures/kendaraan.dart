@@ -12,7 +12,7 @@ class Kendaraan {
   @HiveField(2)
   late String plat;
   @HiveField(3)
-  late String status;
+  late bool status;
   @HiveField(4)
   late String condition;
   @HiveField(5)

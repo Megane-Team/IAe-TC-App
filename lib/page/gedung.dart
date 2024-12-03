@@ -268,12 +268,12 @@ class GedungState extends State<Gedung> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             elevation: 4,
-                            backgroundColor: ruangan.status == 'Digunakan'
+                            backgroundColor: ruangan.status == true
                                 ? Colors.grey
                                 : Colors.white,
                           ),
                           onPressed: () {
-                            if (ruangan.status == 'Digunakan') {
+                            if (ruangan.status == true) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {

@@ -11,7 +11,7 @@ import 'package:inventara/page/cari.dart';
 final appRouter = GoRouter(initialLocation: '/Login', routes: [
   GoRoute(path: '/Login', builder: (context, state) => const Login()),
   GoRoute(path: '/Beranda', builder: (context, state) => const Beranda()),
-  // GoRoute(path: '/Riwayat', builder: (context, state) => const Riwayat()),
+  GoRoute(path: '/Riwayat', builder: (context, state) => const Riwayat()),
   GoRoute(path: '/Notifikasi', builder: (context, state) => const Notifikasi()),
   GoRoute(path: '/Cari', builder: (context, state) => const Cari()),
   GoRoute(path: '/Keranjang', builder: (context, state) => const Keranjang()),
