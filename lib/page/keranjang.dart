@@ -387,10 +387,10 @@ class KeranjangState extends State<Keranjang> {
                                                                     ),
                                                                     Text(
                                                                       ruangan
-                                                                          .firstWhere((r) =>
-                                                                              r.id ==
-                                                                              item.ruanganId)
-                                                                          .status ? 'Tidak digunakan' : 'Digunakan',
+                                                                              .firstWhere((r) => r.id == item.ruanganId)
+                                                                              .status
+                                                                          ? 'Tidak digunakan'
+                                                                          : 'Digunakan',
                                                                       style: const TextStyle(
                                                                           fontSize:
                                                                               12,

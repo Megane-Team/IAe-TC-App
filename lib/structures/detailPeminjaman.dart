@@ -46,7 +46,9 @@ class DetailPeminjaman {
             (e) => e.toString() == 'PeminjamanStatus.${json['status']}'),
         borrowedDate: DateTime.parse(json['borrowedDate']),
         estimatedTime: DateTime.parse(json['estimatedTime']),
-        returnDate: json['returnDate'] != null ? DateTime.parse(json['returnDate']) : null,
+        returnDate: json['returnDate'] != null
+            ? DateTime.parse(json['returnDate'])
+            : null,
         objective: json['objective'],
         destination: json['destination'],
         passenger: json['passenger'],

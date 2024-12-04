@@ -252,7 +252,8 @@ class RiwayatState extends State<Riwayat> {
                             }
                             if (snapshot.hasError) {
                               print('error: ${snapshot.error.toString()}');
-                              print('stack trace: ${snapshot.stackTrace.toString()}');
+                              print(
+                                  'stack trace: ${snapshot.stackTrace.toString()}');
                               return noData();
                             }
                             if (snapshot.hasData) {
@@ -301,239 +302,259 @@ class RiwayatState extends State<Riwayat> {
                                       b.createdAt.compareTo(a.createdAt));
                                   var p = filteredList[index];
                                   return FutureBuilder(
-                                    future: readPeminjamanbyDetailId(p.id),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-                                      if (snapshot.hasError) {
-                                        return Center(child: noData());
-                                      }
-                                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                                        peminjamans = snapshot.data!;
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 24),
-                                          child: SingleChildScrollView(
-                                            child: Container(
-                                              margin:
-                                              const EdgeInsets.only(bottom: 8),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color:
-                                                    Colors.black.withOpacity(0.1),
-                                                    spreadRadius: 1,
-                                                    blurRadius: 4,
-                                                    offset: const Offset(0, 0),
-                                                  ),
-                                                ],
-                                                borderRadius:
-                                                BorderRadius.circular(8),
-                                              ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                                children: [
-                                                  // Header
-                                                  Container(
-                                                    decoration: const BoxDecoration(
-                                                      border: Border(
-                                                          bottom: BorderSide(
-                                                              color: Colors.black12,
-                                                              width: 1)),
+                                      future: readPeminjamanbyDetailId(p.id),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+                                        if (snapshot.hasError) {
+                                          return Center(child: noData());
+                                        }
+                                        if (snapshot.hasData &&
+                                            snapshot.data!.isNotEmpty) {
+                                          peminjamans = snapshot.data!;
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 24),
+                                            child: SingleChildScrollView(
+                                              child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    bottom: 8),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black
+                                                          .withOpacity(0.1),
+                                                      spreadRadius: 1,
+                                                      blurRadius: 4,
+                                                      offset:
+                                                          const Offset(0, 0),
                                                     ),
-                                                    child: Padding(
-                                                      padding:
-                                                      const EdgeInsets.symmetric(
-                                                          horizontal: 8,
-                                                          vertical: 8),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            DateFormat('dd MMM yyyy')
-                                                                .format(p.createdAt),
-                                                            style: const TextStyle(
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                FontWeight.w500),
-                                                          ),
-                                                          Text(
-                                                            peminjamanStatusToString(
-                                                                p.status),
-                                                            style: const TextStyle(
-                                                                fontSize: 14,
-                                                                color: Colors.black),
-                                                          ),
-                                                        ],
+                                                  ],
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    // Header
+                                                    Container(
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        border: Border(
+                                                            bottom: BorderSide(
+                                                                color: Colors
+                                                                    .black12,
+                                                                width: 1)),
                                                       ),
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                    children: [
-                                                      Expanded(
-                                                        child: Padding(
-                                                          padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: 8,
-                                                              left: 8,
-                                                              top: 8),
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                            children: [
-                                                              Row(
-                                                                children: [
-                                                                  Container(
-                                                                    width: 60,
-                                                                    height: 50,
-                                                                    decoration:
-                                                                    BoxDecoration(
-                                                                      color: Colors
-                                                                          .grey[200],
-                                                                      borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                          8),
-                                                                    ),
-                                                                    child:
-                                                                    ClipRRect(
-                                                                      borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                          8),
-                                                                      child: FutureBuilder
-                                                                        (future: asetPhoto(peminjamans[0]),
-                                                                          builder: (context, snapshot) {
-                                                                            if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                              return const Center(
-                                                                                child: CircularProgressIndicator(),
-                                                                              );
-                                                                            }
-                                                                            if (snapshot.hasError) {
-                                                                              return Center(child: noData());
-                                                                            }
-                                                                            if (snapshot.hasData) {
-                                                                              return snapshot.data!;
-                                                                            } else {
-                                                                              return const SizedBox();
-                                                                            }
-                                                                          }
-                                                                      ),
-                                                                    )
-                                                                  ),
-                                                                  const SizedBox(
-                                                                      width: 8),
-                                                                  Expanded(
-                                                                    child: Column(
-                                                                      crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                      children: [
-                                                                        Text(
-                                                                          getAsetName(peminjamans[0]),
-                                                                          style:
-                                                                          const TextStyle(
-                                                                            fontSize:
-                                                                            16,
-                                                                            fontWeight:
-                                                                            FontWeight
-                                                                                .w600,
-                                                                          ),
-                                                                        ),
-                                                                        Text(
-                                                                          getTempatName(peminjamans[0]),
-                                                                          style:
-                                                                          const TextStyle(
-                                                                            fontSize:
-                                                                            14,
-                                                                            color: Colors
-                                                                                .grey,
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              const SizedBox(
-                                                                  height: 8),
-                                                              if (peminjamans.length > 1)
-                                                                Text(
-                                                                  '+${peminjamans.length - 1} Barang lainnya',
-                                                                  style: const TextStyle(
-                                                                      fontSize: 14,
-                                                                      color: Colors.grey),
-                                                                ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
+                                                      child: Padding(
                                                         padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 8, right: 8),
-                                                        child: Container(
-                                                          width: 100,
-                                                          height: 30,
-                                                          decoration: BoxDecoration(
-                                                            borderRadius:
-                                                            BorderRadius.circular(
-                                                                8),
-                                                          ),
-                                                          child: ElevatedButton(
-                                                            onPressed: () {},
-                                                            style: ElevatedButton
-                                                                .styleFrom(
-                                                              padding:
-                                                              EdgeInsets.zero,
-                                                              maximumSize:
-                                                              const Size(100, 40),
-                                                              backgroundColor:
-                                                              Colors.orange,
-                                                              shape:
-                                                              RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                BorderRadius
-                                                                    .circular(8),
-                                                              ),
-                                                            ),
-                                                            child: const Text(
-                                                              'Detail',
-                                                              style: TextStyle(
-                                                                  fontSize: 12,
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal: 8,
+                                                                vertical: 8),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              DateFormat(
+                                                                      'dd MMM yyyy')
+                                                                  .format(p
+                                                                      .createdAt),
+                                                              style: const TextStyle(
+                                                                  fontSize: 14,
                                                                   fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                            Text(
+                                                              peminjamanStatusToString(
+                                                                  p.status),
+                                                              style: const TextStyle(
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .black),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    bottom: 8,
+                                                                    left: 8,
+                                                                    top: 8),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                        width:
+                                                                            60,
+                                                                        height:
+                                                                            50,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              Colors.grey[200],
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(8),
+                                                                        ),
+                                                                        child:
+                                                                            ClipRRect(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(8),
+                                                                          child: FutureBuilder(
+                                                                              future: asetPhoto(peminjamans[0]),
+                                                                              builder: (context, snapshot) {
+                                                                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                  return const Center(
+                                                                                    child: CircularProgressIndicator(),
+                                                                                  );
+                                                                                }
+                                                                                if (snapshot.hasError) {
+                                                                                  return Center(child: noData());
+                                                                                }
+                                                                                if (snapshot.hasData) {
+                                                                                  return snapshot.data!;
+                                                                                } else {
+                                                                                  return const SizedBox();
+                                                                                }
+                                                                              }),
+                                                                        )),
+                                                                    const SizedBox(
+                                                                        width:
+                                                                            8),
+                                                                    Expanded(
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text(
+                                                                            getAsetName(peminjamans[0]),
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight.w600,
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            getTempatName(peminjamans[0]),
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              fontSize: 14,
+                                                                              color: Colors.grey,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 8),
+                                                                if (peminjamans
+                                                                        .length >
+                                                                    1)
+                                                                  Text(
+                                                                    '+${peminjamans.length - 1} Barang lainnya',
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            14,
+                                                                        color: Colors
+                                                                            .grey),
+                                                                  ),
+                                                              ],
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 8,
+                                                                  right: 8),
+                                                          child: Container(
+                                                            width: 100,
+                                                            height: 30,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                            ),
+                                                            child:
+                                                                ElevatedButton(
+                                                              onPressed: () {},
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .zero,
+                                                                maximumSize:
+                                                                    const Size(
+                                                                        100,
+                                                                        40),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .orange,
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8),
+                                                                ),
+                                                              ),
+                                                              child: const Text(
+                                                                'Detail',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      } else {
-                                        return Center(child: Text(snapshot.data.toString()));
-                                      }
-                                    }
-                                  );
+                                          );
+                                        } else {
+                                          return Center(
+                                              child: Text(
+                                                  snapshot.data.toString()));
+                                        }
+                                      });
                                 },
                               );
                             } else {

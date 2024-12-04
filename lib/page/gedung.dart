@@ -282,6 +282,7 @@ class GedungState extends State<Gedung> {
                                         const Text('Ruangan Sedang Digunakan'),
                                     content: const Column(
                                       mainAxisSize: MainAxisSize.min,
+                                      // TODO: make the peminjaman detail
                                       // children: Peminjaman.map((peminjaman) {
                                       //   return ListTile(
                                       //     title: Text(peminjaman['name']!),
@@ -301,7 +302,7 @@ class GedungState extends State<Gedung> {
                                                 const Color(0xFFFCA311),
                                           ),
                                           onPressed: () {
-                                            Navigator.of(context).pop();
+                                            context.pop();
                                           },
                                           child: const Text(
                                             'OK',
