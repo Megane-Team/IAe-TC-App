@@ -280,16 +280,20 @@ class GedungState extends State<Gedung> {
                                   return AlertDialog(
                                     title:
                                         const Text('Ruangan Sedang Digunakan'),
-                                    content: const Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      // TODO: make the peminjaman detail
-                                      // children: Peminjaman.map((peminjaman) {
-                                      //   return ListTile(
-                                      //     title: Text(peminjaman['name']!),
-                                      //     subtitle: Text(
-                                      //         'Divisi: ${peminjaman['Divisi']!}\nEstimasi Peminjaman: ${peminjaman['estimasi peminjaman']!}'),
-                                      //   );
-                                      // }).toList(),
+                                    content: FutureBuilder(
+                                      future: readPeminjamanbyBarangId(),
+                                      builder: (context, snapshot) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: Peminjaman.map((peminjaman) {
+                                            return ListTile(
+                                              title: Text(peminjaman['name']!),
+                                              subtitle: Text(
+                                                  'Divisi: ${peminjaman['Divisi']!}\nEstimasi Peminjaman: ${peminjaman['estimasi peminjaman']!}'),
+                                            );
+                                          }).toList(),
+                                        );
+                                      }
                                     ),
                                     actions: [
                                       SizedBox(
