@@ -61,16 +61,17 @@ Future<List<Peminjaman>> readPeminjamanbyDetailId(int id) async {
   }
 }
 
-Future<Peminjaman> readPeminjamanbyBarangId(int id) async {
+Future<List<Peminjaman>> readPeminjamanbyRuanganId(int id) async {
   var token = await Session.getToken();
 
-  var response = await App.api.get(apiBaseURl.resolve('/peminjaman/barang/$id'),
+  var response = await App.api.get(apiBaseURl.resolve('/peminjaman/ruangan/$id'),
       headers: {'Authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final List<dynamic> data = responseData['data'];
-    final Peminjaman peminjaman = Peminjaman.fromJson(data[0]);
+    final List<Peminjaman> peminjaman =
+        data.map((item) => Peminjaman.fromJson(item)).toList();
 
     return peminjaman;
   } else {
