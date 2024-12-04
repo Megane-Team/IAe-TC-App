@@ -159,7 +159,7 @@ class CariState extends State<Cari> {
                                   backgroundColor: const Color(0xFFFCA311),
                                 ),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
+                                  context.pop();
                                 },
                                 child: Text(
                                   'OK',

@@ -12,4 +12,8 @@ enum PeminjamanStatus {
   approved,
   @HiveField(3)
   rejected,
+  @HiveField(4)
+  returned,
+  @HiveField(5)
+  canceled,
 }

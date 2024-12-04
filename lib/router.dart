@@ -19,6 +19,7 @@ final appRouter = GoRouter(initialLocation: '/Login', routes: [
   GoRoute(
       path: '/KonfK', builder: (context, state) => const Konfirmasikendaraan()),
   GoRoute(path: '/Cari', builder: (context, state) => const Cari()),
+  GoRoute(path: '/Keranjang', builder: (context, state) => const Keranjang()),
   GoRoute(
       path: '/Gedung',
       builder: (context, state) => Gedung(
@@ -30,5 +31,4 @@ final appRouter = GoRouter(initialLocation: '/Login', routes: [
             id: state.uri.queryParameters['id'] ?? '',
             category: state.uri.queryParameters['category'] ?? '',
           )),
-  GoRoute(path: '/Keranjang', builder: (context, state) => const Keranjang()),
 ]);

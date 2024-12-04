@@ -20,7 +20,7 @@ class KendaraanAdapter extends TypeAdapter<Kendaraan> {
       id: fields[0] as int,
       name: fields[1] as String,
       plat: fields[2] as String,
-      status: fields[3] as String,
+      status: fields[3] as bool,
       condition: fields[4] as String,
       warranty: fields[5] as DateTime,
       capacity: fields[6] as int,

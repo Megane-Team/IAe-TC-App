@@ -268,12 +268,12 @@ class GedungState extends State<Gedung> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             elevation: 4,
-                            backgroundColor: ruangan.status == 'Digunakan'
+                            backgroundColor: ruangan.status == true
                                 ? Colors.grey
                                 : Colors.white,
                           ),
                           onPressed: () {
-                            if (ruangan.status == 'Digunakan') {
+                            if (ruangan.status == true) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -282,6 +282,7 @@ class GedungState extends State<Gedung> {
                                         const Text('Ruangan Sedang Digunakan'),
                                     content: const Column(
                                       mainAxisSize: MainAxisSize.min,
+                                      // TODO: make the peminjaman detail
                                       // children: Peminjaman.map((peminjaman) {
                                       //   return ListTile(
                                       //     title: Text(peminjaman['name']!),
@@ -301,7 +302,7 @@ class GedungState extends State<Gedung> {
                                                 const Color(0xFFFCA311),
                                           ),
                                           onPressed: () {
-                                            Navigator.of(context).pop();
+                                            context.pop();
                                           },
                                           child: const Text(
                                             'OK',

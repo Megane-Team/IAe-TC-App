@@ -10,7 +10,7 @@ class Ruangans {
   @HiveField(1)
   late String code;
   @HiveField(2)
-  late String status;
+  late bool status;
   @HiveField(3)
   late int? capacity;
   @HiveField(4)

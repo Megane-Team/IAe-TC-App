@@ -21,6 +21,10 @@ class PeminjamanStatusAdapter extends TypeAdapter<PeminjamanStatus> {
         return PeminjamanStatus.approved;
       case 3:
         return PeminjamanStatus.rejected;
+      case 4:
+        return PeminjamanStatus.returned;
+      case 5:
+        return PeminjamanStatus.canceled;
       default:
         return PeminjamanStatus.draft;
     }
@@ -40,6 +44,12 @@ class PeminjamanStatusAdapter extends TypeAdapter<PeminjamanStatus> {
         break;
       case PeminjamanStatus.rejected:
         writer.writeByte(3);
+        break;
+      case PeminjamanStatus.returned:
+        writer.writeByte(4);
+        break;
+      case PeminjamanStatus.canceled:
+        writer.writeByte(5);
         break;
     }
   }

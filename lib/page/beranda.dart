@@ -94,7 +94,7 @@ class BerandaState extends State<Beranda> {
                             ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         } else if (snapshot.hasError) {
-                          return const Text('Error');
+                          return const SizedBox();
                         } else if (snapshot.hasData &&
                             snapshot.data!.isNotEmpty &&
                             snapshot.data!.any((e) => !e.isRead)) {
@@ -128,7 +128,7 @@ class BerandaState extends State<Beranda> {
             children: <Widget>[
               ListTile(
                 onTap: () {
-                  Navigator.pop(context);
+                  context.pop();
                 },
                 leading: const Icon(
                   Icons.close,
@@ -141,17 +141,22 @@ class BerandaState extends State<Beranda> {
               ListTile(
                 onTap: () {
                   context.push('/keranjang');
+                  context.pop();
                 },
                 leading: const Icon(
                   Icons.shopping_cart_outlined,
                 ),
                 title: const Text('Keranjang Peminjaman'),
               ),
-              const ListTile(
-                leading: Icon(
+              ListTile(
+                onTap: () {
+                  context.push('/riwayat');
+                  context.pop();
+                },
+                leading: const Icon(
                   Icons.history,
                 ),
-                title: Text('Riwayat Peminjaman'),
+                title: const Text('Riwayat Peminjaman'),
               ),
               const Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
@@ -322,7 +327,7 @@ class BerandaState extends State<Beranda> {
                                     return noData();
                                   } else if (snapshot.hasData) {
                                     if (snapshot.data!.isEmpty) {
-                                      return noData();
+                                      return SizedBox();
                                     }
                                     return GridView.builder(
                                       shrinkWrap: true,

@@ -91,11 +91,9 @@ class RuanganState extends State<Ruangan> {
                     ? Assets.ruangan(ruangan[0].photo ?? '')
                     : tempat.isNotEmpty
                         ? Assets.tempat(tempat[0].photo ?? '')
-                        : Future.value(const Center(
-                            child: Text(
-                            'Data tidak tersedia!\n Coba cek jaringanmu!',
-                            textAlign: TextAlign.center,
-                          ))),
+                        : Future.value(Center(
+                            child: Image.asset(Assets.noImage()),
+                          )),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator(); // Show a loading indicator while waiting
@@ -205,7 +203,7 @@ class RuanganState extends State<Ruangan> {
                                       Text(
                                         ruangan.isEmpty
                                             ? ''
-                                            : ruangan[0].status == 'TDG'
+                                            : ruangan[0].status == false
                                                 ? 'Tidak Digunakan'
                                                 : 'Digunakan',
                                         style: const TextStyle(
@@ -358,15 +356,15 @@ class RuanganState extends State<Ruangan> {
                                                           .toList()
                                                         ..sort((a, b) {
                                                           if (a.status ==
-                                                                  'DG' &&
+                                                                  true &&
                                                               b.status !=
-                                                                  'DG') {
+                                                                  true) {
                                                             return 1;
                                                           }
                                                           if (a.status !=
-                                                                  'DG' &&
+                                                                  true &&
                                                               b.status ==
-                                                                  'DG') {
+                                                                  false) {
                                                             return -1;
                                                           }
                                                           return a.id
@@ -416,241 +414,213 @@ class RuanganState extends State<Ruangan> {
                                                                           16),
                                                             ),
                                                             elevation: 4,
-                                                            backgroundColor: items[
-                                                                            index2]
-                                                                        .status ==
-                                                                    'digunakan'
-                                                                ? Colors.black12
-                                                                : Colors.white,
+                                                            backgroundColor:
+                                                                items[index2]
+                                                                            .status ==
+                                                                        true
+                                                                    ? Colors
+                                                                        .black12
+                                                                    : Colors
+                                                                        .white,
                                                             shadowColor: Colors
                                                                 .black
                                                                 .withOpacity(
                                                                     0.1),
                                                           ),
                                                           onPressed: () {
-                                                            // if (items[index2].status ==
-                                                            //     'digunakan') {
-                                                            //   showDialog(
-                                                            //     context: context,
-                                                            //     builder: (BuildContext
-                                                            //         context) {
-                                                            //       return AlertDialog(
-                                                            //         title: const Text(
-                                                            //           'Asset sedang Digunakan',
-                                                            //           style: TextStyle(
-                                                            //               fontWeight:
-                                                            //                   FontWeight
-                                                            //                       .w600),
-                                                            //         ),
-                                                            //         content: Column(
-                                                            //           mainAxisSize:
-                                                            //               MainAxisSize
-                                                            //                   .min,
-                                                            //           crossAxisAlignment:
-                                                            //               CrossAxisAlignment
-                                                            //                   .start,
-                                                            //           children:
-                                                            //           TODO: pemfilteran Peminjaman
-                                                            //           Peminjaman
-                                                            //               .map((item) =>
-                                                            //                   Text(
-                                                            //                     'Name: ${item['name']}\nDivisi: ${item['Divisi']}\nEstimasi Peminjaman: ${item['estimasi peminjaman']}',
-                                                            //                     style: const TextStyle(
-                                                            //                         height:
-                                                            //                             2),
-                                                            //                   )).toList(),
-                                                            //         ),
-                                                            //         actions: [
-                                                            //           SizedBox(
-                                                            //             width:
-                                                            //                 MediaQuery.of(
-                                                            //                         context)
-                                                            //                     .size
-                                                            //                     .width,
-                                                            //             child:
-                                                            //                 ElevatedButton(
-                                                            //               style: ElevatedButton
-                                                            //                   .styleFrom(
-                                                            //                 padding:
-                                                            //                     EdgeInsets
-                                                            //                         .zero,
-                                                            //                 backgroundColor:
-                                                            //                     const Color(
-                                                            //                         0xFFFCA311),
-                                                            //               ),
-                                                            //               onPressed: () {
-                                                            //                 Navigator.of(
-                                                            //                         context)
-                                                            //                     .pop();
-                                                            //               },
-                                                            //               child:
-                                                            //                   const Text(
-                                                            //                 'OK',
-                                                            //                 style: TextStyle(
-                                                            //                     color: Colors
-                                                            //                         .white,
-                                                            //                     fontWeight:
-                                                            //                         FontWeight
-                                                            //                             .w600),
-                                                            //               ),
-                                                            //             ),
-                                                            //           ),
-                                                            //         ],
-                                                            //       );
-                                                            //     },
-                                                            //   );
-                                                            // } else {
-                                                            //   showModalBottomSheet(
-                                                            //     showDragHandle: true,
-                                                            //     context: context,
-                                                            //     builder: (BuildContext
-                                                            //         context) {
-                                                            //       return Padding(
-                                                            //         padding:
-                                                            //             const EdgeInsets
-                                                            //                 .only(
-                                                            //                 left: 24,
-                                                            //                 right: 24,
-                                                            //                 bottom: 32),
-                                                            //         child: SizedBox(
-                                                            //           width:
-                                                            //               MediaQuery.of(
-                                                            //                       context)
-                                                            //                   .size
-                                                            //                   .width,
-                                                            //           height: MediaQuery.of(
-                                                            //                       context)
-                                                            //                   .size
-                                                            //                   .height /
-                                                            //               2.6,
-                                                            //           child: Column(
-                                                            //             crossAxisAlignment:
-                                                            //                 CrossAxisAlignment
-                                                            //                     .start,
-                                                            //             children: [
-                                                            //               SizedBox(
-                                                            //                 width: MediaQuery.of(
-                                                            //                         context)
-                                                            //                     .size
-                                                            //                     .width,
-                                                            //                 height: 218,
-                                                            //                 child: SizedBox(
-                                                            //                                                       width: 60,
-                                                            //                                                       height: 46,
-                                                            //                                                       child: ClipRRect(
-                                                            //                                                         borderRadius:
-                                                            //                                                             BorderRadius
-                                                            //                                                                 .circular(10),
-                                                            //                                                         child: FutureBuilder<Widget>(
-                                                            //                                                           future: Assets.barang(barang[index2].photo),
-                                                            //                                                           builder: (context, snapshot) {
-                                                            //                                                             if (snapshot.connectionState ==
-                                                            //                                                                 ConnectionState.waiting) {
-                                                            //                                                               return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                            //                                                             } else if (snapshot.hasError) {
-                                                            //                                                               return Image.asset(Assets.noImage()); // Show error message if any
-                                                            //                                                             } else if (snapshot.hasData) {
-                                                            //                                                               return snapshot
-                                                            //                                                                   .data!; // Return the widget once the future completes
-                                                            //                                                             } else {
-                                                            //                                                               return const Text(
-                                                            //                                                                   'No data available'); // Show message if no data
-                                                            //                                                             }
-                                                            //                                                           }
-                                                            //                                                         ),
-                                                            //                                                       )
-                                                            //                                                     ),
-                                                            //               ),
-                                                            //               Row(
-                                                            //                 children: [
-                                                            //                   Text(
-                                                            //                     items[index2].name,
-                                                            //                     style: const TextStyle(
-                                                            //                         fontSize:
-                                                            //                             20,
-                                                            //                         fontWeight:
-                                                            //                             FontWeight.w600),
-                                                            //                   ),
-                                                            //                   Text(
-                                                            //                     ' ${items[index2].code}',
-                                                            //                     style: const TextStyle(
-                                                            //                         fontSize:
-                                                            //                             20,
-                                                            //                         fontWeight:
-                                                            //                             FontWeight.w600),
-                                                            //                   ),
-                                                            //                 ],
-                                                            //               ),
-                                                            //               Text(
-                                                            //                   'Kondisi ${items[index2].condition}'),
-                                                            //               Expanded(
-                                                            //                 child: Align(
-                                                            //                   alignment:
-                                                            //                       Alignment
-                                                            //                           .bottomCenter,
-                                                            //                   child: Row(
-                                                            //                     mainAxisAlignment:
-                                                            //                         MainAxisAlignment
-                                                            //                             .spaceBetween,
-                                                            //                     children: [
-                                                            //                       SizedBox(
-                                                            //                         width:
-                                                            //                             MediaQuery.of(context).size.width / 2.3,
-                                                            //                         child:
-                                                            //                             ElevatedButton(
-                                                            //                           onPressed:
-                                                            //                               () {
-                                                            //                             Navigator.pop(context);
-                                                            //                             ScaffoldMessenger.of(context).showSnackBar(
-                                                            //                               const SnackBar(
-                                                            //                                 content: Text('Barang Disimpan di Keranjang'),
-                                                            //                               ),
-                                                            //                             );
-                                                            //                           },
-                                                            //                           style:
-                                                            //                               ElevatedButton.styleFrom(
-                                                            //                             padding: EdgeInsets.zero,
-                                                            //                             side: const BorderSide(color: Color(0xFFFCA311)),
-                                                            //                           ),
-                                                            //                           child:
-                                                            //                               const Text(
-                                                            //                             'Masukan Keranjang',
-                                                            //                             style: TextStyle(color: Color(0xFFFCA311), fontWeight: FontWeight.w600),
-                                                            //                           ),
-                                                            //                         ),
-                                                            //                       ),
-                                                            //                       SizedBox(
-                                                            //                         width:
-                                                            //                             MediaQuery.of(context).size.width / 2.3,
-                                                            //                         child:
-                                                            //                             ElevatedButton(
-                                                            //                           onPressed:
-                                                            //                               () {
-                                                            //                             Navigator.pop(context);
-                                                            //                           },
-                                                            //                           style:
-                                                            //                               ElevatedButton.styleFrom(
-                                                            //                             padding: EdgeInsets.zero,
-                                                            //                             backgroundColor: const Color(0xFFFCA311),
-                                                            //                           ),
-                                                            //                           child:
-                                                            //                               const Text(
-                                                            //                             'Pinjam Barang',
-                                                            //                             style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-                                                            //                           ),
-                                                            //                         ),
-                                                            //                       ),
-                                                            //                     ],
-                                                            //                   ),
-                                                            //                 ),
-                                                            //               ),
-                                                            //             ],
-                                                            //           ),
-                                                            //         ),
-                                                            //       );
-                                                            //     },
-                                                            //   );
-                                                            // }
+                                                            if (items[index2]
+                                                                    .status ==
+                                                                'digunakan') {
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return AlertDialog(
+                                                                    title:
+                                                                        const Text(
+                                                                      'Asset sedang Digunakan',
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
+                                                                    ),
+                                                                    content:
+                                                                        Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      // TODO: Make the peminjaman detail
+                                                                      // children:
+                                                                      // Peminjaman
+                                                                      //     .map((item) =>
+                                                                      //         Text(
+                                                                      //           'Name: ${item['name']}\nDivisi: ${item['Divisi']}\nEstimasi Peminjaman: ${item['estimasi peminjaman']}',
+                                                                      //           style: const TextStyle(
+                                                                      //               height:
+                                                                      //                   2),
+                                                                      //         )).toList(),
+                                                                    ),
+                                                                    actions: [
+                                                                      SizedBox(
+                                                                        width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width,
+                                                                        child:
+                                                                            ElevatedButton(
+                                                                          style:
+                                                                              ElevatedButton.styleFrom(
+                                                                            padding:
+                                                                                EdgeInsets.zero,
+                                                                            backgroundColor:
+                                                                                const Color(0xFFFCA311),
+                                                                          ),
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.of(context).pop();
+                                                                          },
+                                                                          child:
+                                                                              const Text(
+                                                                            'OK',
+                                                                            style:
+                                                                                TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                },
+                                                              );
+                                                            } else {
+                                                              showModalBottomSheet(
+                                                                showDragHandle:
+                                                                    true,
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .only(
+                                                                        left:
+                                                                            24,
+                                                                        right:
+                                                                            24,
+                                                                        bottom:
+                                                                            32),
+                                                                    child:
+                                                                        SizedBox(
+                                                                      width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width,
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height /
+                                                                          2.6,
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          SizedBox(
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width,
+                                                                            height:
+                                                                                218,
+                                                                            child: SizedBox(
+                                                                                width: 60,
+                                                                                height: 46,
+                                                                                child: ClipRRect(
+                                                                                  borderRadius: BorderRadius.circular(10),
+                                                                                  child: FutureBuilder<Widget>(
+                                                                                      future: Assets.barang(barang[index2].photo ?? ''),
+                                                                                      builder: (context, snapshot) {
+                                                                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                                        } else if (snapshot.hasError) {
+                                                                                          return Image.asset(Assets.noImage()); // Show error message if any
+                                                                                        } else if (snapshot.hasData) {
+                                                                                          return snapshot.data!; // Return the widget once the future completes
+                                                                                        } else {
+                                                                                          return const Text('No data available'); // Show message if no data
+                                                                                        }
+                                                                                      }),
+                                                                                )),
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              Text(
+                                                                                items[index2].name,
+                                                                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                                                                              ),
+                                                                              Text(
+                                                                                ' ${items[index2].code}',
+                                                                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Text(
+                                                                              'Kondisi ${items[index2].condition}'),
+                                                                          Expanded(
+                                                                            child:
+                                                                                Align(
+                                                                              alignment: Alignment.bottomCenter,
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  SizedBox(
+                                                                                    width: MediaQuery.of(context).size.width / 2.3,
+                                                                                    child: ElevatedButton(
+                                                                                      onPressed: () {
+                                                                                        Navigator.pop(context);
+                                                                                        ScaffoldMessenger.of(context).showSnackBar(
+                                                                                          const SnackBar(
+                                                                                            content: Text('Barang Disimpan di Keranjang'),
+                                                                                          ),
+                                                                                        );
+                                                                                      },
+                                                                                      style: ElevatedButton.styleFrom(
+                                                                                        padding: EdgeInsets.zero,
+                                                                                        side: const BorderSide(color: Color(0xFFFCA311)),
+                                                                                      ),
+                                                                                      child: const Text(
+                                                                                        'Masukan Keranjang',
+                                                                                        style: TextStyle(color: Color(0xFFFCA311), fontWeight: FontWeight.w600),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: MediaQuery.of(context).size.width / 2.3,
+                                                                                    child: ElevatedButton(
+                                                                                      onPressed: () {
+                                                                                        Navigator.pop(context);
+                                                                                      },
+                                                                                      style: ElevatedButton.styleFrom(
+                                                                                        padding: EdgeInsets.zero,
+                                                                                        backgroundColor: const Color(0xFFFCA311),
+                                                                                      ),
+                                                                                      child: const Text(
+                                                                                        'Pinjam Barang',
+                                                                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
+                                                            }
                                                           },
                                                           child: Row(
                                                             children: [
@@ -808,12 +778,12 @@ class RuanganState extends State<Ruangan> {
                                                             uniqueNames[index])
                                                         .toList()
                                                       ..sort((a, b) {
-                                                        if (a.status == 'DG' &&
-                                                            b.status != 'DG') {
+                                                        if (a.status == true &&
+                                                            b.status != true) {
                                                           return 1;
                                                         }
-                                                        if (a.status != 'DG' &&
-                                                            b.status == 'DG') {
+                                                        if (a.status != true &&
+                                                            b.status == true) {
                                                           return -1;
                                                         }
                                                         return a.id
@@ -865,7 +835,7 @@ class RuanganState extends State<Ruangan> {
                                                           backgroundColor: items[
                                                                           index2]
                                                                       .status ==
-                                                                  'digunakan'
+                                                                  true
                                                               ? Colors.black12
                                                               : Colors.white,
                                                           shadowColor: Colors
@@ -1071,7 +1041,7 @@ class RuanganState extends State<Ruangan> {
                                                           //                             ElevatedButton(
                                                           //                           onPressed:
                                                           //                               () {
-                                                          //                             Navigator.pop(context);
+                                                          //                             context.pop();
                                                           //                           },
                                                           //                           style:
                                                           //                               ElevatedButton.styleFrom(

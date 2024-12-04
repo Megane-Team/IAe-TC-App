@@ -89,7 +89,7 @@ class _NotifikasiState extends State<Notifikasi> {
                   return noData();
                 } else if (snapshot.hasData) {
                   if (snapshot.data!.isEmpty) {
-                    return noData();
+                    return SizedBox();
                   }
                   listNotif = snapshot.data!;
                   return ListView.builder(
