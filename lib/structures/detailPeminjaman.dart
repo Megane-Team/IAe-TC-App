@@ -22,32 +22,35 @@ class DetailPeminjaman {
   @HiveField(7)
   late int? passenger;
   @HiveField(8)
+  late int userId;
+  @HiveField(9)
   late DateTime createdAt;
 
-  DetailPeminjaman({
-    required this.id,
-    required this.status,
-    required this.borrowedDate,
-    required this.estimatedTime,
-    required this.returnDate,
-    required this.objective,
-    required this.destination,
-    required this.passenger,
-    required this.createdAt,
-  });
+  DetailPeminjaman(
+      {required this.id,
+      required this.status,
+      required this.borrowedDate,
+      required this.estimatedTime,
+      required this.returnDate,
+      required this.objective,
+      required this.destination,
+      required this.passenger,
+      required this.userId,
+      required this.createdAt});
 
   factory DetailPeminjaman.fromJson(Map<String, dynamic> json) {
+    print('json: $json');
     return DetailPeminjaman(
-      id: json['id'],
-      status: PeminjamanStatus.values.firstWhere(
-          (e) => e.toString() == 'PeminjamanStatus.${json['status']}'),
-      borrowedDate: DateTime.parse(json['borrowedDate']),
-      estimatedTime: DateTime.parse(json['estimatedTime']),
-      returnDate: DateTime.parse(json['returnDate']),
-      objective: json['objective'],
-      destination: json['destination'],
-      passenger: json['passenger'],
-      createdAt: DateTime.parse(json['createdAt']),
-    );
+        id: json['id'],
+        status: PeminjamanStatus.values.firstWhere(
+            (e) => e.toString() == 'PeminjamanStatus.${json['status']}'),
+        borrowedDate: DateTime.parse(json['borrowedDate']),
+        estimatedTime: DateTime.parse(json['estimatedTime']),
+        returnDate: json['returnDate'] != null ? DateTime.parse(json['returnDate']) : null,
+        objective: json['objective'],
+        destination: json['destination'],
+        passenger: json['passenger'],
+        userId: json['userId'],
+        createdAt: DateTime.parse(json['createdAt']));
   }
 }
