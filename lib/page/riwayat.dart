@@ -54,7 +54,7 @@ class RiwayatState extends State<Riwayat> {
   }
 
   String getAsetName(Peminjaman peminjaman) {
-    var name;
+    String? name;
 
     if (peminjaman.category == PeminjamanCategory.barang) {
       name = barangs.firstWhere((b) => b.id == peminjaman.barangId).name;
@@ -251,9 +251,6 @@ class RiwayatState extends State<Riwayat> {
                               );
                             }
                             if (snapshot.hasError) {
-                              print('error: ${snapshot.error.toString()}');
-                              print(
-                                  'stack trace: ${snapshot.stackTrace.toString()}');
                               return noData();
                             }
                             if (snapshot.hasData) {
