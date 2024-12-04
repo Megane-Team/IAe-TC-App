@@ -466,7 +466,7 @@ class KeranjangState extends State<Keranjang> {
                                                                             () async {
                                                                           await deletePeminjaman(
                                                                               item.id);
-                                                                          Navigator.of(context)
+                                                                          context
                                                                               .pop();
                                                                           setState(
                                                                               () {});
