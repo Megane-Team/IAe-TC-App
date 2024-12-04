@@ -1,27 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:inventara/actions/barang/read_barang_action.dart';
+import 'package:inventara/actions/kendaraan/read_kendaraan_action.dart';
+import 'package:inventara/structures/barang.dart';
+import 'package:inventara/structures/kendaraan.dart';
+import 'package:inventara/utils/assets.dart';
 
 class Cari extends StatefulWidget {
-  const Cari({super.key});
+  final int id;
+  final bool isRuangan;
+  const Cari({required this.id, required this.isRuangan, super.key});
 
   @override
   State<Cari> createState() => CariState();
 }
 
 class CariState extends State<Cari> {
-  List<Map<String, String>> filteredList = List.from(Kelas_1);
+  late List<Barang> barangs;
+  late List<Barang> bfilteredList;
+  late List<Kendaraan> kendaraans;
+  late List<Kendaraan> kfilteredList;
+  late bool isRuangan = widget.isRuangan;
+  late Future<void> fetchDataFuture;
+
+  Future<void> fetchData() async {
+    if (isRuangan) {
+      barangs = await readBarangFromRuanganId('${widget.id}', context);
+    } else {
+      kendaraans = await readKendaraanByGedungId('${widget.id}', context);
+    }
+    _filterAndUpdateList('');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFuture = fetchData();
+  }
 
   void _filterAndUpdateList(String value) {
     setState(() {
-      if (value.isEmpty) {
-        filteredList = List.from(Kelas_1);
+      if (isRuangan) {
+        if (value.isEmpty) {
+          bfilteredList = List.from(barangs);
+        } else {
+          bfilteredList = barangs
+              .where((item) =>
+                  item.name.toLowerCase().contains(value.toLowerCase()) ||
+                  item.code.toLowerCase().contains(value.toLowerCase()))
+              .toList();
+        }
       } else {
-        filteredList = Kelas_1.where((item) =>
-            item['name']!.toLowerCase().contains(value.toLowerCase()) ||
-            item['kode_barang']!
-                .toLowerCase()
-                .contains(value.toLowerCase())).toList();
+        if (value.isEmpty) {
+          kfilteredList = List.from(kendaraans);
+        } else {
+          kfilteredList = kendaraans
+              .where((item) =>
+                  item.name.toLowerCase().contains(value.toLowerCase()) ||
+                  item.plat.toLowerCase().contains(value.toLowerCase()))
+              .toList();
+        }
       }
     });
   }
@@ -58,7 +97,8 @@ class CariState extends State<Cari> {
                         color: Colors.black54,
                         fontSize: 16,
                         fontWeight: FontWeight.w100),
-                    hintText: 'Cari barang...',
+                    hintText:
+                        isRuangan ? 'Cari barang...' : 'Cari kendaraan...',
                     prefixIcon: const Icon(Icons.search),
                     border: InputBorder.none,
                     filled: true,
@@ -100,255 +140,509 @@ class CariState extends State<Cari> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: ListView.builder(
-          itemCount: filteredList.length,
-          itemBuilder: (context, index) {
-            final item = filteredList[index];
-            return Container(
-              margin: const EdgeInsets.only(top: 10),
-              width: MediaQuery.of(context).size.width,
-              height: 60,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                    offset: const Offset(0, 0),
-                  ),
-                ],
-              ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  elevation: 4,
-                  backgroundColor: item['status'] == 'Digunakan'
-                      ? Colors.black12
-                      : Colors.white,
-                  shadowColor: Colors.black.withOpacity(0.1),
-                ),
-                onPressed: () {
-                  if (item['status'] == 'Digunakan') {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(
-                            'Asset sedang Digunakan',
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: Peminjaman.map((item) => Text(
-                                  'Name: ${item['name']}\nDivisi: ${item['Divisi']}\nEstimasi Peminjaman: ${item['estimasi peminjaman']}',
-                                  style: TextStyle(height: 2),
-                                )).toList(),
-                          ),
-                          actions: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  backgroundColor: const Color(0xFFFCA311),
-                                ),
-                                onPressed: () {
-                                  context.pop();
-                                },
-                                child: Text(
-                                  'OK',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    );
+        child: FutureBuilder(
+            future: fetchDataFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return ListView.builder(
+                itemCount:
+                    isRuangan ? bfilteredList.length : kfilteredList.length,
+                itemBuilder: (context, index) {
+                  late Barang item;
+                  late Kendaraan item2;
+                  if (isRuangan) {
+                    item = bfilteredList[index];
                   } else {
-                    showModalBottomSheet(
-                      showDragHandle: true,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                              left: 24, right: 24, bottom: 32),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height / 2.6,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 218,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(10),
+                    item2 = kfilteredList[index];
+                  }
+                  return Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    width: MediaQuery.of(context).size.width,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 4,
+                          offset: const Offset(0, 0),
+                        ),
+                      ],
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        elevation: 4,
+                        backgroundColor: isRuangan
+                            ? item.status == true
+                                ? Colors.black12
+                                : Colors.white
+                            : item2.status == true
+                                ? Colors.black12
+                                : Colors.white,
+                        shadowColor: Colors.black.withOpacity(0.1),
+                      ),
+                      onPressed: () {
+                        if (isRuangan) {
+                          if (item.status == true) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    'Asset sedang Digunakan',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
                                   ),
-                                  child: Image.asset(
-                                    item['photo']!,
-                                    width: 50,
-                                    height: 50,
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    // TODO: peminjaman filter
+                                    // children: Peminjaman.map((item) => Text(
+                                    //       'Name: ${item['name']}\nDivisi: ${item['Divisi']}\nEstimasi Peminjaman: ${item['estimasi peminjaman']}',
+                                    //       style: TextStyle(height: 2),
+                                    //     )).toList(),
                                   ),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      item['name']!,
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      ' ${item['kode_barang']!}',
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600),
+                                  actions: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          backgroundColor:
+                                              const Color(0xFFFCA311),
+                                        ),
+                                        onPressed: () {
+                                          context.pop();
+                                        },
+                                        child: Text(
+                                          'OK',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
                                     ),
                                   ],
-                                ),
-                                Text('Kondisi ${item['kondisi']!}'),
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                );
+                              },
+                            );
+                          } else {
+                            showModalBottomSheet(
+                              showDragHandle: true,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 24, right: 24, bottom: 32),
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height /
+                                        2.6,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2.3,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(
-                                                  content: Text(
-                                                      'Barang Disimpan di Keranjang'),
-                                                ),
-                                              );
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              padding: EdgeInsets.zero,
-                                              side: const BorderSide(
-                                                  color: Color(0xFFFCA311)),
+                                        Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 218,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
                                             ),
-                                            child: const Text(
-                                              'Masukan Keranjang',
-                                              style: TextStyle(
-                                                  color: Color(0xFFFCA311),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: FutureBuilder(
+                                                  future: Assets.barang(
+                                                      item.photo ?? ''),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState.done) {
+                                                      return snapshot.data
+                                                          as Widget;
+                                                    } else {
+                                                      return const Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      );
+                                                    }
+                                                  }),
+                                            )),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              item.name,
+                                              style: const TextStyle(
+                                                  fontSize: 20,
                                                   fontWeight: FontWeight.w600),
                                             ),
-                                          ),
+                                            Text(
+                                              ' ${item.code}',
+                                              style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ],
                                         ),
-                                        SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2.3,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              padding: EdgeInsets.zero,
-                                              backgroundColor:
-                                                  const Color(0xFFFCA311),
-                                            ),
-                                            child: const Text(
-                                              'Pinjam Barang',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w600),
+                                        Text('Kondisi ${item.condition}'),
+                                        Expanded(
+                                          child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2.3,
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      // TODO: masukan ke detail Peminjaman (Draft)
+
+                                                      context.pop();
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              'Barang Disimpan di Keranjang'),
+                                                        ),
+                                                      );
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      padding: EdgeInsets.zero,
+                                                      side: const BorderSide(
+                                                          color: Color(
+                                                              0xFFFCA311)),
+                                                    ),
+                                                    child: const Text(
+                                                      'Masukan Keranjang',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xFFFCA311),
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2.3,
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      context.pop();
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      padding: EdgeInsets.zero,
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xFFFCA311),
+                                                    ),
+                                                    child: const Text(
+                                                      'Pinjam Barang',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+                                );
+                              },
+                            );
+                          }
+                        } else {
+                          if (item.status == true) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    'Asset sedang Digunakan',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    // TODO: peminjaman filter
+                                    // children: Peminjaman.map((item) => Text(
+                                    //       'Name: ${item['name']}\nDivisi: ${item['Divisi']}\nEstimasi Peminjaman: ${item['estimasi peminjaman']}',
+                                    //       style: TextStyle(height: 2),
+                                    //     )).toList(),
+                                  ),
+                                  actions: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          backgroundColor:
+                                              const Color(0xFFFCA311),
+                                        ),
+                                        onPressed: () {
+                                          context.pop();
+                                        },
+                                        child: Text(
+                                          'OK',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            showModalBottomSheet(
+                              showDragHandle: true,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 24, right: 24, bottom: 32),
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height /
+                                        2.6,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 218,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: FutureBuilder(
+                                                  future: Assets.barang(
+                                                      item2.photo ?? ''),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState.done) {
+                                                      return snapshot.data
+                                                          as Widget;
+                                                    } else {
+                                                      return const Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      );
+                                                    }
+                                                  }),
+                                            )),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              item2.name,
+                                              style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ],
+                                        ),
+                                        Text('Kondisi ${item2.condition}'),
+                                        Expanded(
+                                          child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2.3,
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      // TODO: masukan ke detail Peminjaman (Draft)
+
+                                                      context.pop();
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              'Kendaraan Disimpan di Keranjang'),
+                                                        ),
+                                                      );
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      padding: EdgeInsets.zero,
+                                                      side: const BorderSide(
+                                                          color: Color(
+                                                              0xFFFCA311)),
+                                                    ),
+                                                    child: const Text(
+                                                      'Masukan Keranjang',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xFFFCA311),
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2.3,
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      context.pop();
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      padding: EdgeInsets.zero,
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xFFFCA311),
+                                                    ),
+                                                    child: const Text(
+                                                      'Pinjam Kendaraan',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        }
                       },
-                    );
-                  }
+                      child: Row(
+                        children: [
+                          Container(
+                              width: 60,
+                              height: 46,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: isRuangan
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: FutureBuilder(
+                                          future:
+                                              Assets.barang(item.photo ?? ''),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.done) {
+                                              return snapshot.data as Widget;
+                                            } else {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            }
+                                          }),
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: FutureBuilder(
+                                          future: Assets.kendaraan(
+                                              item2.photo ?? ''),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.done) {
+                                              return snapshot.data as Widget;
+                                            } else {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            }
+                                          }),
+                                    )),
+                          const Gap(4),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (isRuangan) ...[
+                                Text(
+                                  '${item.name} ${item.code}',
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                                Text(
+                                  item.condition,
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                              ] else ...[
+                                Text(
+                                  item2.name,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                  item2.condition,
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w100),
+                                ),
+                              ]
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
                 },
-                child: Row(
-                  children: [
-                    Container(
-                      width: 60,
-                      height: 46,
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Image.asset(
-                        item['photo']!,
-                        width: 50,
-                        height: 50,
-                      ),
-                    ),
-                    const Gap(4),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${item['name']} ${item['kode_barang']}',
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                        Text(
-                          item['kondisi']!,
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
+              );
+            }),
       ),
     );
   }
 }
-
-List<Map<String, String>> Peminjaman = [
-  {
-    'name': 'User 1',
-    'Divisi': 'HC3000',
-    'estimasi peminjaman': '31-11-2024',
-  },
-];
-
-List<Map<String, String>> Kelas_1 = [
-  {
-    'name': 'Kursi',
-    'kode_barang': '1',
-    'photo': 'assets/images/logos/inventara.png',
-    'kondisi': 'Bagus',
-    'status': 'Tidak Digunakan',
-  },
-  {
-    'name': 'Meja',
-    'kode_barang': '3',
-    'photo': 'assets/images/logos/inventara.png',
-    'kondisi': 'Kurang Baik',
-    'status': 'Digunakan',
-  },
-];
