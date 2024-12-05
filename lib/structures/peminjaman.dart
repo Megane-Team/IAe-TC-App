@@ -18,7 +18,7 @@ class Peminjaman {
   @HiveField(5)
   late int? kendaraanId;
   @HiveField(6)
-  late int? detailPeminjamanId;
+  late int detailPeminjamanId;
   @HiveField(7)
   late DateTime createdAt;
 

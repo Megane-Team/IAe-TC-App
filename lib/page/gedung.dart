@@ -3,8 +3,14 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:inventara/actions/peminjaman/read_detailPeminjaman_action.dart';
+import 'package:inventara/actions/peminjaman/read_peminjaman_action.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
+import 'package:inventara/actions/users/read_user_action.dart';
+import 'package:inventara/structures/detailPeminjaman.dart';
+import 'package:inventara/structures/peminjaman.dart';
 import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/structures/ruangan_category.dart';
 import 'package:inventara/structures/tempat.dart';
@@ -44,32 +50,17 @@ class GedungState extends State<Gedung> {
 
   void _filterAndUpdateRuanganList(String value) {
     setState(() {
-      if (isKelasActive || isLabActive || isGudangActive) {
-        filteredRuangan = [];
-        if (isKelasActive) {
-          filteredRuangan.addAll(originalRuanganList
-              .where((item) => item.category == RuanganCategory.kelas)
-              .where((element) =>
-                  element.code.toLowerCase().contains(value.toLowerCase())));
-        }
-        if (isLabActive) {
-          filteredRuangan.addAll(originalRuanganList
-              .where((item) => item.category == RuanganCategory.lab)
-              .where((element) =>
-                  element.code.toLowerCase().contains(value.toLowerCase())));
-        }
-        if (isGudangActive) {
-          filteredRuangan.addAll(originalRuanganList
-              .where((item) => item.category == RuanganCategory.gudang)
-              .where((element) =>
-                  element.code.toLowerCase().contains(value.toLowerCase())));
-        }
-      } else {
-        filteredRuangan = originalRuanganList
-            .where((element) =>
-                element.code.toLowerCase().contains(value.toLowerCase()))
-            .toList();
-      }
+      filteredRuangan = originalRuanganList.where((item) {
+        bool matchesCategory =
+            (isKelasActive && item.category == RuanganCategory.kelas) ||
+                (isLabActive && item.category == RuanganCategory.lab) ||
+                (isGudangActive && item.category == RuanganCategory.gudang) ||
+                (!isKelasActive && !isLabActive && !isGudangActive);
+        bool matchesSearch =
+            item.code.toLowerCase().contains(value.toLowerCase());
+        return matchesCategory && matchesSearch;
+      }).toList()
+        ..sort((a, b) => a.status.toString().compareTo(b.status.toString()));
     });
   }
 
@@ -278,19 +269,82 @@ class GedungState extends State<Gedung> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title:
-                                        const Text('Ruangan Sedang Digunakan'),
-                                    content: const Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      // TODO: make the peminjaman detail
-                                      // children: Peminjaman.map((peminjaman) {
-                                      //   return ListTile(
-                                      //     title: Text(peminjaman['name']!),
-                                      //     subtitle: Text(
-                                      //         'Divisi: ${peminjaman['Divisi']!}\nEstimasi Peminjaman: ${peminjaman['estimasi peminjaman']!}'),
-                                      //   );
-                                      // }).toList(),
-                                    ),
+                                    title: const Text('Ruangan Sedang Dipinjam',
+                                        style: TextStyle(fontSize: 20)),
+                                    content: FutureBuilder(
+                                        future: readPeminjamanbyRuanganId(
+                                            ruangan.id),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const CircularProgressIndicator();
+                                          } else if (snapshot.hasError) {
+                                            return const Text(
+                                                'No data available');
+                                          } else if (snapshot.hasData) {
+                                            final Peminjaman peminjaman =
+                                                snapshot.data!;
+                                            return FutureBuilder(
+                                                future: readUserById(
+                                                    '${peminjaman.userId}'),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return const CircularProgressIndicator();
+                                                  } else if (snapshot
+                                                      .hasError) {
+                                                    return const Text(
+                                                        'No data available');
+                                                  } else if (snapshot.hasData) {
+                                                    final user = snapshot.data!;
+                                                    return FutureBuilder(
+                                                        future: readDetailPeminjamanbyId(
+                                                            peminjaman
+                                                                .detailPeminjamanId),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          if (snapshot
+                                                                  .connectionState ==
+                                                              ConnectionState
+                                                                  .waiting) {
+                                                            return const CircularProgressIndicator();
+                                                          } else if (snapshot
+                                                              .hasError) {
+                                                            return const Text(
+                                                                'No data available');
+                                                          } else if (snapshot
+                                                              .hasData) {
+                                                            final DetailPeminjaman
+                                                                dpeminjaman =
+                                                                snapshot.data!;
+                                                            return Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  Text(
+                                                                      'Digunakan oleh: ${user.name}'),
+                                                                  Text(
+                                                                      'Divisi: ${user.unit}\nEstimasi : ${DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!)}')
+                                                                ]);
+                                                          } else {
+                                                            return const Text(
+                                                                'Tidak ada data');
+                                                          }
+                                                        });
+                                                  } else {
+                                                    return const Text(
+                                                        'Tidak ada data');
+                                                  }
+                                                });
+                                          } else {
+                                            return const Text('Tidak ada data');
+                                          }
+                                        }),
                                     actions: [
                                       SizedBox(
                                         width:

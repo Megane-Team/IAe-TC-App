@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:inventara/actions/barang/read_barang_action.dart';
 import 'package:inventara/actions/kendaraan/read_kendaraan_action.dart';
+import 'package:inventara/actions/peminjaman/read_detailPeminjaman_action.dart';
+import 'package:inventara/actions/peminjaman/read_peminjaman_action.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
+import 'package:inventara/actions/users/read_user_action.dart';
 import 'package:inventara/structures/barang.dart';
+import 'package:inventara/structures/detailPeminjaman.dart';
 import 'package:inventara/structures/kendaraan.dart';
+import 'package:inventara/structures/peminjaman.dart';
 import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/structures/tempat.dart';
+import 'package:inventara/structures/user.dart';
 import 'package:inventara/utils/actionwidget.dart';
 import 'package:inventara/utils/assets.dart';
 import 'package:inventara/structures/ruangan_category.dart';
@@ -444,30 +451,62 @@ class RuanganState extends State<Ruangan> {
                                                                   return AlertDialog(
                                                                     title:
                                                                         const Text(
-                                                                      'Asset sedang Digunakan',
+                                                                      'Asset sedang Dipinjam',
                                                                       style: TextStyle(
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
+                                                                          fontSize:
+                                                                              20),
                                                                     ),
-                                                                    content:
-                                                                        Column(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .min,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      // TODO: Make the peminjaman detail
-                                                                      // children:
-                                                                      // Peminjaman
-                                                                      //     .map((item) =>
-                                                                      //         Text(
-                                                                      //           'Name: ${item['name']}\nDivisi: ${item['Divisi']}\nEstimasi Peminjaman: ${item['estimasi peminjaman']}',
-                                                                      //           style: const TextStyle(
-                                                                      //               height:
-                                                                      //                   2),
-                                                                      //         )).toList(),
-                                                                    ),
+                                                                    content: FutureBuilder(
+                                                                        future: readPeminjamanbyBarangId(items[index2].id),
+                                                                        builder: (context, snapshot) {
+                                                                          if (snapshot.connectionState ==
+                                                                              ConnectionState
+                                                                                  .waiting) {
+                                                                            return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                          } else if (snapshot
+                                                                              .hasError) {
+                                                                            return const Text('Data tidak tersedia'); // Show error message if any
+                                                                          } else if (snapshot
+                                                                              .hasData) {
+                                                                            final Peminjaman
+                                                                                peminjaman =
+                                                                                snapshot.data!;
+                                                                            return FutureBuilder(
+                                                                                future: readUserById('${peminjaman.userId}'),
+                                                                                builder: (context, snapshot) {
+                                                                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                    return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                                  } else if (snapshot.hasError) {
+                                                                                    return const Text('Data tidak tersedia'); // Show error message if any
+                                                                                  } else if (snapshot.hasData) {
+                                                                                    final User user = snapshot.data!;
+                                                                                    return FutureBuilder(
+                                                                                        future: readDetailPeminjamanbyId(peminjaman.detailPeminjamanId),
+                                                                                        builder: (context, snapshot) {
+                                                                                          if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                            return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                                          } else if (snapshot.hasError) {
+                                                                                            return const Text('Data tidak tersedia'); // Show error message if any
+                                                                                          } else if (snapshot.hasData) {
+                                                                                            final DetailPeminjaman dpeminjaman = snapshot.data!;
+                                                                                            return Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                                                                              Text('Digunakan oleh: ${user.name}'),
+                                                                                              Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
+                                                                                            ]);
+                                                                                          } else {
+                                                                                            return const Text('Data tidak tersedia');
+                                                                                          }
+                                                                                        });
+                                                                                  } else {
+                                                                                    return const Text('Data tidak tersedia');
+                                                                                  }
+                                                                                });
+                                                                          } else {
+                                                                            return const Text('Data tidak tersedia');
+                                                                          }
+                                                                        }),
                                                                     actions: [
                                                                       SizedBox(
                                                                         width: MediaQuery.of(context)
@@ -864,24 +903,52 @@ class RuanganState extends State<Ruangan> {
                                                                             FontWeight.w600),
                                                                   ),
                                                                   content:
-                                                                      Column(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .min,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    // TODO: pemfilteran Peminjaman
-                                                                    // children:
-                                                                    // Peminjaman
-                                                                    //     .map((item) =>
-                                                                    //         Text(
-                                                                    //           'Name: ${item['name']}\nDivisi: ${item['Divisi']}\nEstimasi Peminjaman: ${item['estimasi peminjaman']}',
-                                                                    //           style: const TextStyle(
-                                                                    //               height:
-                                                                    //                   2),
-                                                                    //         )).toList(),
-                                                                  ),
+                                                                      FutureBuilder(
+                                                                          future: readPeminjamanbyKendaraanId(items[index2]
+                                                                              .id),
+                                                                          builder:
+                                                                              (context, snapshot) {
+                                                                            if (snapshot.connectionState ==
+                                                                                ConnectionState.waiting) {
+                                                                              return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                            } else if (snapshot.hasError) {
+                                                                              return const Text('Data tidak tersedia'); // Show error message if any
+                                                                            } else if (snapshot.hasData) {
+                                                                              final Peminjaman peminjaman = snapshot.data!;
+                                                                              return FutureBuilder(
+                                                                                  future: readUserById('${peminjaman.userId}'),
+                                                                                  builder: (context, snapshot) {
+                                                                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                      return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                                    } else if (snapshot.hasError) {
+                                                                                      return const Text('Data tidak tersedia'); // Show error message if any
+                                                                                    } else if (snapshot.hasData) {
+                                                                                      final User user = snapshot.data!;
+                                                                                      return FutureBuilder(
+                                                                                          future: readDetailPeminjamanbyId(peminjaman.detailPeminjamanId),
+                                                                                          builder: (context, snapshot) {
+                                                                                            if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                              return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                                            } else if (snapshot.hasError) {
+                                                                                              return const Text('Data tidak tersedia'); // Show error message if any
+                                                                                            } else if (snapshot.hasData) {
+                                                                                              final DetailPeminjaman dpeminjaman = snapshot.data!;
+                                                                                              return Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                                                                                Text('Digunakan oleh: ${user.name}'),
+                                                                                                Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
+                                                                                              ]);
+                                                                                            } else {
+                                                                                              return const Text('Data tidak tersedia');
+                                                                                            }
+                                                                                          });
+                                                                                    } else {
+                                                                                      return const Text('Data tidak tersedia');
+                                                                                    }
+                                                                                  });
+                                                                            } else {
+                                                                              return const Text('Data tidak tersedia');
+                                                                            }
+                                                                          }),
                                                                   actions: [
                                                                     SizedBox(
                                                                       width: MediaQuery.of(
@@ -958,7 +1025,7 @@ class RuanganState extends State<Ruangan> {
                                                                               child: ClipRRect(
                                                                                 borderRadius: BorderRadius.circular(10),
                                                                                 child: FutureBuilder<Widget>(
-                                                                                    future: Assets.barang(barang[index2].photo ?? ''),
+                                                                                    future: Assets.kendaraan(kendaraan[index2].photo ?? ''),
                                                                                     builder: (context, snapshot) {
                                                                                       if (snapshot.connectionState == ConnectionState.waiting) {
                                                                                         return const CircularProgressIndicator(); // Show a loading indicator while waiting
@@ -1142,6 +1209,7 @@ class RuanganState extends State<Ruangan> {
                             child: FloatingActionButton(
                                 backgroundColor: const Color(0xFFFCA311),
                                 onPressed: () {
+                                  // TODO: adding peminjaman function
                                   // Add your onPressed code here!
                                 },
                                 child: const Text(
