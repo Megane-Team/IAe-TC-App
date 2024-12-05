@@ -23,7 +23,7 @@ class PeminjamanAdapter extends TypeAdapter<Peminjaman> {
       ruanganId: fields[3] as int?,
       barangId: fields[4] as int?,
       kendaraanId: fields[5] as int?,
-      detailPeminjamanId: fields[6] as int?,
+      detailPeminjamanId: fields[6] as int,
       createdAt: fields[7] as DateTime,
     );
   }

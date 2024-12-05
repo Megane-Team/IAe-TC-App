@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:inventara/constants/themes.dart';
 import 'package:inventara/router.dart';
 import 'package:inventara/structures/barang.dart';
@@ -62,6 +63,8 @@ Future<void> main() async {
   await Hive.openBox('session', compactionStrategy: (int total, int deleted) {
     return deleted > 10;
   });
+
+  await initializeDateFormatting('id_ID', null);
 
   runApp(const App());
 }

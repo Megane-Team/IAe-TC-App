@@ -14,7 +14,6 @@ Future<List<DetailPeminjaman>> readDetailPeminjaman() async {
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final List<dynamic> data = responseData['data'];
-    print('data: $data');
     final List<DetailPeminjaman> detailPeminjaman =
         data.map((item) => DetailPeminjaman.fromJson(item)).toList();
 

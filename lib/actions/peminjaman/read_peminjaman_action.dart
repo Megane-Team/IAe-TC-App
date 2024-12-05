@@ -61,7 +61,7 @@ Future<List<Peminjaman>> readPeminjamanbyDetailId(int id) async {
   }
 }
 
-Future<List<Peminjaman>> readPeminjamanbyRuanganId(int id) async {
+Future<Peminjaman> readPeminjamanbyRuanganId(int id) async {
   var token = await Session.getToken();
 
   var response = await App.api.get(apiBaseURl.resolve('/peminjaman/ruangan/$id'),
@@ -69,11 +69,9 @@ Future<List<Peminjaman>> readPeminjamanbyRuanganId(int id) async {
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
-    final List<dynamic> data = responseData['data'];
-    final List<Peminjaman> peminjaman =
-        data.map((item) => Peminjaman.fromJson(item)).toList();
+    final Map<String, dynamic> data = responseData['data'];
+    return Peminjaman.fromJson(data);
 
-    return peminjaman;
   } else {
     throw Exception(
         'Failed to get draft peminjaman. Is internet connection available?');
