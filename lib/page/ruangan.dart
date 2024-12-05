@@ -1028,7 +1028,7 @@ class RuanganState extends State<Ruangan> {
                                                                               child: ClipRRect(
                                                                                 borderRadius: BorderRadius.circular(10),
                                                                                 child: FutureBuilder<Widget>(
-                                                                                    future: Assets.barang(barang[index2].photo ?? ''),
+                                                                                    future: Assets.kendaraan(kendaraan[index2].photo ?? ''),
                                                                                     builder: (context, snapshot) {
                                                                                       if (snapshot.connectionState == ConnectionState.waiting) {
                                                                                         return const CircularProgressIndicator(); // Show a loading indicator while waiting
@@ -1212,6 +1212,7 @@ class RuanganState extends State<Ruangan> {
                             child: FloatingActionButton(
                                 backgroundColor: const Color(0xFFFCA311),
                                 onPressed: () {
+                                  // TODO: adding peminjaman function
                                   // Add your onPressed code here!
                                 },
                                 child: const Text(

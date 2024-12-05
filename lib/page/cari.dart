@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:inventara/actions/barang/read_barang_action.dart';
 import 'package:inventara/actions/kendaraan/read_kendaraan_action.dart';
+import 'package:inventara/actions/peminjaman/read_detailPeminjaman_action.dart';
+import 'package:inventara/actions/peminjaman/read_peminjaman_action.dart';
+import 'package:inventara/actions/users/read_user_action.dart';
 import 'package:inventara/structures/barang.dart';
+import 'package:inventara/structures/detailPeminjaman.dart';
 import 'package:inventara/structures/kendaraan.dart';
+import 'package:inventara/structures/peminjaman.dart';
+import 'package:inventara/structures/user.dart';
 import 'package:inventara/utils/assets.dart';
 
 class Cari extends StatefulWidget {
@@ -56,9 +63,9 @@ class CariState extends State<Cari> {
           kfilteredList = List.from(kendaraans);
         } else {
           kfilteredList = kendaraans
-              .where((item) =>
-                  item.name.toLowerCase().contains(value.toLowerCase()) ||
-                  item.plat.toLowerCase().contains(value.toLowerCase()))
+              .where((item2) =>
+                  item2.name.toLowerCase().contains(value.toLowerCase()) ||
+                  item2.plat.toLowerCase().contains(value.toLowerCase()))
               .toList();
         }
       }
@@ -203,15 +210,55 @@ class CariState extends State<Cari> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.w600),
                                   ),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    // TODO: peminjaman filter
-                                    // children: Peminjaman.map((item) => Text(
-                                    //       'Name: ${item['name']}\nDivisi: ${item['Divisi']}\nEstimasi Peminjaman: ${item['estimasi peminjaman']}',
-                                    //       style: TextStyle(height: 2),
-                                    //     )).toList(),
+                                  content:
+                                  FutureBuilder(
+                                      future: readPeminjamanbyBarangId(item.id),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                        } else if (snapshot.hasError) {
+                                          return const Text('Data tidak tersedia'); // Show error message if any
+                                        } else if (snapshot.hasData) {
+                                          final Peminjaman peminjaman = snapshot.data!;
+                                          return FutureBuilder(
+                                              future: readUserById('${peminjaman.userId}'),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                                  return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                } else if (snapshot.hasError) {
+                                                  return const Text('Data tidak tersedia'); // Show error message if any
+                                                } else if (snapshot.hasData) {
+                                                  final User user = snapshot.data!;
+                                                  return FutureBuilder(
+                                                      future: readDetailPeminjamanbyId(peminjaman.detailPeminjamanId),
+                                                      builder: (context, snapshot) {
+                                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                        } else if (snapshot.hasError) {
+                                                          return const Text('Data tidak tersedia'); // Show error message if any
+                                                        } else if (snapshot.hasData) {
+                                                          final DetailPeminjaman dpeminjaman = snapshot.data!;
+                                                          return Column(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Text('Digunakan oleh: ${user.name}'),
+                                                                Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft' }')
+                                                              ]
+                                                          );
+                                                        } else {
+                                                          return const Text('Data tidak tersedia');
+                                                        }
+                                                      }
+                                                  );
+                                                } else {
+                                                  return const Text('Data tidak tersedia');
+                                                }
+                                              });
+                                        } else {
+                                          return const Text('Data tidak tersedia');
+                                        }
+                                      }
                                   ),
                                   actions: [
                                     SizedBox(
@@ -380,7 +427,7 @@ class CariState extends State<Cari> {
                             );
                           }
                         } else {
-                          if (item.status == true) {
+                          if (item2.status == true) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -390,15 +437,54 @@ class CariState extends State<Cari> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.w600),
                                   ),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    // TODO: peminjaman filter
-                                    // children: Peminjaman.map((item) => Text(
-                                    //       'Name: ${item['name']}\nDivisi: ${item['Divisi']}\nEstimasi Peminjaman: ${item['estimasi peminjaman']}',
-                                    //       style: TextStyle(height: 2),
-                                    //     )).toList(),
+                                  content: FutureBuilder(
+                                      future: readPeminjamanbyKendaraanId(item2.id),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                        } else if (snapshot.hasError) {
+                                          return const Text('Data tidak tersedia'); // Show error message if any
+                                        } else if (snapshot.hasData) {
+                                          final Peminjaman peminjaman = snapshot.data!;
+                                          return FutureBuilder(
+                                              future: readUserById('${peminjaman.userId}'),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                                  return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                } else if (snapshot.hasError) {
+                                                  return const Text('Data tidak tersedia'); // Show error message if any
+                                                } else if (snapshot.hasData) {
+                                                  final User user = snapshot.data!;
+                                                  return FutureBuilder(
+                                                      future: readDetailPeminjamanbyId(peminjaman.detailPeminjamanId),
+                                                      builder: (context, snapshot) {
+                                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                        } else if (snapshot.hasError) {
+                                                          return const Text('Data tidak tersedia'); // Show error message if any
+                                                        } else if (snapshot.hasData) {
+                                                          final DetailPeminjaman dpeminjaman = snapshot.data!;
+                                                          return Column(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Text('Digunakan oleh: ${user.name}'),
+                                                                Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft' }')
+                                                              ]
+                                                          );
+                                                        } else {
+                                                          return const Text('Data tidak tersedia');
+                                                        }
+                                                      }
+                                                  );
+                                                } else {
+                                                  return const Text('Data tidak tersedia');
+                                                }
+                                              });
+                                        } else {
+                                          return const Text('Data tidak tersedia');
+                                        }
+                                      }
                                   ),
                                   actions: [
                                     SizedBox(
@@ -453,7 +539,7 @@ class CariState extends State<Cari> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               child: FutureBuilder(
-                                                  future: Assets.barang(
+                                                  future: Assets.kendaraan(
                                                       item2.photo ?? ''),
                                                   builder: (context, snapshot) {
                                                     if (snapshot
@@ -622,15 +708,11 @@ class CariState extends State<Cari> {
                               ] else ...[
                                 Text(
                                   item2.name,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
+                                  style: const TextStyle(color: Colors.black),
                                 ),
                                 Text(
                                   item2.condition,
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w100),
+                                  style: const TextStyle(color: Colors.black),
                                 ),
                               ]
                             ],
