@@ -453,60 +453,60 @@ class RuanganState extends State<Ruangan> {
                                                                         const Text(
                                                                       'Asset sedang Dipinjam',
                                                                       style: TextStyle(
-                                                                          fontWeight:
-                                                                              FontWeight.w600,
-                                                                        fontSize: 20),
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
+                                                                          fontSize:
+                                                                              20),
                                                                     ),
-                                                                    content:
-                                                                        FutureBuilder(
-                                                                          future: readPeminjamanbyBarangId(items[index2].id),
-                                                                          builder: (context, snapshot) {
-                                                                            if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                    content: FutureBuilder(
+                                                                        future: readPeminjamanbyBarangId(items[index2].id),
+                                                                        builder: (context, snapshot) {
+                                                                          if (snapshot.connectionState ==
+                                                                              ConnectionState
+                                                                                  .waiting) {
                                                                             return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                                            } else if (snapshot.hasError) {
+                                                                          } else if (snapshot
+                                                                              .hasError) {
                                                                             return const Text('Data tidak tersedia'); // Show error message if any
-                                                                            } else if (snapshot.hasData) {
-                                                                            final Peminjaman peminjaman = snapshot.data!;
+                                                                          } else if (snapshot
+                                                                              .hasData) {
+                                                                            final Peminjaman
+                                                                                peminjaman =
+                                                                                snapshot.data!;
                                                                             return FutureBuilder(
-                                                                              future: readUserById('${peminjaman.userId}'),
-                                                                              builder: (context, snapshot) {
-                                                                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                                  return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                                                } else if (snapshot.hasError) {
-                                                                                  return const Text('Data tidak tersedia'); // Show error message if any
-                                                                                } else if (snapshot.hasData) {
-                                                                                  final User user = snapshot.data!;
-                                                                                  return FutureBuilder(
-                                                                                    future: readDetailPeminjamanbyId(peminjaman.detailPeminjamanId),
-                                                                                    builder: (context, snapshot) {
-                                                                                      if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                                        return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                                                      } else if (snapshot.hasError) {
-                                                                                        return const Text('Data tidak tersedia'); // Show error message if any
-                                                                                      } else if (snapshot.hasData) {
-                                                                                        final DetailPeminjaman dpeminjaman = snapshot.data!;
-                                                                                        return Column(
-                                                                                          mainAxisSize: MainAxisSize.min,
-                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                          children: [
-                                                                                            Text('Digunakan oleh: ${user.name}'),
-                                                                                            Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft' }')
-                                                                                          ]
-                                                                                        );
-                                                                                      } else {
-                                                                                        return const Text('Data tidak tersedia');
-                                                                                      }
-                                                                                    }
-                                                                                  );
-                                                                                } else {
-                                                                                  return const Text('Data tidak tersedia');
-                                                                                }
-                                                                              });
+                                                                                future: readUserById('${peminjaman.userId}'),
+                                                                                builder: (context, snapshot) {
+                                                                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                    return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                                  } else if (snapshot.hasError) {
+                                                                                    return const Text('Data tidak tersedia'); // Show error message if any
+                                                                                  } else if (snapshot.hasData) {
+                                                                                    final User user = snapshot.data!;
+                                                                                    return FutureBuilder(
+                                                                                        future: readDetailPeminjamanbyId(peminjaman.detailPeminjamanId),
+                                                                                        builder: (context, snapshot) {
+                                                                                          if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                            return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                                          } else if (snapshot.hasError) {
+                                                                                            return const Text('Data tidak tersedia'); // Show error message if any
+                                                                                          } else if (snapshot.hasData) {
+                                                                                            final DetailPeminjaman dpeminjaman = snapshot.data!;
+                                                                                            return Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                                                                              Text('Digunakan oleh: ${user.name}'),
+                                                                                              Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
+                                                                                            ]);
+                                                                                          } else {
+                                                                                            return const Text('Data tidak tersedia');
+                                                                                          }
+                                                                                        });
+                                                                                  } else {
+                                                                                    return const Text('Data tidak tersedia');
+                                                                                  }
+                                                                                });
                                                                           } else {
                                                                             return const Text('Data tidak tersedia');
-                                                                            }
                                                                           }
-                                                                        ),
+                                                                        }),
                                                                     actions: [
                                                                       SizedBox(
                                                                         width: MediaQuery.of(context)
@@ -903,55 +903,52 @@ class RuanganState extends State<Ruangan> {
                                                                             FontWeight.w600),
                                                                   ),
                                                                   content:
-                                                                  FutureBuilder(
-                                                                      future: readPeminjamanbyKendaraanId(items[index2].id),
-                                                                      builder: (context, snapshot) {
-                                                                        if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                                        } else if (snapshot.hasError) {
-                                                                          return const Text('Data tidak tersedia'); // Show error message if any
-                                                                        } else if (snapshot.hasData) {
-                                                                          final Peminjaman peminjaman = snapshot.data!;
-                                                                          return FutureBuilder(
-                                                                              future: readUserById('${peminjaman.userId}'),
-                                                                              builder: (context, snapshot) {
-                                                                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                                  return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                                                } else if (snapshot.hasError) {
-                                                                                  return const Text('Data tidak tersedia'); // Show error message if any
-                                                                                } else if (snapshot.hasData) {
-                                                                                  final User user = snapshot.data!;
-                                                                                  return FutureBuilder(
-                                                                                      future: readDetailPeminjamanbyId(peminjaman.detailPeminjamanId),
-                                                                                      builder: (context, snapshot) {
-                                                                                        if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                                                        } else if (snapshot.hasError) {
-                                                                                          return const Text('Data tidak tersedia'); // Show error message if any
-                                                                                        } else if (snapshot.hasData) {
-                                                                                          final DetailPeminjaman dpeminjaman = snapshot.data!;
-                                                                                          return Column(
-                                                                                              mainAxisSize: MainAxisSize.min,
-                                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                              children: [
+                                                                      FutureBuilder(
+                                                                          future: readPeminjamanbyKendaraanId(items[index2]
+                                                                              .id),
+                                                                          builder:
+                                                                              (context, snapshot) {
+                                                                            if (snapshot.connectionState ==
+                                                                                ConnectionState.waiting) {
+                                                                              return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                            } else if (snapshot.hasError) {
+                                                                              return const Text('Data tidak tersedia'); // Show error message if any
+                                                                            } else if (snapshot.hasData) {
+                                                                              final Peminjaman peminjaman = snapshot.data!;
+                                                                              return FutureBuilder(
+                                                                                  future: readUserById('${peminjaman.userId}'),
+                                                                                  builder: (context, snapshot) {
+                                                                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                      return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                                    } else if (snapshot.hasError) {
+                                                                                      return const Text('Data tidak tersedia'); // Show error message if any
+                                                                                    } else if (snapshot.hasData) {
+                                                                                      final User user = snapshot.data!;
+                                                                                      return FutureBuilder(
+                                                                                          future: readDetailPeminjamanbyId(peminjaman.detailPeminjamanId),
+                                                                                          builder: (context, snapshot) {
+                                                                                            if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                              return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                                            } else if (snapshot.hasError) {
+                                                                                              return const Text('Data tidak tersedia'); // Show error message if any
+                                                                                            } else if (snapshot.hasData) {
+                                                                                              final DetailPeminjaman dpeminjaman = snapshot.data!;
+                                                                                              return Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
                                                                                                 Text('Digunakan oleh: ${user.name}'),
-                                                                                                Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft' }')
-                                                                                              ]
-                                                                                          );
-                                                                                        } else {
-                                                                                          return const Text('Data tidak tersedia');
-                                                                                        }
-                                                                                      }
-                                                                                  );
-                                                                                } else {
-                                                                                  return const Text('Data tidak tersedia');
-                                                                                }
-                                                                              });
-                                                                        } else {
-                                                                          return const Text('Data tidak tersedia');
-                                                                        }
-                                                                      }
-                                                                  ),
+                                                                                                Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
+                                                                                              ]);
+                                                                                            } else {
+                                                                                              return const Text('Data tidak tersedia');
+                                                                                            }
+                                                                                          });
+                                                                                    } else {
+                                                                                      return const Text('Data tidak tersedia');
+                                                                                    }
+                                                                                  });
+                                                                            } else {
+                                                                              return const Text('Data tidak tersedia');
+                                                                            }
+                                                                          }),
                                                                   actions: [
                                                                     SizedBox(
                                                                       width: MediaQuery.of(
