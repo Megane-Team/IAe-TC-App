@@ -307,7 +307,7 @@ class GedungState extends State<Gedung> {
                                                       final
                                                           DetailPeminjaman dpeminjaman =
                                                       snapshot.data!;
-                                                      return Column(
+                                                      return Column (
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisSize: MainAxisSize
                                                             .min,

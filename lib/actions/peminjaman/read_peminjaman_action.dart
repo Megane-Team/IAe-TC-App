@@ -77,3 +77,38 @@ Future<Peminjaman> readPeminjamanbyRuanganId(int id) async {
         'Failed to get draft peminjaman. Is internet connection available?');
   }
 }
+
+Future<Peminjaman> readPeminjamanbyBarangId(int id) async {
+  var token = await Session.getToken();
+
+  var response = await App.api.get(apiBaseURl.resolve('/peminjaman/barang/$id'),
+      headers: {'Authorization': 'Bearer $token'});
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final Map<String, dynamic> data = responseData['data'];
+    return Peminjaman.fromJson(data);
+
+  } else {
+    throw Exception(
+        'Failed to get draft peminjaman. Is internet connection available?');
+  }
+}
+
+Future<Peminjaman> readPeminjamanbyKendaraanId(int id) async {
+  var token = await Session.getToken();
+
+  var response = await App.api.get(apiBaseURl.resolve('/peminjaman/kendaraan/$id'),
+      headers: {'Authorization': 'Bearer $token'});
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final Map<String, dynamic> data = responseData['data'];
+    return Peminjaman.fromJson(data);
+
+  } else {
+    throw Exception(
+        'Failed to get draft peminjaman. Is internet connection available?');
+  }
+}
+
