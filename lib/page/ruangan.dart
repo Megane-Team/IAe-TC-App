@@ -1045,14 +1045,24 @@ class RuanganState extends State<Ruangan> {
                                                                               items[index2].name,
                                                                               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                                                                             ),
-                                                                            Text(
-                                                                              ' ${items[index2].name}',
-                                                                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                                                                            ),
                                                                           ],
                                                                         ),
-                                                                        Text(
-                                                                            'Kondisi ${items[index2].condition}'),
+                                                                        Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                                                          children: [
+                                                                            Text('Kondisi'),
+                                                                            Text(items[index2].condition, style: TextStyle(fontWeight: FontWeight.bold),)
+                                                                          ],
+                                                                        ),
+                                                                        Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                                                          children: [
+                                                                            Text('Plat Nomor'),
+                                                                            Text(items[index2].plat, style: TextStyle(fontWeight: FontWeight.bold),),
+                                                                          ],
+                                                                        ),
                                                                         Expanded(
                                                                           child:
                                                                               Align(
@@ -1069,7 +1079,7 @@ class RuanganState extends State<Ruangan> {
                                                                                       Navigator.pop(context);
                                                                                       ScaffoldMessenger.of(context).showSnackBar(
                                                                                         const SnackBar(
-                                                                                          content: Text('Barang Disimpan di Keranjang'),
+                                                                                          content: Text('Kendaraan Disimpan di Keranjang'),
                                                                                         ),
                                                                                       );
                                                                                     },
@@ -1094,7 +1104,7 @@ class RuanganState extends State<Ruangan> {
                                                                                       backgroundColor: const Color(0xFFFCA311),
                                                                                     ),
                                                                                     child: const Text(
-                                                                                      'Pinjam Barang',
+                                                                                      'Pinjam Kendaraan',
                                                                                       style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                                                                                     ),
                                                                                   ),
@@ -1164,7 +1174,7 @@ class RuanganState extends State<Ruangan> {
                                                                           .name,
                                                                       style: const TextStyle(
                                                                           color:
-                                                                              Colors.black),
+                                                                              Colors.black, fontWeight: FontWeight.w600),
                                                                     ),
                                                                   ],
                                                                 ),
@@ -1173,7 +1183,7 @@ class RuanganState extends State<Ruangan> {
                                                                       .condition,
                                                                   style: const TextStyle(
                                                                       color: Colors
-                                                                          .black),
+                                                                          .black, fontSize: 12),
                                                                 ),
                                                               ],
                                                             ),
