@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:inventara/actions/barang/read_barang_action.dart';
 import 'package:inventara/actions/kendaraan/read_kendaraan_action.dart';
+import 'package:inventara/actions/peminjaman/create_detailPeminjaman_action.dart';
+import 'package:inventara/actions/peminjaman/create_peminjaman_action.dart';
 import 'package:inventara/actions/peminjaman/read_detailPeminjaman_action.dart';
 import 'package:inventara/actions/peminjaman/read_peminjaman_action.dart';
 import 'package:inventara/actions/users/read_user_action.dart';
@@ -33,7 +35,7 @@ class CariState extends State<Cari> {
 
   Future<void> fetchData() async {
     if (isRuangan) {
-      barangs = await readBarangFromRuanganId('${widget.id}', context);
+      barangs = await readBarangbyRuanganId('${widget.id}', context);
     } else {
       kendaraans = await readKendaraanByGedungId('${widget.id}', context);
     }
@@ -383,18 +385,52 @@ class CariState extends State<Cari> {
                                                           .width /
                                                       2.3,
                                                   child: ElevatedButton(
-                                                    onPressed: () {
-                                                      // TODO: masukan ke detail Peminjaman (Draft)
+                                                    onPressed: () async {
+                                                      DetailPeminjaman dp =
+                                                          await createDetailPeminjaman(
+                                                              status: 'draft');
 
-                                                      context.pop();
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          content: Text(
-                                                              'Barang Disimpan di Keranjang'),
-                                                        ),
-                                                      );
+                                                      var res =
+                                                          await createPeminjaman(
+                                                              dp.id,
+                                                              item2.id,
+                                                              null,
+                                                              null,
+                                                              'barang');
+
+                                                      if (res) {
+                                                        WidgetsBinding.instance
+                                                            .addPostFrameCallback(
+                                                                (_) {
+                                                          if (context.mounted) {
+                                                            context.pop();
+                                                          }
+                                                        });
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                                'Barang Disimpan di Keranjang'),
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        WidgetsBinding.instance
+                                                            .addPostFrameCallback(
+                                                                (_) {
+                                                          if (context.mounted) {
+                                                            context.pop();
+                                                          }
+                                                        });
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                                'Gagal Menyimpan Barang ke keranjang!'),
+                                                          ),
+                                                        );
+                                                      }
                                                     },
                                                     style: ElevatedButton
                                                         .styleFrom(
@@ -420,7 +456,9 @@ class CariState extends State<Cari> {
                                                       2.3,
                                                   child: ElevatedButton(
                                                     onPressed: () {
-                                                      context.pop();
+                                                      var param = item.id;
+                                                      context.push(
+                                                          '/konfA?id=$param%category=barang');
                                                     },
                                                     style: ElevatedButton
                                                         .styleFrom(
@@ -628,18 +666,52 @@ class CariState extends State<Cari> {
                                                           .width /
                                                       2.3,
                                                   child: ElevatedButton(
-                                                    onPressed: () {
-                                                      // TODO: masukan ke detail Peminjaman (Draft)
+                                                    onPressed: () async {
+                                                      DetailPeminjaman dp =
+                                                          await createDetailPeminjaman(
+                                                              status: 'draft');
 
-                                                      context.pop();
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          content: Text(
-                                                              'Kendaraan Disimpan di Keranjang'),
-                                                        ),
-                                                      );
+                                                      var res =
+                                                          await createPeminjaman(
+                                                              dp.id,
+                                                              null,
+                                                              null,
+                                                              item2.id,
+                                                              'kendaraan');
+
+                                                      if (res) {
+                                                        WidgetsBinding.instance
+                                                            .addPostFrameCallback(
+                                                                (_) {
+                                                          if (context.mounted) {
+                                                            context.pop();
+                                                          }
+                                                        });
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                                'Kendaraan Disimpan di Keranjang'),
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        WidgetsBinding.instance
+                                                            .addPostFrameCallback(
+                                                                (_) {
+                                                          if (context.mounted) {
+                                                            context.pop();
+                                                          }
+                                                        });
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                                'Gagal Menyimpan Kendaraan ke keranjang!'),
+                                                          ),
+                                                        );
+                                                      }
                                                     },
                                                     style: ElevatedButton
                                                         .styleFrom(
@@ -665,7 +737,9 @@ class CariState extends State<Cari> {
                                                       2.3,
                                                   child: ElevatedButton(
                                                     onPressed: () {
-                                                      context.pop();
+                                                      var param = item2.id;
+                                                      context.push(
+                                                          '/KonfK?id=$param&category=kendaraan');
                                                     },
                                                     style: ElevatedButton
                                                         .styleFrom(
