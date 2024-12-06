@@ -106,16 +106,18 @@ class RiwayatState extends State<Riwayat> {
     } else if (peminjaman.category == PeminjamanCategory.kendaraan) {
       tempatId =
           kendaraans.firstWhere((k) => k.id == peminjaman.kendaraanId).tempatId;
+    } else {
+      tempatId = ruangans.firstWhere((r) => r.id == peminjaman.ruanganId).tempatId;
     }
 
     return tempats.firstWhere((t) => t.id == tempatId).name;
   }
 
   Future<void> fetchData() async {
-    barangs = await readBarang('', context);
+    barangs = await readBarang(context);
     ruangans = await readRuangan('', context);
     tempats = await readTempat('', context);
-    kendaraans = await readKendaraan('', context);
+    kendaraans = await readKendaraan(context);
   }
 
   @override
@@ -254,21 +256,21 @@ class RiwayatState extends State<Riwayat> {
                               return noData();
                             }
                             if (snapshot.hasData) {
-                              var peminjaman = snapshot.data!;
-                              if (peminjaman.isEmpty) {
+                              var dpeminjaman = snapshot.data!;
+                              if (dpeminjaman.isEmpty) {
                                 return Center(child: SizedBox());
                               }
                               return ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: isBerlangsungActive
-                                    ? peminjaman
+                                    ? dpeminjaman
                                         .where((item) =>
                                             item.status ==
                                                 PeminjamanStatus.approved ||
                                             item.status ==
                                                 PeminjamanStatus.pending)
                                         .length
-                                    : peminjaman
+                                    : dpeminjaman
                                         .where((item) =>
                                             item.status ==
                                                 PeminjamanStatus.canceled ||
@@ -279,14 +281,14 @@ class RiwayatState extends State<Riwayat> {
                                         .length,
                                 itemBuilder: (context, index) {
                                   var filteredList = isBerlangsungActive
-                                      ? peminjaman
+                                      ? dpeminjaman
                                           .where((item) =>
                                               item.status ==
                                                   PeminjamanStatus.approved ||
                                               item.status ==
                                                   PeminjamanStatus.pending)
                                           .toList()
-                                      : peminjaman
+                                      : dpeminjaman
                                           .where((item) =>
                                               item.status ==
                                                   PeminjamanStatus.canceled ||
@@ -308,7 +310,7 @@ class RiwayatState extends State<Riwayat> {
                                           );
                                         }
                                         if (snapshot.hasError) {
-                                          return Center(child: noData());
+                                          return Center(child: SizedBox());
                                         }
                                         if (snapshot.hasData &&
                                             snapshot.data!.isNotEmpty) {
@@ -431,7 +433,7 @@ class RiwayatState extends State<Riwayat> {
                                                                                   );
                                                                                 }
                                                                                 if (snapshot.hasError) {
-                                                                                  return Center(child: noData());
+                                                                                  return snapshot.data!;
                                                                                 }
                                                                                 if (snapshot.hasData) {
                                                                                   return snapshot.data!;
@@ -547,9 +549,7 @@ class RiwayatState extends State<Riwayat> {
                                             ),
                                           );
                                         } else {
-                                          return Center(
-                                              child: Text(
-                                                  snapshot.data.toString()));
+                                          return SizedBox();
                                         }
                                       });
                                 },

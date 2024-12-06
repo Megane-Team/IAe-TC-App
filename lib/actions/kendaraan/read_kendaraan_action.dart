@@ -7,16 +7,20 @@ import 'package:inventara/main.dart';
 import 'package:inventara/structures/kendaraan.dart';
 import 'package:inventara/utils/sessions.dart';
 
-Future<List<Kendaraan>> readKendaraan(String id, BuildContext context) async {
+Future<List<Kendaraan>> readKendaraan(BuildContext context) async {
   var token = await Session.getToken();
 
   if (token == null) {
     Session.unset();
-    context.go('login');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        context.go('login');
+      }
+    });
     throw Exception('Unauthorized');
   }
 
-  final response = await App.api.get(apiBaseURl.resolve('/kendaraans/$id'),
+  final response = await App.api.get(apiBaseURl.resolve('/kendaraans'),
       headers: {'authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {
@@ -34,13 +38,33 @@ Future<List<Kendaraan>> readKendaraan(String id, BuildContext context) async {
   }
 }
 
+Future<Kendaraan> readKendaraanbyId(String id) async {
+  var token = await Session.getToken();
+
+  final response = await App.api.get(apiBaseURl.resolve('/kendaraans/$id'),
+      headers: {'authorization': 'Bearer $token'});
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final Map<String, dynamic> data = responseData['data'];
+    return Kendaraan.fromJson(data);
+  } else {
+    throw Exception(
+        'Failed to get kendaraan. Is internet connection available?');
+  }
+}
+
 Future<List<Kendaraan>> readKendaraanByGedungId(
     String id, BuildContext context) async {
   var token = await Session.getToken();
 
   if (token == null) {
     Session.unset();
-    context.go('login');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        context.go('login');
+      }
+    });
     throw Exception('Unauthorized');
   }
 

@@ -12,7 +12,11 @@ Future<List<Ruangans>> readRuangan(String? id, BuildContext context) async {
 
   if (token == null) {
     Session.unset();
-    context.go('login');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        context.go('login');
+      }
+    });
     throw Exception('Unauthorized');
   }
 
@@ -31,13 +35,17 @@ Future<List<Ruangans>> readRuangan(String? id, BuildContext context) async {
   }
 }
 
-Future<List<Ruangans>> readRuanganFromGedungId(
+Future<List<Ruangans>> readRuanganbyGedungId(
     String? id, BuildContext context) async {
   final token = await Session.getToken();
 
   if (token == null) {
     Session.unset();
-    context.go('login');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        context.go('login');
+      }
+    });
     throw Exception('Unauthorized');
   }
 
@@ -63,7 +71,11 @@ Future<List<Ruangans>> readRuanganbyId(
 
   if (token == null) {
     Session.unset();
-    context.go('login');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        context.go('login');
+      }
+    });
     throw Exception('Unauthorized');
   }
 

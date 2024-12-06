@@ -7,16 +7,20 @@ import 'package:inventara/main.dart';
 import 'package:inventara/structures/barang.dart';
 import 'package:inventara/utils/sessions.dart';
 
-Future<List<Barang>> readBarang(String id, BuildContext context) async {
+Future<List<Barang>> readBarang(BuildContext context) async {
   var token = await Session.getToken();
 
   if (token == null) {
     Session.unset();
-    context.go('login');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        context.go('login');
+      }
+    });
     throw Exception('Unauthorized');
   }
 
-  final response = await App.api.get(apiBaseURl.resolve('/barangs/$id'),
+  final response = await App.api.get(apiBaseURl.resolve('/barangs'),
       headers: {'authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {
@@ -33,13 +37,33 @@ Future<List<Barang>> readBarang(String id, BuildContext context) async {
   }
 }
 
-Future<List<Barang>> readBarangFromRuanganId(
+Future<Barang> readBarangbyId(String id) async {
+  var token = await Session.getToken();
+
+  final response = await App.api.get(apiBaseURl.resolve('/barangs/$id'),
+      headers: {'authorization': 'Bearer $token'});
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final Map<String, dynamic> data = responseData['data'];
+    return Barang.fromJson(data);
+  } else {
+    throw Exception(
+        'Failed to get draft peminjaman. Is internet connection available?');
+  }
+}
+
+Future<List<Barang>> readBarangbyRuanganId(
     String id, BuildContext context) async {
   var token = await Session.getToken();
 
   if (token == null) {
     Session.unset();
-    context.go('login');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        context.go('login');
+      }
+    });
     throw Exception('Unauthorized');
   }
 

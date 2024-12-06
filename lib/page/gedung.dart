@@ -39,7 +39,7 @@ class GedungState extends State<Gedung> {
   }
 
   void fetchData() async {
-    var ruangan = await readRuanganFromGedungId(widget.id, context);
+    var ruangan = await readRuanganbyGedungId(widget.id, context);
     gedung = await readTempat(widget.id, context);
     setState(() {
       originalRuanganList = ruangan;
@@ -229,7 +229,7 @@ class GedungState extends State<Gedung> {
           const Gap(20),
           Expanded(
             child: FutureBuilder<List<Ruangans>>(
-              future: readRuanganFromGedungId(widget.id, context),
+              future: readRuanganbyGedungId(widget.id, context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
@@ -241,236 +241,243 @@ class GedungState extends State<Gedung> {
                   if (snapshot.data!.isEmpty) {
                     return noData();
                   }
-                  return ListView.builder(
-                    itemCount: filteredRuangan.length,
-                    itemBuilder: (context, index) {
-                      var ruangan = filteredRuangan[index];
-                      return Container(
-                        height: 61,
-                        margin: const EdgeInsets.only(
-                            left: 24, right: 24, bottom: 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: 4,
-                            backgroundColor: ruangan.status == true
-                                ? Colors.grey
-                                : Colors.white,
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      fetchData();
+                    },
+                    child: ListView.builder(
+                      itemCount: filteredRuangan.length,
+                      itemBuilder: (context, index) {
+                        var ruangan = filteredRuangan[index];
+                        return Container(
+                          height: 61,
+                          margin: const EdgeInsets.only(
+                              left: 24, right: 24, bottom: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          onPressed: () {
-                            if (ruangan.status == true) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Ruangan Sedang Dipinjam',
-                                        style: TextStyle(fontSize: 20)),
-                                    content: FutureBuilder(
-                                        future: readPeminjamanbyRuanganId(
-                                            ruangan.id),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return const CircularProgressIndicator();
-                                          } else if (snapshot.hasError) {
-                                            return const Text(
-                                                'No data available');
-                                          } else if (snapshot.hasData) {
-                                            final Peminjaman peminjaman =
-                                                snapshot.data!;
-                                            return FutureBuilder(
-                                                future: readUserById(
-                                                    '${peminjaman.userId}'),
-                                                builder: (context, snapshot) {
-                                                  if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.waiting) {
-                                                    return const CircularProgressIndicator();
-                                                  } else if (snapshot
-                                                      .hasError) {
-                                                    return const Text(
-                                                        'No data available');
-                                                  } else if (snapshot.hasData) {
-                                                    final user = snapshot.data!;
-                                                    return FutureBuilder(
-                                                        future: readDetailPeminjamanbyId(
-                                                            peminjaman
-                                                                .detailPeminjamanId),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          if (snapshot
-                                                                  .connectionState ==
-                                                              ConnectionState
-                                                                  .waiting) {
-                                                            return const CircularProgressIndicator();
-                                                          } else if (snapshot
-                                                              .hasError) {
-                                                            return const Text(
-                                                                'No data available');
-                                                          } else if (snapshot
-                                                              .hasData) {
-                                                            final DetailPeminjaman
-                                                                dpeminjaman =
-                                                                snapshot.data!;
-                                                            return Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .min,
-                                                                children: [
-                                                                  Text(
-                                                                      'Digunakan oleh: ${user.name}'),
-                                                                  Text(
-                                                                      'Divisi: ${user.unit}\nEstimasi : ${DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!)}')
-                                                                ]);
-                                                          } else {
-                                                            return const Text(
-                                                                'Tidak ada data');
-                                                          }
-                                                        });
-                                                  } else {
-                                                    return const Text(
-                                                        'Tidak ada data');
-                                                  }
-                                                });
-                                          } else {
-                                            return const Text('Tidak ada data');
-                                          }
-                                        }),
-                                    actions: [
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            backgroundColor:
-                                                const Color(0xFFFCA311),
-                                          ),
-                                          onPressed: () {
-                                            context.pop();
-                                          },
-                                          child: const Text(
-                                            'OK',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.only(left: 10, right: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              elevation: 4,
+                              backgroundColor: ruangan.status == true
+                                  ? Colors.grey
+                                  : Colors.white,
+                            ),
+                            onPressed: () {
+                              if (ruangan.status == true) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Ruangan Sedang Dipinjam',
+                                          style: TextStyle(fontSize: 20)),
+                                      content: FutureBuilder(
+                                          future: readPeminjamanbyRuanganId(
+                                              ruangan.id),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return const CircularProgressIndicator();
+                                            } else if (snapshot.hasError) {
+                                              return const Text(
+                                                  'No data available');
+                                            } else if (snapshot.hasData) {
+                                              final Peminjaman peminjaman =
+                                                  snapshot.data!;
+                                              return FutureBuilder(
+                                                  future: readUserById(
+                                                      '${peminjaman.userId}'),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState.waiting) {
+                                                      return const CircularProgressIndicator();
+                                                    } else if (snapshot
+                                                        .hasError) {
+                                                      return const Text(
+                                                          'No data available');
+                                                    } else if (snapshot.hasData) {
+                                                      final user = snapshot.data!;
+                                                      return FutureBuilder(
+                                                          future: readDetailPeminjamanbyId(
+                                                              peminjaman
+                                                                  .detailPeminjamanId),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            if (snapshot
+                                                                    .connectionState ==
+                                                                ConnectionState
+                                                                    .waiting) {
+                                                              return const CircularProgressIndicator();
+                                                            } else if (snapshot
+                                                                .hasError) {
+                                                              return const Text(
+                                                                  'No data available');
+                                                            } else if (snapshot
+                                                                .hasData) {
+                                                              final DetailPeminjaman
+                                                                  dpeminjaman =
+                                                                  snapshot.data!;
+                                                              return Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    Text(
+                                                                        'Digunakan oleh: ${user.name}'),
+                                                                    Text(
+                                                                        'Divisi: ${user.unit}\nEstimasi : ${DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!)}')
+                                                                  ]);
+                                                            } else {
+                                                              return const Text(
+                                                                  'Tidak ada data');
+                                                            }
+                                                          });
+                                                    } else {
+                                                      return const Text(
+                                                          'Tidak ada data');
+                                                    }
+                                                  });
+                                            } else {
+                                              return const Text('Tidak ada data');
+                                            }
+                                          }),
+                                      actions: [
+                                        SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              padding: EdgeInsets.zero,
+                                              backgroundColor:
+                                                  const Color(0xFFFCA311),
+                                            ),
+                                            onPressed: () {
+                                              context.pop();
+                                            },
+                                            child: const Text(
+                                              'OK',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            } else {
-                              setState(() {
-                                var param1 = ruangan.id;
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                setState(() {
+                                  var param1 = ruangan.id;
 
-                                context.push(
-                                    "/ruangan?id=$param1&category=ruangan");
-                              });
-                            }
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 60,
-                                      height: 46,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: FutureBuilder<Widget>(
-                                            future: Assets.ruangan(
-                                                ruangan.photo ?? ''),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                              } else if (snapshot.hasError) {
-                                                return Image.asset(Assets
-                                                    .noImage()); // Show error message if any
-                                              } else if (snapshot.hasData) {
-                                                return snapshot
-                                                    .data!; // Return the widget once the future completes
-                                              } else {
-                                                return const Text(
-                                                    'No data available'); // Show message if no data
-                                              }
-                                            }),
+                                  context.push(
+                                      "/ruangan?id=$param1&category=ruangan");
+                                });
+                              }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 60,
+                                        height: 46,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(8),
+                                          child: FutureBuilder<Widget>(
+                                              future: Assets.ruangan(
+                                                  ruangan.photo ?? ''),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                } else if (snapshot.hasError) {
+                                                  return Image.asset(Assets
+                                                      .noImage()); // Show error message if any
+                                                } else if (snapshot.hasData) {
+                                                  return snapshot
+                                                      .data!; // Return the widget once the future completes
+                                                } else {
+                                                  return const Text(
+                                                      'No data available'); // Show message if no data
+                                                }
+                                              }),
+                                        ),
                                       ),
-                                    ),
-                                    const Gap(16),
-                                    Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            ruangan.code,
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black),
-                                          ),
-                                        ])
-                                  ],
+                                      const Gap(16),
+                                      Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              ruangan.code,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black),
+                                            ),
+                                          ])
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              isRuanganHasCapacity(ruangan)
-                                  ? Container(
-                                      width: 46,
-                                      height: 22,
-                                      decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: const Color(0xFFFCA311)
-                                                .withOpacity(1),
-                                            spreadRadius: 1,
-                                            blurRadius: 4,
-                                            offset: const Offset(0, 0),
-                                          )
-                                        ],
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Icon(
-                                            Icons.person,
-                                            color: Color(0xFFFCA311),
-                                            size: 16,
-                                          ),
-                                          Text(
-                                            ruangan.capacity.toString(),
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFFFCA311)),
-                                          ),
-                                        ],
-                                      ),
-                                    )
+                                isRuanganHasCapacity(ruangan) ?
+                                    ruangan.category != RuanganCategory.gudang
+                                    ? Container(
+                                        width: 46,
+                                        height: 22,
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: const Color(0xFFFCA311)
+                                                  .withOpacity(1),
+                                              spreadRadius: 1,
+                                              blurRadius: 4,
+                                              offset: const Offset(0, 0),
+                                            )
+                                          ],
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Icon(
+                                              Icons.person,
+                                              color: Color(0xFFFCA311),
+                                              size: 16,
+                                            ),
+                                            Text(
+                                              ruangan.capacity.toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Color(0xFFFCA311)),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : const SizedBox()
                                   : const SizedBox()
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   );
                 } else {
                   return const Text('No data available');
