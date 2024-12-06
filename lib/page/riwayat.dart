@@ -107,7 +107,8 @@ class RiwayatState extends State<Riwayat> {
       tempatId =
           kendaraans.firstWhere((k) => k.id == peminjaman.kendaraanId).tempatId;
     } else {
-      tempatId = ruangans.firstWhere((r) => r.id == peminjaman.ruanganId).tempatId;
+      tempatId =
+          ruangans.firstWhere((r) => r.id == peminjaman.ruanganId).tempatId;
     }
 
     return tempats.firstWhere((t) => t.id == tempatId).name;

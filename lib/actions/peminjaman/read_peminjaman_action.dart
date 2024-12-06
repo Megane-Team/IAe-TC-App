@@ -45,7 +45,8 @@ Future<List<Peminjaman>> readDraftPeminjaman() async {
 Future<List<Peminjaman>> readPeminjamanbyDetailId(int id) async {
   var token = await Session.getToken();
 
-  var response = await App.api.get(apiBaseURl.resolve('/detailPeminjaman/$id/peminjaman'),
+  var response = await App.api.get(
+      apiBaseURl.resolve('/detailPeminjaman/$id/peminjaman'),
       headers: {'Authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {

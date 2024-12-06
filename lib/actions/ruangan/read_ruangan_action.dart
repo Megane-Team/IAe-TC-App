@@ -65,8 +65,7 @@ Future<List<Ruangans>> readRuanganbyGedungId(
   }
 }
 
-Future<List<Ruangans>> readRuanganbyId(
-    String? id, BuildContext context) async {
+Future<List<Ruangans>> readRuanganbyId(String? id, BuildContext context) async {
   final token = await Session.getToken();
 
   if (token == null) {
@@ -79,15 +78,14 @@ Future<List<Ruangans>> readRuanganbyId(
     throw Exception('Unauthorized');
   }
 
-  final response = await App.api.get(
-      apiBaseURl.resolve('/ruangans/$id'),
+  final response = await App.api.get(apiBaseURl.resolve('/ruangans/$id'),
       headers: {'authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final List<dynamic> data = responseData['data'];
     final List<Ruangans> ruangans =
-    data.map((item) => Ruangans.fromJson(item)).toList();
+        data.map((item) => Ruangans.fromJson(item)).toList();
 
     return ruangans;
   } else {

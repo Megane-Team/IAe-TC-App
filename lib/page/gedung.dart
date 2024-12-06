@@ -258,7 +258,8 @@ class GedungState extends State<Gedung> {
                           ),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.only(left: 10, right: 10),
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                               ),
@@ -273,7 +274,8 @@ class GedungState extends State<Gedung> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: const Text('Ruangan Sedang Dipinjam',
+                                      title: const Text(
+                                          'Ruangan Sedang Dipinjam',
                                           style: TextStyle(fontSize: 20)),
                                       content: FutureBuilder(
                                           future: readPeminjamanbyRuanganId(
@@ -294,14 +296,17 @@ class GedungState extends State<Gedung> {
                                                   builder: (context, snapshot) {
                                                     if (snapshot
                                                             .connectionState ==
-                                                        ConnectionState.waiting) {
+                                                        ConnectionState
+                                                            .waiting) {
                                                       return const CircularProgressIndicator();
                                                     } else if (snapshot
                                                         .hasError) {
                                                       return const Text(
                                                           'No data available');
-                                                    } else if (snapshot.hasData) {
-                                                      final user = snapshot.data!;
+                                                    } else if (snapshot
+                                                        .hasData) {
+                                                      final user =
+                                                          snapshot.data!;
                                                       return FutureBuilder(
                                                           future: readDetailPeminjamanbyId(
                                                               peminjaman
@@ -321,7 +326,8 @@ class GedungState extends State<Gedung> {
                                                                 .hasData) {
                                                               final DetailPeminjaman
                                                                   dpeminjaman =
-                                                                  snapshot.data!;
+                                                                  snapshot
+                                                                      .data!;
                                                               return Column(
                                                                   crossAxisAlignment:
                                                                       CrossAxisAlignment
@@ -346,7 +352,8 @@ class GedungState extends State<Gedung> {
                                                     }
                                                   });
                                             } else {
-                                              return const Text('Tidak ada data');
+                                              return const Text(
+                                                  'Tidak ada data');
                                             }
                                           }),
                                       actions: [
@@ -393,7 +400,8 @@ class GedungState extends State<Gedung> {
                                         width: 60,
                                         height: 46,
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                           child: FutureBuilder<Widget>(
                                               future: Assets.ruangan(
                                                   ruangan.photo ?? ''),
@@ -432,46 +440,47 @@ class GedungState extends State<Gedung> {
                                     ],
                                   ),
                                 ),
-                                isRuanganHasCapacity(ruangan) ?
-                                    ruangan.category != RuanganCategory.gudang
-                                    ? Container(
-                                        width: 46,
-                                        height: 22,
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: const Color(0xFFFCA311)
-                                                  .withOpacity(1),
-                                              spreadRadius: 1,
-                                              blurRadius: 4,
-                                              offset: const Offset(0, 0),
-                                            )
-                                          ],
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Icon(
-                                              Icons.person,
-                                              color: Color(0xFFFCA311),
-                                              size: 16,
+                                isRuanganHasCapacity(ruangan)
+                                    ? ruangan.category != RuanganCategory.gudang
+                                        ? Container(
+                                            width: 46,
+                                            height: 22,
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: const Color(0xFFFCA311)
+                                                      .withOpacity(1),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 4,
+                                                  offset: const Offset(0, 0),
+                                                )
+                                              ],
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
                                             ),
-                                            Text(
-                                              ruangan.capacity.toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  color: Color(0xFFFCA311)),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const Icon(
+                                                  Icons.person,
+                                                  color: Color(0xFFFCA311),
+                                                  size: 16,
+                                                ),
+                                                Text(
+                                                  ruangan.capacity.toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFFFCA311)),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      )
+                                          )
+                                        : const SizedBox()
                                     : const SizedBox()
-                                  : const SizedBox()
                               ],
                             ),
                           ),

@@ -17,7 +17,8 @@ import 'package:inventara/structures/kendaraan.dart';
 class Konfirmasikendaraan extends StatefulWidget {
   final String id;
   final String category;
-  const Konfirmasikendaraan({required this.id, super.key, required this.category});
+  const Konfirmasikendaraan(
+      {required this.id, super.key, required this.category});
 
   @override
   State<Konfirmasikendaraan> createState() => KonfimasikendaraanState();
@@ -50,15 +51,13 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
     super.initState();
   }
 
-  Future<void> fetchData() async  {
+  Future<void> fetchData() async {
     if (widget.category == 'kendaraan') {
       kendaraans = await readKendaraanbyId(widget.id);
     } else {
       detailPeminjaman = await readDetailPeminjamanbyId(int.parse(widget.id));
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +97,8 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
       body: SingleChildScrollView(
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: (MediaQuery.of(context).size.height / 1.05) - appBar.preferredSize.height,
+          height: (MediaQuery.of(context).size.height / 1.05) -
+              appBar.preferredSize.height,
           child: Padding(
             padding: EdgeInsets.only(top: 16),
             child: Column(
@@ -209,8 +209,8 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                   doneStyle: const TextStyle(
                                     color: Color(0xFFFCA311),
                                   ),
-                                ), onChanged: (date) {
-                            }, onConfirm: (date) {
+                                ),
+                                onChanged: (date) {}, onConfirm: (date) {
                               DateTime tomorrow =
                                   DateTime.now().add(Duration(days: 1));
                               DateTime startOfTomorrow = DateTime(
@@ -222,7 +222,8 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                         'Tanggal peminjaman harus 1 hari setelah pengajuan.'),
                                   ),
                                 );
-                              } else if (_pengembalianController.text.isNotEmpty &&
+                              } else if (_pengembalianController
+                                      .text.isNotEmpty &&
                                   date.isAfter(pengembalianDateTime)) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -234,7 +235,8 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                 setState(() {
                                   peminjamanDateTime = date;
                                   _peminjamanController.text =
-                                      DateFormat('yyyy-MM-dd HH:mm').format(date);
+                                      DateFormat('yyyy-MM-dd HH:mm')
+                                          .format(date);
                                 });
                               }
                             });
@@ -307,8 +309,7 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                   color: Color(0xFFFCA311),
                                 ),
                               ),
-                              onChanged: (date) {
-                              },
+                              onChanged: (date) {},
                               onConfirm: (date) {
                                 if (_peminjamanController.text.isNotEmpty &&
                                     date.isBefore(peminjamanDateTime)) {
@@ -322,7 +323,8 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                   setState(() {
                                     pengembalianDateTime = date;
                                     _pengembalianController.text =
-                                        DateFormat('yyyy-MM-dd HH:mm').format(date);
+                                        DateFormat('yyyy-MM-dd HH:mm')
+                                            .format(date);
                                   });
                                 }
                               },
@@ -485,14 +487,21 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                 estimatedTime: pengembalianDateTime,
                                 objective: _tujuanController.text,
                                 destination: _tempatTujuanController.text,
-                                passenger: int.parse(_jumlahPenumpangController.text),
+                                passenger:
+                                    int.parse(_jumlahPenumpangController.text),
                                 status: 'pending',
                               );
 
-                              var res = await createPeminjaman(detailPeminjaman.id, null, null, kendaraans.id, 'kendaraan');
+                              var res = await createPeminjaman(
+                                  detailPeminjaman.id,
+                                  null,
+                                  null,
+                                  kendaraans.id,
+                                  'kendaraan');
 
                               if (res) {
-                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
                                   if (context.mounted) {
                                     context.pop();
                                   }
@@ -505,7 +514,8 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Peminjaman gagal! coba lagi nanti'),
+                                    content: Text(
+                                        'Peminjaman gagal! coba lagi nanti'),
                                   ),
                                 );
                               }
@@ -519,9 +529,10 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                 _tempatTujuanController.text,
                                 int.parse(_jumlahPenumpangController.text),
                               );
-                              
+
                               if (res) {
-                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
                                   if (context.mounted) {
                                     context.go('/beranda');
                                   }
@@ -534,15 +545,15 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Peminjaman gagal! coba lagi nanti'),
+                                    content: Text(
+                                        'Peminjaman gagal! coba lagi nanti'),
                                   ),
                                 );
                               }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(
-                                      'Aset tidak valid!'),
+                                  content: Text('Aset tidak valid!'),
                                 ),
                               );
                             }
