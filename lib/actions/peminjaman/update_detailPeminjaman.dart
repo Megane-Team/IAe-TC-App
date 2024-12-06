@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:inventara/constants/variables.dart';
 import 'package:inventara/main.dart';
-import 'package:inventara/structures/detailPeminjaman.dart';
 import 'package:inventara/utils/sessions.dart';
 
 Future<bool> updateDetailPeminjaman(
