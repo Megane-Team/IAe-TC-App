@@ -50,7 +50,9 @@ class RuanganState extends State<Ruangan> {
     category = widget.category;
 
     if (isRuangan()) {
-      ruangan = await readRuanganFromGedungId(widget.id, context);
+      ruangan = await readRuanganbyId(widget.id, context);
+      print(ruangan.length);
+      print(widget.id);
       final barangs = await readBarangFromRuanganId(widget.id, context);
       setState(() {
         barang = barangs;
@@ -744,7 +746,7 @@ class RuanganState extends State<Ruangan> {
                                           );
                                         },
                                       )
-                                    : noData()
+                                    : Text('Tidak ada data!')
                               ],
                             )
                           : Column(children: [
@@ -1210,7 +1212,7 @@ class RuanganState extends State<Ruangan> {
                                 backgroundColor: const Color(0xFFFCA311),
                                 onPressed: () {
                                   // TODO: adding peminjaman function
-                                  // Add your onPressed code here!
+                                  context.push('/konfA');
                                 },
                                 child: const Text(
                                   "Pinjam Ruangan",

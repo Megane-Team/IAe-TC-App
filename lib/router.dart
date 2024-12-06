@@ -16,8 +16,7 @@ final appRouter = GoRouter(initialLocation: '/Login', routes: [
   GoRoute(path: '/Riwayat', builder: (context, state) => const Riwayat()),
   GoRoute(path: '/Notifikasi', builder: (context, state) => const Notifikasi()),
   GoRoute(path: '/KonfA', builder: (context, state) => const Konfirmasiasset()),
-  GoRoute(
-      path: '/KonfK', builder: (context, state) => const Konfirmasikendaraan()),
+  GoRoute(path: '/KonfK', builder: (context, state) => const Konfirmasikendaraan()),
   GoRoute(
       path: '/Cari',
       builder: (context, state) => Cari(
@@ -28,12 +27,12 @@ final appRouter = GoRouter(initialLocation: '/Login', routes: [
   GoRoute(
       path: '/Gedung',
       builder: (context, state) => Gedung(
-            id: state.uri.queryParameters['id'] ?? '',
+            id: state.uri.queryParameters['id']!,
           )),
   GoRoute(
       path: '/Ruangan',
       builder: (context, state) => Ruangan(
-            id: state.uri.queryParameters['id'] ?? '',
-            category: state.uri.queryParameters['category'] ?? '',
+            id: state.uri.queryParameters['id']!,
+            category: state.uri.queryParameters['category']!,
           )),
 ]);

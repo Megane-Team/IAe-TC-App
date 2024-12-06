@@ -28,6 +28,7 @@ class KeranjangState extends State<Keranjang> {
   late List<Ruangans> ruangan;
   late List<Barang> barang;
   late List<Kendaraan> kendaraan;
+  late List<Peminjaman> peminjaman;
 
   @override
   void initState() {
@@ -186,7 +187,7 @@ class KeranjangState extends State<Keranjang> {
                                       child: Text(snapshot.error.toString()),
                                     );
                                   } else if (snapshot.hasData) {
-                                    var peminjaman = snapshot.data!;
+                                    peminjaman = snapshot.data!;
                                     return ListView.builder(
                                       shrinkWrap: true,
                                       physics:
@@ -537,7 +538,21 @@ class KeranjangState extends State<Keranjang> {
                         width: MediaQuery.of(context).size.width,
                         child: FloatingActionButton(
                           backgroundColor: const Color(0xFFFCA311),
-                          onPressed: () {},
+                          onPressed: () {
+                            // check if the peminjamans has kendaraanId
+                            // if it has, then got to konfiK
+                            // if it doesn't, then go to konfiA
+
+                            if (peminjaman
+                                .where((item) =>
+                                    item.category ==
+                                    PeminjamanCategory.kendaraan)
+                                .isNotEmpty) {
+                              context.push('/KonfK');
+                            } else {
+                              context.push('/KonfA');
+                            }
+                          },
                           child: const Text(
                             'Ajukan Peminjaman',
                             style: TextStyle(
