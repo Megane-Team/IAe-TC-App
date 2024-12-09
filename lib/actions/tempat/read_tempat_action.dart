@@ -12,7 +12,11 @@ Future<List<Tempat>> readTempat(String? id, BuildContext context) async {
 
   if (token == null) {
     Session.unset();
-    context.go('login');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        context.go('login');
+      }
+    });
     throw Exception('Unauthorized');
   }
 

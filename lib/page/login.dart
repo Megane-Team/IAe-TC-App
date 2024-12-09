@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/login_action.dart';
 import 'package:inventara/utils/assets.dart';
+import 'package:inventara/utils/sessions.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -16,6 +17,24 @@ class LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    sessionChecker();
+  }
+
+  void sessionChecker() async {
+    var user = await Session.refresh();
+
+    if (user != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.go('/beranda');
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

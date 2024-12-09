@@ -45,7 +45,8 @@ Future<List<Peminjaman>> readDraftPeminjaman() async {
 Future<List<Peminjaman>> readPeminjamanbyDetailId(int id) async {
   var token = await Session.getToken();
 
-  var response = await App.api.get(apiBaseURl.resolve('/peminjaman/$id'),
+  var response = await App.api.get(
+      apiBaseURl.resolve('/detailPeminjaman/$id/peminjaman'),
       headers: {'Authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {
@@ -57,7 +58,7 @@ Future<List<Peminjaman>> readPeminjamanbyDetailId(int id) async {
     return peminjaman;
   } else {
     throw Exception(
-        'Failed to get draft peminjaman. Is internet connection available?');
+        'Failed to get peminjaman. Is internet connection available?');
   }
 }
 

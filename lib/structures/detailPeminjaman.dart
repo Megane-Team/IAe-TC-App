@@ -39,7 +39,6 @@ class DetailPeminjaman {
       required this.createdAt});
 
   factory DetailPeminjaman.fromJson(Map<String, dynamic> json) {
-    print('json: $json');
     return DetailPeminjaman(
         id: json['id'],
         status: PeminjamanStatus.values.firstWhere(

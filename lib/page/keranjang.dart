@@ -28,6 +28,7 @@ class KeranjangState extends State<Keranjang> {
   late List<Ruangans> ruangan;
   late List<Barang> barang;
   late List<Kendaraan> kendaraan;
+  late List<Peminjaman> peminjaman;
 
   @override
   void initState() {
@@ -36,10 +37,10 @@ class KeranjangState extends State<Keranjang> {
   }
 
   Future<void> fetchData() async {
+    barang = await readBarang(context);
     tempat = await readTempat('', context);
     ruangan = await readRuangan('', context);
-    kendaraan = await readKendaraan('', context);
-    barang = await readBarang('', context);
+    kendaraan = await readKendaraan(context);
   }
 
   List<String> tempatNamesUsed(List<Peminjaman> peminjaman) {
@@ -160,7 +161,7 @@ class KeranjangState extends State<Keranjang> {
                         const EdgeInsets.only(top: 24, left: 24, right: 24),
                     child: Column(
                       children: [
-                        FutureBuilder<void>(
+                        FutureBuilder(
                           future: fetchDataFuture,
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
@@ -186,7 +187,7 @@ class KeranjangState extends State<Keranjang> {
                                       child: Text(snapshot.error.toString()),
                                     );
                                   } else if (snapshot.hasData) {
-                                    var peminjaman = snapshot.data!;
+                                    peminjaman = snapshot.data!;
                                     return ListView.builder(
                                       shrinkWrap: true,
                                       physics:
@@ -537,7 +538,21 @@ class KeranjangState extends State<Keranjang> {
                         width: MediaQuery.of(context).size.width,
                         child: FloatingActionButton(
                           backgroundColor: const Color(0xFFFCA311),
-                          onPressed: () {},
+                          onPressed: () {
+                            if (peminjaman
+                                .where((item) =>
+                                    item.category ==
+                                    PeminjamanCategory.kendaraan)
+                                .isNotEmpty) {
+                              var param = peminjaman[0].detailPeminjamanId;
+
+                              context.push('/KonfK?id=$param&category=draft');
+                            } else {
+                              var param = peminjaman[0].detailPeminjamanId;
+
+                              context.push('/KonfA?id=$param&category=draft');
+                            }
+                          },
                           child: const Text(
                             'Ajukan Peminjaman',
                             style: TextStyle(
