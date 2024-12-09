@@ -116,8 +116,8 @@ class RiwayatState extends State<Riwayat> {
 
   Future<void> fetchData() async {
     barangs = await readBarang(context);
-    ruangans = await readRuangan('', context);
-    tempats = await readTempat('', context);
+    ruangans = await readRuangan(context);
+    tempats = await readTempat(context);
     kendaraans = await readKendaraan(context);
   }
 

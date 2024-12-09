@@ -40,7 +40,7 @@ class GedungState extends State<Gedung> {
 
   void fetchData() async {
     var ruangan = await readRuanganbyGedungId(widget.id, context);
-    gedung = await readTempat(widget.id, context);
+    gedung = await readTempat(context);
     setState(() {
       originalRuanganList = ruangan;
       filteredRuangan = List.from(originalRuanganList);

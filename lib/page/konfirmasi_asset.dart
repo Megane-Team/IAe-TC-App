@@ -50,8 +50,7 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
 
   Future<void> fetchData() async {
     if (widget.category == 'ruangan') {
-      var ruanganList = await readRuanganbyId(widget.id, context);
-      ruangans = ruanganList[0];
+      ruangans = await readRuanganbyId(int.parse(widget.id), context);
     } else if (widget.category == 'barang') {
       barangs = await readBarangbyId(widget.id);
     } else {
