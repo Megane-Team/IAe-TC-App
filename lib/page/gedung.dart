@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:inventara/actions/peminjaman/read_detailPeminjaman_action.dart';
+import 'package:inventara/actions/peminjaman/read_detail_peminjaman_action.dart';
 import 'package:inventara/actions/peminjaman/read_peminjaman_action.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';

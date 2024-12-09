@@ -425,7 +425,7 @@ class BerandaState extends State<Beranda> {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
