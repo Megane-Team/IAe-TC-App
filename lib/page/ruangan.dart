@@ -85,7 +85,7 @@ class RuanganState extends State<Ruangan> {
         children: [
           Container(
             width: MediaQuery.of(context).size.width,
-            height: 247,
+            height: 240,
             decoration: const BoxDecoration(
               color: Colors.grey,
               borderRadius: BorderRadius.only(
@@ -119,7 +119,7 @@ class RuanganState extends State<Ruangan> {
             bottom: isRuangan(),
             child: Column(children: [
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                padding: const EdgeInsets.only(left: 24, right: 24, top: 8),
                 child: Column(
                   children: [
                     Row(
@@ -561,10 +561,7 @@ class RuanganState extends State<Ruangan> {
                                                                               context)
                                                                           .size
                                                                           .width,
-                                                                      height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height /
-                                                                          2.6,
+                                                                      height: MediaQuery.of(context).size.height * 0.09,
                                                                       child:
                                                                           Column(
                                                                         crossAxisAlignment:

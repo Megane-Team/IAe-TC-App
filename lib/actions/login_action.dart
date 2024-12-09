@@ -25,7 +25,7 @@ Future<bool> loginAction(String email, String password) async {
   } else if (response.statusCode == 400) {
     return false;
   } else {
+    return false;
     // If the server returns an unexpected response, throw an error.
-    throw Exception('Failed to login. Is internet connection available?');
   }
 }
