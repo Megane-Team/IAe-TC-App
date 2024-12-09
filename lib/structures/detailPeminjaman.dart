@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:inventara/structures/peminjaman_status.dart';
 
@@ -25,6 +26,8 @@ class DetailPeminjaman {
   late int userId;
   @HiveField(9)
   late DateTime createdAt;
+  @HiveField(10)
+  late String? canceledReason;
 
   DetailPeminjaman(
       {required this.id,
@@ -36,7 +39,8 @@ class DetailPeminjaman {
       required this.destination,
       required this.passenger,
       required this.userId,
-      required this.createdAt});
+      required this.createdAt,
+      required this.canceledReason});
 
   factory DetailPeminjaman.fromJson(Map<String, dynamic> json) {
     return DetailPeminjaman(
@@ -56,6 +60,7 @@ class DetailPeminjaman {
         destination: json['destination'],
         passenger: json['passenger'],
         userId: json['userId'],
-        createdAt: DateTime.parse(json['createdAt']));
+        createdAt: DateTime.parse(json['createdAt']),
+        canceledReason: json['canceledReason']);
   }
 }

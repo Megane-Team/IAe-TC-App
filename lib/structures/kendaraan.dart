@@ -27,6 +27,8 @@ class Kendaraan {
   late String? photo;
   @HiveField(10)
   late int tempatId;
+  @HiveField(11)
+  late DateTime tax;
 
   Kendaraan(
       {required this.id,
@@ -39,7 +41,8 @@ class Kendaraan {
       required this.category,
       required this.color,
       required this.photo,
-      required this.tempatId});
+      required this.tempatId,
+      required this.tax});
 
   factory Kendaraan.fromJson(Map<String, dynamic> json) {
     return Kendaraan(
@@ -54,6 +57,7 @@ class Kendaraan {
             (e) => e.toString() == 'KendaraanCategory.${json['category']}'),
         color: json['color'],
         photo: json['photo'],
-        tempatId: json['tempatId']);
+        tempatId: json['tempatId'],
+        tax: DateTime.parse(json['tax']));
   }
 }
