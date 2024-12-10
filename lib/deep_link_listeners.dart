@@ -3,8 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:app_links/app_links.dart';
 import 'package:go_router/go_router.dart';
+import 'package:inventara/actions/barang/read_barang_action.dart';
+import 'package:inventara/actions/kendaraan/read_kendaraan_action.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
+import 'package:inventara/structures/barang.dart';
+import 'package:inventara/structures/kendaraan.dart';
 import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/structures/tempat.dart';
 import 'package:inventara/utils/sessions.dart';
@@ -39,21 +43,31 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
     appLinks.uriLinkStream.listen((uri) async {
       log('Received deep link: ${uri.toString()}');
       final category = uri.pathSegments.firstOrNull;
-      if (mounted) {
-        context.go('/beranda');
-      }
       if (category == 'barang' && mounted) {
-        final id = uri.pathSegments.lastOrNull;
-        if (id != null) {
-          Ruangans ruangan = await readRuanganbyId(int.parse(id), context);
+        var id = uri.pathSegments.lastOrNull;
+        if (id != null && mounted) {
+          Barang barang = await readBarangbyId(id);
+          Ruangans ruangan = await readRuanganbyId(barang.ruanganId, context);
           Tempat tempat = await readTempatbyId(ruangan.tempatId, context);
-          int ruanganId = ruangan.id;
           int tempatId = tempat.id;
           if (mounted) {
             context.push('/gedung?id=$tempatId');
-            context.push('/ruangan?id=$ruanganId&category=barang&action=pinjam');
+            if(mounted) {
+              context.push('/ruangan?id=$tempatId&category=ruangan&index=$id');
+            }
           }
-        } else {
+        }
+      }
+      if (category == 'kendaraan' && mounted){
+        final id = uri.pathSegments.lastOrNull;
+        if (id != null && mounted) {
+          Kendaraan kendaraan = await readKendaraanbyId(id);
+          Tempat tempat = await readTempatbyId(kendaraan.tempatId, context);
+          int tempatId = tempat.id;
+          if (mounted) {
+            print(id);
+            context.push('/ruangan?id=$tempatId&category=kendaraan&index=$id');
+          }
         }
       }
 

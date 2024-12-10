@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:inventara/deep_link_listeners.dart';
 import 'package:inventara/page/gedung.dart';
 import 'package:inventara/page/beranda.dart';
 import 'package:inventara/page/konfirmasi_kendaraan.dart';
@@ -12,7 +13,7 @@ import 'package:inventara/page/cari.dart';
 
 final appRouter = GoRouter(initialLocation: '/Login', routes: [
   GoRoute(path: '/Login', builder: (context, state) => const Login()),
-  GoRoute(path: '/Beranda', builder: (context, state) => const Beranda()),
+  GoRoute(path: '/Beranda', builder: (context, state) => DeepLinkListener(child: const Beranda())),
   GoRoute(path: '/Riwayat', builder: (context, state) => const Riwayat()),
   GoRoute(path: '/Notifikasi', builder: (context, state) => const Notifikasi()),
   GoRoute(
@@ -44,6 +45,6 @@ final appRouter = GoRouter(initialLocation: '/Login', routes: [
       builder: (context, state) => Ruangan(
             id: state.uri.queryParameters['id']!,
             category: state.uri.queryParameters['category']!,
-            action: state.uri.queryParameters['action'],
+            index: int.parse(state.uri.queryParameters['index'] ?? '0'),
           )),
 ]);
