@@ -320,7 +320,7 @@ class CariState extends State<Cari> {
                                         left: 24, right: 24, bottom: 32),
                                     child: SizedBox(
                                       width: MediaQuery.of(context).size.width,
-                                      height: 420,
+                                      height: 380,
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -920,21 +920,28 @@ class CariState extends State<Cari> {
                             children: [
                               if (isRuangan) ...[
                                 Text(
-                                  '${item.name} ${item.activaCode}',
-                                  style: const TextStyle(color: Colors.black),
+                                  item.activaCode,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                                 Text(
                                   item.condition,
-                                  style: const TextStyle(color: Colors.black),
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 12),
                                 ),
                               ] else ...[
                                 Text(
-                                  item2.name,
-                                  style: const TextStyle(color: Colors.black),
+                                  item2.plat,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
                                 ),
                                 Text(
                                   item2.condition,
-                                  style: const TextStyle(color: Colors.black),
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 12),
                                 ),
                               ]
                             ],

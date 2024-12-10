@@ -589,7 +589,7 @@ class RuanganState extends State<Ruangan> {
                                                                             child:
                                                                                 SizedBox(
                                                                               width: MediaQuery.of(context).size.width,
-                                                                              height: 420,
+                                                                              height: 380,
                                                                               child: Column(
                                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                                 children: [
