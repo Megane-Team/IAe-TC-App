@@ -28,13 +28,14 @@ class KendaraanAdapter extends TypeAdapter<Kendaraan> {
       color: fields[8] as String,
       photo: fields[9] as String?,
       tempatId: fields[10] as int,
+      tax: fields[11] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, Kendaraan obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +57,9 @@ class KendaraanAdapter extends TypeAdapter<Kendaraan> {
       ..writeByte(9)
       ..write(obj.photo)
       ..writeByte(10)
-      ..write(obj.tempatId);
+      ..write(obj.tempatId)
+      ..writeByte(11)
+      ..write(obj.tax);
   }
 
   @override

@@ -187,11 +187,12 @@ class BerandaState extends State<Beranda> {
                     width: MediaQuery.of(context).size.width - 48,
                     height: 50,
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 4,
+                          spreadRadius: 0,
+                          blurRadius: 2,
                           offset: const Offset(0, 0),
                         )
                       ],

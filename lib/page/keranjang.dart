@@ -351,12 +351,16 @@ class KeranjangState extends State<Keranjang> {
                                                                       PeminjamanCategory
                                                                           .barang) ...[
                                                                     Text(
-                                                                      '${barang.firstWhere((b) => b.id == item.barangId).name} (${barang.firstWhere((b) => b.id == item.barangId).code})',
+                                                                      barang
+                                                                          .firstWhere((b) =>
+                                                                              b.id ==
+                                                                              item.barangId)
+                                                                          .activaCode,
                                                                       style: const TextStyle(
                                                                           fontSize:
                                                                               16,
                                                                           fontWeight:
-                                                                              FontWeight.w500),
+                                                                              FontWeight.w600),
                                                                     ),
                                                                     Text(
                                                                       ruangan
@@ -366,9 +370,7 @@ class KeranjangState extends State<Keranjang> {
                                                                           .code,
                                                                       style: const TextStyle(
                                                                           fontSize:
-                                                                              12,
-                                                                          color:
-                                                                              Colors.black54),
+                                                                              12),
                                                                     ),
                                                                   ] else if (item
                                                                           .category ==
