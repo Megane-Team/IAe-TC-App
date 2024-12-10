@@ -73,4 +73,47 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
     );
   }
 }
-// List <string string>
+
+List<Map<String, dynamic>> data = [
+  {
+    'status': 'Menunggu Konfirmasi',
+    'createdAt': 'gedung',
+    'borrowedDate': 'assets/images/logos/inventara.png',
+    'estimatedTime': 'gedung',
+    'returnDate': 'gedung',
+    'destination': 'gedung',
+    'canceledReason': 'gedung',
+    'objective': 'Hidup Sehat Bersama',
+    'penumpang': 2,
+    'barang': [
+      {
+        'name': 'Barang 1',
+        'photo': 'assets/images/logos/inventara.png',
+        'kategori': 'elektronik'
+      },
+      {
+        'name': 'Barang 2',
+        'photo': 'assets/images/logos/inventara.png',
+        'kategori': 'furniture'
+      },
+    ]
+  },
+  {
+    'name': 'Gedung 2',
+    'photo': 'assets/images/logos/inventara.png',
+    'kategori': 'gedung',
+    'barang': [
+      {
+        'name': 'Barang 3',
+        'photo': 'assets/images/logos/inventara.png',
+        'kategori': 'elektronik'
+      },
+      {
+        'name': 'Barang 4',
+        'photo': 'assets/images/logos/inventara.png',
+        'kategori': 'furniture'
+      },
+    ]
+  },
+];
+
