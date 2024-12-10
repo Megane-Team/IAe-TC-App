@@ -9,12 +9,14 @@ import 'package:inventara/page/riwayat.dart';
 import 'package:inventara/page/notifikasi.dart';
 import 'package:inventara/page/konfirmasi_asset.dart';
 import 'package:inventara/page/cari.dart';
+import 'package:inventara/page/detail_peminjaman.dart';
 
-final appRouter = GoRouter(initialLocation: '/Login', routes: [
+final appRouter = GoRouter(initialLocation: '/DetailP', routes: [
   GoRoute(path: '/Login', builder: (context, state) => const Login()),
   GoRoute(path: '/Beranda', builder: (context, state) => const Beranda()),
   GoRoute(path: '/Riwayat', builder: (context, state) => const Riwayat()),
   GoRoute(path: '/Notifikasi', builder: (context, state) => const Notifikasi()),
+  GoRoute(path: '/DetailP', builder: (context, state) => const DetailPeminjaman()),
   GoRoute(
       path: '/KonfA',
       builder: (context, state) => Konfirmasiasset(
