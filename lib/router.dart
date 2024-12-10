@@ -44,5 +44,6 @@ final appRouter = GoRouter(initialLocation: '/Login', routes: [
       builder: (context, state) => Ruangan(
             id: state.uri.queryParameters['id']!,
             category: state.uri.queryParameters['category']!,
+            action: state.uri.queryParameters['action'],
           )),
 ]);

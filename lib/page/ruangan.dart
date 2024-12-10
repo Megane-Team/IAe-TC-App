@@ -26,8 +26,9 @@ import 'package:inventara/utils/extension.dart';
 class Ruangan extends StatefulWidget {
   final String id;
   final String category;
+  final String? action;
 
-  const Ruangan({required this.id, required this.category, super.key});
+  const Ruangan({required this.id, required this.category, this.action, super.key});
 
   @override
   State<Ruangan> createState() => RuanganState();
@@ -651,22 +652,26 @@ class RuanganState extends State<Ruangan> {
                                                                                                     context.pop();
                                                                                                   }
                                                                                                 });
-                                                                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                                                                  const SnackBar(
-                                                                                                    content: Text('Barang Disimpan di Keranjang'),
-                                                                                                  ),
-                                                                                                );
+                                                                                                if (context.mounted) {
+                                                                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                                                                    const SnackBar(
+                                                                                                      content: Text('Barang Disimpan di Keranjang'),
+                                                                                                    ),
+                                                                                                  );
+                                                                                                }
                                                                                               } else {
                                                                                                 WidgetsBinding.instance.addPostFrameCallback((_) {
                                                                                                   if (context.mounted) {
                                                                                                     context.pop();
                                                                                                   }
                                                                                                 });
-                                                                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                                                                  const SnackBar(
-                                                                                                    content: Text('Barang sudah berada di keranjang!'),
-                                                                                                  ),
-                                                                                                );
+                                                                                                if (context.mounted) {
+                                                                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                                                                    const SnackBar(
+                                                                                                      content: Text('Barang sudah berada di keranjang!'),
+                                                                                                    ),
+                                                                                                  );
+                                                                                                }
                                                                                               }
                                                                                             },
                                                                                             style: ElevatedButton.styleFrom(
@@ -1111,22 +1116,26 @@ class RuanganState extends State<Ruangan> {
                                                                                                   context.pop();
                                                                                                 }
                                                                                               });
-                                                                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                                                                const SnackBar(
-                                                                                                  content: Text('Kendaraan Disimpan di Keranjang'),
-                                                                                                ),
-                                                                                              );
+                                                                                              if (context.mounted) {
+                                                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                                                  const SnackBar(
+                                                                                                    content: Text('Kendaraan Disimpan di Keranjang'),
+                                                                                                  ),
+                                                                                                );
+                                                                                              }
                                                                                             } else {
                                                                                               WidgetsBinding.instance.addPostFrameCallback((_) {
                                                                                                 if (context.mounted) {
                                                                                                   context.pop();
                                                                                                 }
                                                                                               });
-                                                                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                                                                const SnackBar(
-                                                                                                  content: Text('Kendaraan sudah berada di keranjang!'),
-                                                                                                ),
-                                                                                              );
+                                                                                              if (context.mounted) {
+                                                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                                                  const SnackBar(
+                                                                                                    content: Text('Kendaraan sudah berada di keranjang!'),
+                                                                                                  ),
+                                                                                                );
+                                                                                              }
                                                                                             }
                                                                                           },
                                                                                           style: ElevatedButton.styleFrom(
