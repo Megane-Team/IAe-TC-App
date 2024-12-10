@@ -57,7 +57,7 @@ class CariState extends State<Cari> {
           bfilteredList = barangs
               .where((item) =>
                   item.name.toLowerCase().contains(value.toLowerCase()) ||
-                  item.code.toLowerCase().contains(value.toLowerCase()))
+                  item.activaCode.toLowerCase().contains(value.toLowerCase()))
               .toList();
         }
       } else {
@@ -314,173 +314,202 @@ class CariState extends State<Cari> {
                               showDragHandle: true,
                               context: context,
                               builder: (BuildContext context) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 24, right: 24, bottom: 32),
-                                  child: SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height /
-                                        2.6,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
+                                return SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 24, right: 24, bottom: 32),
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 380,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width,
                                             height: 218,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(10),
-                                              child: FutureBuilder(
+                                              child: FutureBuilder<Widget>(
                                                   future: Assets.barang(
                                                       item.photo ?? ''),
                                                   builder: (context, snapshot) {
                                                     if (snapshot
                                                             .connectionState ==
-                                                        ConnectionState.done) {
-                                                      return snapshot.data
-                                                          as Widget;
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                    } else if (snapshot
+                                                        .hasError) {
+                                                      return Image.asset(Assets
+                                                          .noImage()); // Show error message if any
+                                                    } else if (snapshot
+                                                        .hasData) {
+                                                      return snapshot
+                                                          .data!; // Return the widget once the future completes
                                                     } else {
-                                                      return const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      );
+                                                      return const Text(
+                                                          'No data available'); // Show message if no data
                                                     }
                                                   }),
-                                            )),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              item.name,
-                                              style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            Text(
-                                              ' ${item.code}',
-                                              style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          ],
-                                        ),
-                                        Text('Kondisi ${item.condition}'),
-                                        Expanded(
-                                          child: Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      2.3,
-                                                  child: ElevatedButton(
-                                                    onPressed: () async {
-                                                      DetailPeminjaman dp =
-                                                          await createDetailPeminjaman(
-                                                              status: 'draft');
-
-                                                      var res =
-                                                          await createPeminjaman(
-                                                              dp.id,
-                                                              item2.id,
-                                                              null,
-                                                              null,
-                                                              'barang');
-
-                                                      if (res) {
-                                                        WidgetsBinding.instance
-                                                            .addPostFrameCallback(
-                                                                (_) {
-                                                          if (context.mounted) {
-                                                            context.pop();
-                                                          }
-                                                        });
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                                'Barang Disimpan di Keranjang'),
-                                                          ),
-                                                        );
-                                                      } else {
-                                                        WidgetsBinding.instance
-                                                            .addPostFrameCallback(
-                                                                (_) {
-                                                          if (context.mounted) {
-                                                            context.pop();
-                                                          }
-                                                        });
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                                'Gagal Menyimpan Barang ke keranjang!'),
-                                                          ),
-                                                        );
-                                                      }
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      padding: EdgeInsets.zero,
-                                                      side: const BorderSide(
-                                                          color: Color(
-                                                              0xFFFCA311)),
-                                                    ),
-                                                    child: const Text(
-                                                      'Masukan Keranjang',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xFFFCA311),
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      2.3,
-                                                  child: ElevatedButton(
-                                                    onPressed: () {
-                                                      var param = item.id;
-                                                      context.push(
-                                                          '/konfA?id=$param%category=barang');
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      padding: EdgeInsets.zero,
-                                                      backgroundColor:
-                                                          const Color(
-                                                              0xFFFCA311),
-                                                    ),
-                                                    child: const Text(
-                                                      'Pinjam Barang',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                          Gap(8),
+                                          Text(
+                                            item.activaCode,
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          Gap(4),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text('Nama'),
+                                              Text(item.name,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600)),
+                                            ],
+                                          ),
+                                          Gap(4),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text('Kondisi'),
+                                              Text(item.condition,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600)),
+                                            ],
+                                          ),
+                                          Gap(4),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text('Garansi'),
+                                              Text(
+                                                  DateFormat('dd MMM yy')
+                                                      .format(item.warranty),
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600)),
+                                            ],
+                                          ),
+                                          Expanded(child: SizedBox()),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2.4,
+                                                child: ElevatedButton(
+                                                  onPressed: () async {
+                                                    DetailPeminjaman dp =
+                                                        await createDetailPeminjaman(
+                                                            status: 'draft');
+
+                                                    var res =
+                                                        await createPeminjaman(
+                                                            dp.id,
+                                                            item.id,
+                                                            null,
+                                                            null,
+                                                            'barang');
+
+                                                    if (res) {
+                                                      WidgetsBinding.instance
+                                                          .addPostFrameCallback(
+                                                              (_) {
+                                                        if (context.mounted) {
+                                                          context.pop();
+                                                        }
+                                                      });
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              'Barang Disimpan di Keranjang'),
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      WidgetsBinding.instance
+                                                          .addPostFrameCallback(
+                                                              (_) {
+                                                        if (context.mounted) {
+                                                          context.pop();
+                                                        }
+                                                      });
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              'Barang sudah berada di keranjang!'),
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    padding: EdgeInsets.zero,
+                                                    side: const BorderSide(
+                                                        color:
+                                                            Color(0xFFFCA311)),
+                                                  ),
+                                                  child: const Text(
+                                                    'Masukan keranjang',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFFFCA311),
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2.4,
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    var param = item.id;
+                                                    context.push(
+                                                        '/KonfA?id=$param&category=barang');
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    padding: EdgeInsets.zero,
+                                                    backgroundColor:
+                                                        const Color(0xFFFCA311),
+                                                    side: const BorderSide(
+                                                        color:
+                                                            Color(0xFFFCA311)),
+                                                  ),
+                                                  child: const Text(
+                                                    'Pinjam Barang',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
@@ -601,60 +630,128 @@ class CariState extends State<Cari> {
                               showDragHandle: true,
                               context: context,
                               builder: (BuildContext context) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 24, right: 24, bottom: 32),
-                                  child: SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height /
-                                        2.6,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 218,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              child: FutureBuilder(
-                                                  future: Assets.kendaraan(
-                                                      item2.photo ?? ''),
-                                                  builder: (context, snapshot) {
-                                                    if (snapshot
-                                                            .connectionState ==
-                                                        ConnectionState.done) {
-                                                      return snapshot.data
-                                                          as Widget;
-                                                    } else {
-                                                      return const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      );
-                                                    }
-                                                  }),
-                                            )),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              item2.name,
-                                              style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          ],
-                                        ),
-                                        Text('Kondisi ${item2.condition}'),
-                                        Expanded(
-                                          child: Align(
-                                            alignment: Alignment.bottomCenter,
+                                return SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 24, right: 24, bottom: 24),
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 420,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                height: 218,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: FutureBuilder<Widget>(
+                                                    future: Assets.kendaraan(
+                                                        item2.photo ?? ''),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                      } else if (snapshot
+                                                          .hasError) {
+                                                        return Image.asset(Assets
+                                                            .noImage()); // Show error message if any
+                                                      } else if (snapshot
+                                                          .hasData) {
+                                                        return snapshot
+                                                            .data!; // Return the widget once the future completes
+                                                      } else {
+                                                        return const Text(
+                                                            'No data available'); // Show message if no data
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                              Gap(8),
+                                              Text(
+                                                item2.plat,
+                                                style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                              Gap(4),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text('Nama'),
+                                                  Text(item2.name,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                ],
+                                              ),
+                                              Gap(4),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text('Kategori'),
+                                                  Text(
+                                                      item2.category
+                                                          .toString()
+                                                          .split('.')
+                                                          .last,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                ],
+                                              ),
+                                              Gap(4),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text('Kondisi'),
+                                                  Text(item2.condition,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                ],
+                                              ),
+                                              Gap(4),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text('Pajak'),
+                                                  Text(
+                                                      DateFormat('yyyy MMM dd')
+                                                          .format(item2.tax),
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Container(
+                                            padding:
+                                                const EdgeInsets.only(top: 16),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -664,7 +761,7 @@ class CariState extends State<Cari> {
                                                   width: MediaQuery.of(context)
                                                           .size
                                                           .width /
-                                                      2.3,
+                                                      2.4,
                                                   child: ElevatedButton(
                                                     onPressed: () async {
                                                       DetailPeminjaman dp =
@@ -708,7 +805,7 @@ class CariState extends State<Cari> {
                                                             .showSnackBar(
                                                           const SnackBar(
                                                             content: Text(
-                                                                'Gagal Menyimpan Kendaraan ke keranjang!'),
+                                                                'Kendaraan sudah berada di keranjang!'),
                                                           ),
                                                         );
                                                       }
@@ -734,7 +831,7 @@ class CariState extends State<Cari> {
                                                   width: MediaQuery.of(context)
                                                           .size
                                                           .width /
-                                                      2.3,
+                                                      2.4,
                                                   child: ElevatedButton(
                                                     onPressed: () {
                                                       var param = item2.id;
@@ -747,9 +844,12 @@ class CariState extends State<Cari> {
                                                       backgroundColor:
                                                           const Color(
                                                               0xFFFCA311),
+                                                      side: const BorderSide(
+                                                          color: Color(
+                                                              0xFFFCA311)),
                                                     ),
                                                     child: const Text(
-                                                      'Pinjam Kendaraan',
+                                                      'Pinjam Barang',
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontWeight:
@@ -760,8 +860,8 @@ class CariState extends State<Cari> {
                                               ],
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
@@ -820,21 +920,28 @@ class CariState extends State<Cari> {
                             children: [
                               if (isRuangan) ...[
                                 Text(
-                                  '${item.name} ${item.code}',
-                                  style: const TextStyle(color: Colors.black),
+                                  item.activaCode,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                                 Text(
                                   item.condition,
-                                  style: const TextStyle(color: Colors.black),
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 12),
                                 ),
                               ] else ...[
                                 Text(
-                                  item2.name,
-                                  style: const TextStyle(color: Colors.black),
+                                  item2.plat,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
                                 ),
                                 Text(
                                   item2.condition,
-                                  style: const TextStyle(color: Colors.black),
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 12),
                                 ),
                               ]
                             ],

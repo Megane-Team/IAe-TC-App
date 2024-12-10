@@ -21,7 +21,7 @@ class NotifikasisAdapter extends TypeAdapter<Notifikasis> {
       category: fields[1] as NotifikasiCategory,
       isRead: fields[2] as bool,
       userId: fields[3] as int,
-      notifikasiId: fields[4] as int,
+      detailNotifikasiId: fields[4] as int,
       createdAt: fields[5] as DateTime,
     );
   }
@@ -39,7 +39,7 @@ class NotifikasisAdapter extends TypeAdapter<Notifikasis> {
       ..writeByte(3)
       ..write(obj.userId)
       ..writeByte(4)
-      ..write(obj.notifikasiId)
+      ..write(obj.detailNotifikasiId)
       ..writeByte(5)
       ..write(obj.createdAt);
   }

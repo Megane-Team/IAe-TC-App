@@ -27,13 +27,14 @@ class DetailPeminjamanAdapter extends TypeAdapter<DetailPeminjaman> {
       passenger: fields[7] as int?,
       userId: fields[8] as int,
       createdAt: fields[9] as DateTime,
+      canceledReason: fields[10] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, DetailPeminjaman obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -53,7 +54,9 @@ class DetailPeminjamanAdapter extends TypeAdapter<DetailPeminjaman> {
       ..writeByte(8)
       ..write(obj.userId)
       ..writeByte(9)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(10)
+      ..write(obj.canceledReason);
   }
 
   @override
