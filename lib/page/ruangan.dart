@@ -59,6 +59,9 @@ class RuanganState extends State<Ruangan> {
       setState(() {
         barang = barangs;
       });
+      if (widget.index != null && widget.index! <= barang.length && widget.index != 0 && mounted) {
+        onPressedBarang(context, barang[widget.index! - 1]);
+      }
       return;
     } else {
       tempat = await readTempatbyId(int.parse(widget.id), context);
@@ -66,6 +69,9 @@ class RuanganState extends State<Ruangan> {
       setState(() {
         kendaraan = kendaraans;
       });
+      if (widget.index != null && widget.index! <= kendaraan.length && widget.index != 0 && mounted) {
+        onPressedKendaraan(context, kendaraan[widget.index! - 1]);
+      }
       return;
     }
   }
@@ -73,17 +79,7 @@ class RuanganState extends State<Ruangan> {
   @override
   void initState() {
     super.initState();
-    fetchDataFuture = fetchData().then((_) {
-      if (isRuangan()) {
-        if (widget.index != null && widget.index! <= barang.length && widget.index != 0 && mounted) {
-          onPressedBarang(context, widget.index! - 1, barang);
-        }
-      } else {
-        if (widget.index != null && widget.index! < kendaraan.length && widget.index != 0 && mounted) {
-          onPressedKendaraan(context, widget.index! - 1, kendaraan);
-        }
-      }
-    });
+    fetchDataFuture = fetchData();
   }
 
   @override
@@ -235,8 +231,7 @@ class RuanganState extends State<Ruangan> {
                                               ),
                                             ),
                                             if (ruangan.category !=
-                                                RuanganCategory.gudang) ...[
-                                              ...[
+                                              RuanganCategory.gudang) ...[
                                                 Text(
                                                   isRuangan()
                                                       ? ''
@@ -249,7 +244,6 @@ class RuanganState extends State<Ruangan> {
                                                     fontWeight: FontWeight.w400,
                                                   ),
                                                 )
-                                              ]
                                             ]
                                           ],
                                         )
@@ -486,7 +480,7 @@ class RuanganState extends State<Ruangan> {
                                                                           0.1),
                                                                 ),
                                                                 onPressed: () {
-                                                                  onPressedBarang(context, index2, items);
+                                                                  onPressedBarang(context, items[index2]);
                                                                 },
                                                                 child: Row(
                                                                   children: [
@@ -718,7 +712,7 @@ class RuanganState extends State<Ruangan> {
                                                                         0.1),
                                                               ),
                                                               onPressed: () {
-                                                                onPressedKendaraan(context, index2, items);
+                                                                onPressedKendaraan(context, items[index2]);
                                                               },
                                                               child: Row(
                                                                 children: [
@@ -832,15 +826,15 @@ class RuanganState extends State<Ruangan> {
   }
 }
 
-void onPressedBarang(BuildContext context, int index2, List<Barang> items) {
-  if (items[index2].status == true) {
+void onPressedBarang(BuildContext context,Barang items) {
+  if (items.status == true) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Asset sedang Dipinjam', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
           content: FutureBuilder(
-            future: readPeminjamanbyBarangId(items[index2].id),
+            future: readPeminjamanbyBarangId(items.id),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
@@ -916,7 +910,7 @@ void onPressedBarang(BuildContext context, int index2, List<Barang> items) {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: FutureBuilder<Widget>(
-                        future: Assets.barang(items[index2].photo ?? ''),
+                        future: Assets.barang(items.photo ?? ''),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             return const CircularProgressIndicator();
@@ -930,13 +924,13 @@ void onPressedBarang(BuildContext context, int index2, List<Barang> items) {
                     ),
                   ),
                   const Gap(8),
-                  Text(items[index2].activaCode, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                  Text(items.activaCode, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
                   const Gap(4),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Nama'), Text(items[index2].name, style: const TextStyle(fontWeight: FontWeight.w600))]),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Nama'), Text(items.name, style: const TextStyle(fontWeight: FontWeight.w600))]),
                   const Gap(4),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Kondisi'), Text(items[index2].condition, style: const TextStyle(fontWeight: FontWeight.w600))]),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Kondisi'), Text(items.condition, style: const TextStyle(fontWeight: FontWeight.w600))]),
                   const Gap(4),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Garansi'), Text(DateFormat('dd MMM yy').format(items[index2].warranty), style: const TextStyle(fontWeight: FontWeight.w600))]),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Garansi'), Text(DateFormat('dd MMM yy').format(items.warranty), style: const TextStyle(fontWeight: FontWeight.w600))]),
                   const Expanded(child: SizedBox()),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -946,7 +940,7 @@ void onPressedBarang(BuildContext context, int index2, List<Barang> items) {
                         child: ElevatedButton(
                           onPressed: () async {
                             DetailPeminjaman dp = await createDetailPeminjaman(status: 'draft');
-                            var res = await createPeminjaman(dp.id, items[0].id, null, null, 'barang');
+                            var res = await createPeminjaman(dp.id, items.id, null, null, 'barang');
                             if (res) {
                               if (context.mounted) {
                                 context.pop();
@@ -967,7 +961,7 @@ void onPressedBarang(BuildContext context, int index2, List<Barang> items) {
                         width: MediaQuery.of(context).size.width / 3,
                         child: ElevatedButton(
                           onPressed: () {
-                            var param = items[index2].id;
+                            var param = items.id;
                             context.push('/KonfA?id=$param&category=barang');
                           },
                           style: ElevatedButton.styleFrom(padding: EdgeInsets.zero, backgroundColor: const Color(0xFFFCA311)),
@@ -986,15 +980,16 @@ void onPressedBarang(BuildContext context, int index2, List<Barang> items) {
   }
 }
 
-void onPressedKendaraan(BuildContext context, int index2, List<Kendaraan> items) {
-  if (items[index2].status == true) {
+void onPressedKendaraan(BuildContext context, Kendaraan items) {
+  print(items.status);
+  if (items.status == true) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Asset sedang Digunakan', style: TextStyle(fontWeight: FontWeight.w600)),
           content: FutureBuilder(
-            future: readPeminjamanbyKendaraanId(items[index2].id),
+            future: readPeminjamanbyKendaraanId(items.id),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
@@ -1074,7 +1069,7 @@ void onPressedKendaraan(BuildContext context, int index2, List<Kendaraan> items)
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: FutureBuilder<Widget>(
-                            future: Assets.kendaraan(items[index2].photo ?? ''),
+                            future: Assets.kendaraan(items.photo ?? ''),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState == ConnectionState.waiting) {
                                 return const CircularProgressIndicator();
@@ -1088,15 +1083,15 @@ void onPressedKendaraan(BuildContext context, int index2, List<Kendaraan> items)
                         ),
                       ),
                       const Gap(8),
-                      Text(items[index2].plat, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                      Text(items.plat, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
                       const Gap(4),
-                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Nama'), Text(items[index2].name, style: const TextStyle(fontWeight: FontWeight.w600))]),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Nama'), Text(items.name, style: const TextStyle(fontWeight: FontWeight.w600))]),
                       const Gap(4),
-                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Kategori'), Text(items[index2].category.toString().split('.').last.capitalize(), style: const TextStyle(fontWeight: FontWeight.w600))]),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Kategori'), Text(items.category.toString().split('.').last.capitalize(), style: const TextStyle(fontWeight: FontWeight.w600))]),
                       const Gap(4),
-                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Kondisi'), Text(items[index2].condition, style: const TextStyle(fontWeight: FontWeight.w600))]),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Kondisi'), Text(items.condition, style: const TextStyle(fontWeight: FontWeight.w600))]),
                       const Gap(4),
-                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Pajak'), Text(DateFormat('yyyy MMM dd').format(items[index2].tax), style: const TextStyle(fontWeight: FontWeight.w600))]),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Pajak'), Text(DateFormat('yyyy MMM dd').format(items.tax), style: const TextStyle(fontWeight: FontWeight.w600))]),
                     ],
                   ),
                   Container(
@@ -1109,7 +1104,7 @@ void onPressedKendaraan(BuildContext context, int index2, List<Kendaraan> items)
                           child: ElevatedButton(
                             onPressed: () async {
                               DetailPeminjaman dp = await createDetailPeminjaman(status: 'draft');
-                              var res = await createPeminjaman(dp.id, null, null, items[0].id, 'kendaraan');
+                              var res = await createPeminjaman(dp.id, null, null, items.id, 'kendaraan');
                               if (res) {
                                 if (context.mounted) {
                                   context.pop();
@@ -1130,7 +1125,7 @@ void onPressedKendaraan(BuildContext context, int index2, List<Kendaraan> items)
                           width: MediaQuery.of(context).size.width / 2.4,
                           child: ElevatedButton(
                             onPressed: () {
-                              var param = items[index2].id;
+                              var param = items.id;
                               context.push('/KonfK?id=$param&category=kendaraan');
                             },
                             style: ElevatedButton.styleFrom(padding: EdgeInsets.zero, backgroundColor: const Color(0xFFFCA311), side: const BorderSide(color: Color(0xFFFCA311))),
@@ -1149,5 +1144,3 @@ void onPressedKendaraan(BuildContext context, int index2, List<Kendaraan> items)
     );
   }
 }
-
-// TODO: listing is incorrect

@@ -43,6 +43,9 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
     appLinks.uriLinkStream.listen((uri) async {
       log('Received deep link: ${uri.toString()}');
       final category = uri.pathSegments.firstOrNull;
+      if (mounted) {
+        context.go('/beranda');
+      }
       if (category == 'barang' && mounted) {
         var id = uri.pathSegments.lastOrNull;
         if (id != null && mounted) {
@@ -65,7 +68,6 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
           Tempat tempat = await readTempatbyId(kendaraan.tempatId, context);
           int tempatId = tempat.id;
           if (mounted) {
-            print(id);
             context.push('/ruangan?id=$tempatId&category=kendaraan&index=$id');
           }
         }
