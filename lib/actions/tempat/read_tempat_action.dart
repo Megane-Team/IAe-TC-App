@@ -57,7 +57,6 @@ Future<Tempat> readTempatbyId(int id, BuildContext context) async {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final Map<String, dynamic> data = responseData['data'];
     return Tempat.fromJson(data);
-
   } else if (response.statusCode == 401) {
     throw Exception('Unauthorized');
   } else {

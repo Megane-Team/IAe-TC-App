@@ -56,14 +56,15 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
           if (mounted) {
             context.push('/gedung?id=$tempatId&rId=${ruangan.id}');
             if (ruangan.status != true) {
-              if(mounted) {
-                context.push('/ruangan?id=$tempatId&category=ruangan&index=$id');
+              if (mounted) {
+                context
+                    .push('/ruangan?id=$tempatId&category=ruangan&index=$id');
               }
             }
           }
         }
       }
-      if (category == 'kendaraan' && mounted){
+      if (category == 'kendaraan' && mounted) {
         final id = uri.pathSegments.lastOrNull;
         if (id != null && mounted) {
           Kendaraan kendaraan = await readKendaraanbyId(id);
@@ -74,7 +75,6 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
           }
         }
       }
-
     });
     super.initState();
   }

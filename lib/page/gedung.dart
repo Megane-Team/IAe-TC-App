@@ -47,7 +47,10 @@ class GedungState extends State<Gedung> {
       filteredRuangan = List.from(originalRuanganList);
       _filterAndUpdateRuanganList(searchController.text);
     });
-    if (widget.rId != null && widget.rId! <= ruangan.length && widget.rId != 0 && mounted) {
+    if (widget.rId != null &&
+        widget.rId! <= ruangan.length &&
+        widget.rId != 0 &&
+        mounted) {
       var ruangan = await readRuanganbyId(widget.rId!, context);
       if (mounted) {
         onPressed(context, ruangan);
@@ -394,97 +397,67 @@ void onPressed(BuildContext context, Ruangans ruangan) {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text(
-              'Ruangan Sedang Dipinjam',
+          title: const Text('Ruangan Sedang Dipinjam',
               style: TextStyle(fontSize: 20)),
           content: FutureBuilder(
-              future: readPeminjamanbyRuanganId(
-                  ruangan.id),
+              future: readPeminjamanbyRuanganId(ruangan.id),
               builder: (context, snapshot) {
-                if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return const Text(
-                      'No data available');
+                  return const Text('No data available');
                 } else if (snapshot.hasData) {
-                  final Peminjaman peminjaman =
-                  snapshot.data!;
+                  final Peminjaman peminjaman = snapshot.data!;
                   return FutureBuilder(
-                      future: readUserById(
-                          '${peminjaman.userId}'),
+                      future: readUserById('${peminjaman.userId}'),
                       builder: (context, snapshot) {
-                        if (snapshot
-                            .connectionState ==
-                            ConnectionState
-                                .waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const CircularProgressIndicator();
-                        } else if (snapshot
-                            .hasError) {
-                          return const Text(
-                              'No data available');
-                        } else if (snapshot
-                            .hasData) {
-                          final user =
-                          snapshot.data!;
+                        } else if (snapshot.hasError) {
+                          return const Text('No data available');
+                        } else if (snapshot.hasData) {
+                          final user = snapshot.data!;
                           return FutureBuilder(
                               future: readDetailPeminjamanbyId(
-                                  peminjaman
-                                      .detailPeminjamanId),
-                              builder: (context,
-                                  snapshot) {
-                                if (snapshot
-                                    .connectionState ==
-                                    ConnectionState
-                                        .waiting) {
+                                  peminjaman.detailPeminjamanId),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
                                   return const CircularProgressIndicator();
-                                } else if (snapshot
-                                    .hasError) {
-                                  return const Text(
-                                      'No data available');
-                                } else if (snapshot
-                                    .hasData) {
-                                  final DetailPeminjaman
-                                  dpeminjaman =
-                                  snapshot
-                                      .data!;
+                                } else if (snapshot.hasError) {
+                                  return const Text('No data available');
+                                } else if (snapshot.hasData) {
+                                  final DetailPeminjaman dpeminjaman =
+                                      snapshot.data!;
                                   return Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment
-                                          .start,
-                                      mainAxisSize:
-                                      MainAxisSize
-                                          .min,
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text(
-                                            'Digunakan oleh: ${user.name}'),
+                                        Text('Digunakan oleh: ${user.name}'),
                                         Text(
                                             'Divisi: ${user.unit}\nEstimasi : ${DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!)}')
                                       ]);
                                 } else {
-                                  return const Text(
-                                      'Tidak ada data');
+                                  return const Text('Tidak ada data');
                                 }
                               });
                         } else {
-                          return const Text(
-                              'Tidak ada data');
+                          return const Text('Tidak ada data');
                         }
                       });
                 } else {
-                  return const Text(
-                      'Tidak ada data');
+                  return const Text('Tidak ada data');
                 }
               }),
           actions: [
             SizedBox(
-              width:
-              MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.zero,
-                  backgroundColor:
-                  const Color(0xFFFCA311),
+                  backgroundColor: const Color(0xFFFCA311),
                 ),
                 onPressed: () {
                   context.pop();
@@ -492,8 +465,7 @@ void onPressed(BuildContext context, Ruangans ruangan) {
                 child: const Text(
                   'OK',
                   style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600),
+                      color: Colors.white, fontWeight: FontWeight.w600),
                 ),
               ),
             ),
@@ -504,7 +476,6 @@ void onPressed(BuildContext context, Ruangans ruangan) {
   } else {
     var param1 = ruangan.id;
 
-    context.push(
-        "/ruangan?id=$param1&category=ruangan");
+    context.push("/ruangan?id=$param1&category=ruangan");
   }
 }
