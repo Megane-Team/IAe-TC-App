@@ -6,10 +6,10 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:inventara/actions/barang/read_barang_action.dart';
-import 'package:inventara/actions/peminjaman/create_detailPeminjaman_action.dart';
+import 'package:inventara/actions/peminjaman/create_detail_peminjaman_action.dart';
 import 'package:inventara/actions/peminjaman/create_peminjaman_action.dart';
-import 'package:inventara/actions/peminjaman/read_detailPeminjaman_action.dart';
-import 'package:inventara/actions/peminjaman/update_detailPeminjaman.dart';
+import 'package:inventara/actions/peminjaman/read_detail_peminjaman_action.dart';
+import 'package:inventara/actions/peminjaman/update_detail_peminjaman.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/structures/barang.dart';
 import 'package:inventara/structures/detailPeminjaman.dart';
@@ -50,8 +50,7 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
 
   Future<void> fetchData() async {
     if (widget.category == 'ruangan') {
-      var ruanganList = await readRuanganbyId(widget.id, context);
-      ruangans = ruanganList[0];
+      ruangans = await readRuanganbyId(int.parse(widget.id), context);
     } else if (widget.category == 'barang') {
       barangs = await readBarangbyId(widget.id);
     } else {

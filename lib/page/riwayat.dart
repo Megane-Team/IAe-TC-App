@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:gap/gap.dart';
 import 'package:inventara/actions/barang/read_barang_action.dart';
 import 'package:inventara/actions/kendaraan/read_kendaraan_action.dart';
-import 'package:inventara/actions/peminjaman/read_detailPeminjaman_action.dart';
+import 'package:inventara/actions/peminjaman/read_detail_peminjaman_action.dart';
 import 'package:inventara/actions/peminjaman/read_peminjaman_action.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
@@ -116,8 +116,8 @@ class RiwayatState extends State<Riwayat> {
 
   Future<void> fetchData() async {
     barangs = await readBarang(context);
-    ruangans = await readRuangan('', context);
-    tempats = await readTempat('', context);
+    ruangans = await readRuangan(context);
+    tempats = await readTempat(context);
     kendaraans = await readKendaraan(context);
   }
 

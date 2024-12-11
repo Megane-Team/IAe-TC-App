@@ -51,7 +51,15 @@ class Session {
       return null;
     }
 
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    var timestamp = store.get('timestamp');
+
+    if (timestamp == null ||
+        DateTime.now().millisecondsSinceEpoch - timestamp > 43200000) {
+      unset();
+      return null;
+    }
+
+    timestamp = DateTime.now().millisecondsSinceEpoch;
     await store.put('user', user);
     await store.put('timestamp', timestamp);
 

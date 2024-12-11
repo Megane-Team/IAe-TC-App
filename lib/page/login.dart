@@ -13,7 +13,6 @@ class Login extends StatefulWidget {
 
 class LoginState extends State<Login> {
   late bool showPassword = false;
-
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();

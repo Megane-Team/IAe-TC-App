@@ -7,7 +7,7 @@ import 'package:inventara/main.dart';
 import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/utils/sessions.dart';
 
-Future<List<Ruangans>> readRuangan(String? id, BuildContext context) async {
+Future<List<Ruangans>> readRuangan(BuildContext context) async {
   final token = await Session.getToken();
 
   if (token == null) {
@@ -20,7 +20,7 @@ Future<List<Ruangans>> readRuangan(String? id, BuildContext context) async {
     throw Exception('Unauthorized');
   }
 
-  final response = await App.api.get(apiBaseURl.resolve('/ruangans/$id'),
+  final response = await App.api.get(apiBaseURl.resolve('/ruangans'),
       headers: {'authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {
@@ -36,7 +36,7 @@ Future<List<Ruangans>> readRuangan(String? id, BuildContext context) async {
 }
 
 Future<List<Ruangans>> readRuanganbyGedungId(
-    String? id, BuildContext context) async {
+    String id, BuildContext context) async {
   final token = await Session.getToken();
 
   if (token == null) {
@@ -65,7 +65,7 @@ Future<List<Ruangans>> readRuanganbyGedungId(
   }
 }
 
-Future<List<Ruangans>> readRuanganbyId(String? id, BuildContext context) async {
+Future<Ruangans> readRuanganbyId(int id, BuildContext context) async {
   final token = await Session.getToken();
 
   if (token == null) {
@@ -83,11 +83,8 @@ Future<List<Ruangans>> readRuanganbyId(String? id, BuildContext context) async {
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
-    final List<dynamic> data = responseData['data'];
-    final List<Ruangans> ruangans =
-        data.map((item) => Ruangans.fromJson(item)).toList();
-
-    return ruangans;
+    final Map<String, dynamic> data = responseData['data'];
+    return Ruangans.fromJson(data);
   } else {
     throw Exception('Failed to get ruangan. Is internet connection available?');
   }

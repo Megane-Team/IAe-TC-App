@@ -38,8 +38,8 @@ class KeranjangState extends State<Keranjang> {
 
   Future<void> fetchData() async {
     barang = await readBarang(context);
-    tempat = await readTempat('', context);
-    ruangan = await readRuangan('', context);
+    tempat = await readTempat(context);
+    ruangan = await readRuangan(context);
     kendaraan = await readKendaraan(context);
   }
 
