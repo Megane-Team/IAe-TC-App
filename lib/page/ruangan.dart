@@ -981,7 +981,6 @@ void onPressedBarang(BuildContext context,Barang items) {
 }
 
 void onPressedKendaraan(BuildContext context, Kendaraan items) {
-  print(items.status);
   if (items.status == true) {
     showDialog(
       context: context,

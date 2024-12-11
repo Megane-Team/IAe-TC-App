@@ -54,9 +54,11 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
           Tempat tempat = await readTempatbyId(ruangan.tempatId, context);
           int tempatId = tempat.id;
           if (mounted) {
-            context.push('/gedung?id=$tempatId');
-            if(mounted) {
-              context.push('/ruangan?id=$tempatId&category=ruangan&index=$id');
+            context.push('/gedung?id=$tempatId&rId=${ruangan.id}');
+            if (ruangan.status != true) {
+              if(mounted) {
+                context.push('/ruangan?id=$tempatId&category=ruangan&index=$id');
+              }
             }
           }
         }
