@@ -6,7 +6,7 @@ import 'package:inventara/main.dart';
 import 'package:inventara/structures/detailPeminjaman.dart';
 import 'package:inventara/utils/sessions.dart';
 
-Future<DetailPeminjaman> createDetailPeminjaman(
+Future<DetailPeminjamans> createDetailPeminjaman(
     {DateTime? borrowedDate,
     DateTime? estimatedTime,
     String? objective,
@@ -45,7 +45,7 @@ Future<DetailPeminjaman> createDetailPeminjaman(
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final Map<String, dynamic> data = responseData['data'];
-    return DetailPeminjaman.fromJson(data);
+    return DetailPeminjamans.fromJson(data);
   } else {
     throw Exception(
         'Failed to create detailPeminjaman. Is internet connection available?');

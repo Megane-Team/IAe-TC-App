@@ -6,23 +6,23 @@ part of 'detailPeminjaman.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DetailPeminjamanAdapter extends TypeAdapter<DetailPeminjaman> {
+class DetailPeminjamansAdapter extends TypeAdapter<DetailPeminjamans> {
   @override
   final int typeId = 15;
 
   @override
-  DetailPeminjaman read(BinaryReader reader) {
+  DetailPeminjamans read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return DetailPeminjaman(
+    return DetailPeminjamans(
       id: fields[0] as int,
       status: fields[1] as PeminjamanStatus,
       borrowedDate: fields[2] as DateTime?,
       estimatedTime: fields[3] as DateTime?,
       returnDate: fields[4] as DateTime?,
-      objective: fields[5] as String,
+      objective: fields[5] as String?,
       destination: fields[6] as String?,
       passenger: fields[7] as int?,
       userId: fields[8] as int,
@@ -32,7 +32,7 @@ class DetailPeminjamanAdapter extends TypeAdapter<DetailPeminjaman> {
   }
 
   @override
-  void write(BinaryWriter writer, DetailPeminjaman obj) {
+  void write(BinaryWriter writer, DetailPeminjamans obj) {
     writer
       ..writeByte(11)
       ..writeByte(0)
@@ -65,7 +65,7 @@ class DetailPeminjamanAdapter extends TypeAdapter<DetailPeminjaman> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DetailPeminjamanAdapter &&
+      other is DetailPeminjamansAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

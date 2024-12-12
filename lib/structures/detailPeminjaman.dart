@@ -4,7 +4,7 @@ import 'package:inventara/structures/peminjaman_status.dart';
 part 'detailPeminjaman.g.dart';
 
 @HiveType(typeId: 15)
-class DetailPeminjaman {
+class DetailPeminjamans {
   @HiveField(0)
   late int id;
   @HiveField(1)
@@ -16,7 +16,7 @@ class DetailPeminjaman {
   @HiveField(4)
   late DateTime? returnDate;
   @HiveField(5)
-  late String objective;
+  late String? objective;
   @HiveField(6)
   late String? destination;
   @HiveField(7)
@@ -28,7 +28,7 @@ class DetailPeminjaman {
   @HiveField(10)
   late String? canceledReason;
 
-  DetailPeminjaman(
+  DetailPeminjamans(
       {required this.id,
       required this.status,
       required this.borrowedDate,
@@ -41,8 +41,8 @@ class DetailPeminjaman {
       required this.createdAt,
       required this.canceledReason});
 
-  factory DetailPeminjaman.fromJson(Map<String, dynamic> json) {
-    return DetailPeminjaman(
+  factory DetailPeminjamans.fromJson(Map<String, dynamic> json) {
+    return DetailPeminjamans(
         id: json['id'],
         status: PeminjamanStatus.values.firstWhere(
             (e) => e.toString() == 'PeminjamanStatus.${json['status']}'),

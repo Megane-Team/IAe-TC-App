@@ -868,7 +868,8 @@ void onPressedBarang(BuildContext context, Barang items) {
                           } else if (snapshot.hasError || !snapshot.hasData) {
                             return const Text('Data tidak tersedia');
                           } else {
-                            final DetailPeminjaman dpeminjaman = snapshot.data!;
+                            final DetailPeminjamans dpeminjaman =
+                                snapshot.data!;
                             return Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -974,7 +975,7 @@ void onPressedBarang(BuildContext context, Barang items) {
                         width: MediaQuery.of(context).size.width / 2.4,
                         child: ElevatedButton(
                           onPressed: () async {
-                            DetailPeminjaman dp =
+                            DetailPeminjamans dp =
                                 await createDetailPeminjaman(status: 'draft');
                             var res = await createPeminjaman(
                                 dp.id, items.id, null, null, 'barang');
@@ -1069,7 +1070,8 @@ void onPressedKendaraan(BuildContext context, Kendaraan items) {
                           } else if (snapshot.hasError || !snapshot.hasData) {
                             return const Text('Data tidak tersedia');
                           } else {
-                            final DetailPeminjaman dpeminjaman = snapshot.data!;
+                            final DetailPeminjamans dpeminjaman =
+                                snapshot.data!;
                             return Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1200,7 +1202,7 @@ void onPressedKendaraan(BuildContext context, Kendaraan items) {
                           width: MediaQuery.of(context).size.width / 2.4,
                           child: ElevatedButton(
                             onPressed: () async {
-                              DetailPeminjaman dp =
+                              DetailPeminjamans dp =
                                   await createDetailPeminjaman(status: 'draft');
                               var res = await createPeminjaman(
                                   dp.id, null, null, items.id, 'kendaraan');

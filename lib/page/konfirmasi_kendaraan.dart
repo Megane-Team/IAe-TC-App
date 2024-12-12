@@ -27,7 +27,7 @@ class Konfirmasikendaraan extends StatefulWidget {
 class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
   late Barang barangs;
   late Kendaraan kendaraans;
-  late DetailPeminjaman detailPeminjaman;
+  late DetailPeminjamans detailPeminjaman;
   late Future<void> fetchDataFuture;
   DateTime peminjamanDateTime = DateTime.now();
   DateTime pengembalianDateTime = DateTime.now();
@@ -481,7 +481,7 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                             );
                           } else {
                             if (widget.category == 'kendaraan') {
-                              DetailPeminjaman detailPeminjaman =
+                              DetailPeminjamans detailPeminjaman =
                                   await createDetailPeminjaman(
                                 borrowedDate: peminjamanDateTime,
                                 estimatedTime: pengembalianDateTime,
