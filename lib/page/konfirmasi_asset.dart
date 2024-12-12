@@ -27,7 +27,7 @@ class Konfirmasiasset extends StatefulWidget {
 class KonfimasiassetState extends State<Konfirmasiasset> {
   late Ruangans ruangans;
   late Barang barangs;
-  late DetailPeminjaman detailPeminjaman;
+  late DetailPeminjamans detailPeminjaman;
   DateTime peminjamanDateTime = DateTime.now();
   DateTime pengembalianDateTime = DateTime.now();
   late Future<void> fetchDataFuture;
@@ -393,7 +393,7 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                               );
                             } else {
                               if (widget.category == 'ruangan') {
-                                DetailPeminjaman detailPeminjaman =
+                                DetailPeminjamans detailPeminjaman =
                                     await createDetailPeminjaman(
                                   borrowedDate: peminjamanDateTime,
                                   estimatedTime: pengembalianDateTime,
@@ -429,7 +429,7 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                                   );
                                 }
                               } else if (widget.category == 'barang') {
-                                DetailPeminjaman detailPeminjaman =
+                                DetailPeminjamans detailPeminjaman =
                                     await createDetailPeminjaman(
                                   borrowedDate: peminjamanDateTime,
                                   estimatedTime: pengembalianDateTime,

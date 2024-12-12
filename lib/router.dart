@@ -20,7 +20,9 @@ final appRouter = GoRouter(initialLocation: '/Login', routes: [
   GoRoute(path: '/Riwayat', builder: (context, state) => const Riwayat()),
   GoRoute(path: '/Notifikasi', builder: (context, state) => const Notifikasi()),
   GoRoute(
-      path: '/DetailP', builder: (context, state) => const DetailPeminjaman()),
+      path: '/DetailP', builder: (context, state) => DetailPeminjaman(
+            dpId: int.parse(state.uri.queryParameters['id']!),
+  )),
   GoRoute(
       path: '/KonfA',
       builder: (context, state) => Konfirmasiasset(

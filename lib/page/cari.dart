@@ -254,7 +254,7 @@ class CariState extends State<Cari> {
                                                               'Data tidak tersedia'); // Show error message if any
                                                         } else if (snapshot
                                                             .hasData) {
-                                                          final DetailPeminjaman
+                                                          final DetailPeminjamans
                                                               dpeminjaman =
                                                               snapshot.data!;
                                                           return Column(
@@ -414,7 +414,7 @@ class CariState extends State<Cari> {
                                                     2.4,
                                                 child: ElevatedButton(
                                                   onPressed: () async {
-                                                    DetailPeminjaman dp =
+                                                    DetailPeminjamans dp =
                                                         await createDetailPeminjaman(
                                                             status: 'draft');
 
@@ -570,7 +570,7 @@ class CariState extends State<Cari> {
                                                               'Data tidak tersedia'); // Show error message if any
                                                         } else if (snapshot
                                                             .hasData) {
-                                                          final DetailPeminjaman
+                                                          final DetailPeminjamans
                                                               dpeminjaman =
                                                               snapshot.data!;
                                                           return Column(
@@ -764,7 +764,7 @@ class CariState extends State<Cari> {
                                                       2.4,
                                                   child: ElevatedButton(
                                                     onPressed: () async {
-                                                      DetailPeminjaman dp =
+                                                      DetailPeminjamans dp =
                                                           await createDetailPeminjaman(
                                                               status: 'draft');
 

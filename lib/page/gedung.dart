@@ -428,7 +428,7 @@ void onPressed(BuildContext context, Ruangans ruangan) {
                                 } else if (snapshot.hasError) {
                                   return const Text('No data available');
                                 } else if (snapshot.hasData) {
-                                  final DetailPeminjaman dpeminjaman =
+                                  final DetailPeminjamans dpeminjaman =
                                       snapshot.data!;
                                   return Column(
                                       crossAxisAlignment:

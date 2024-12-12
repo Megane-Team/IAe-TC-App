@@ -5,7 +5,7 @@ import 'package:inventara/main.dart';
 import 'package:inventara/structures/detailPeminjaman.dart';
 import 'package:inventara/utils/sessions.dart';
 
-Future<List<DetailPeminjaman>> readDetailPeminjaman() async {
+Future<List<DetailPeminjamans>> readDetailPeminjaman() async {
   var token = await Session.getToken();
 
   var response = await App.api.get(apiBaseURl.resolve('/detailPeminjaman'),
@@ -14,8 +14,8 @@ Future<List<DetailPeminjaman>> readDetailPeminjaman() async {
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final List<dynamic> data = responseData['data'];
-    final List<DetailPeminjaman> detailPeminjaman =
-        data.map((item) => DetailPeminjaman.fromJson(item)).toList();
+    final List<DetailPeminjamans> detailPeminjaman =
+        data.map((item) => DetailPeminjamans.fromJson(item)).toList();
 
     return detailPeminjaman;
   } else {
@@ -24,7 +24,7 @@ Future<List<DetailPeminjaman>> readDetailPeminjaman() async {
   }
 }
 
-Future<DetailPeminjaman> readDetailPeminjamanbyId(int id) async {
+Future<DetailPeminjamans> readDetailPeminjamanbyId(int id) async {
   var token = await Session.getToken();
 
   var response = await App.api.get(apiBaseURl.resolve('/detailPeminjaman/$id'),
@@ -33,7 +33,7 @@ Future<DetailPeminjaman> readDetailPeminjamanbyId(int id) async {
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final Map<String, dynamic> data = responseData['data'];
-    return DetailPeminjaman.fromJson(data);
+    return DetailPeminjamans.fromJson(data);
   } else {
     throw Exception(
         'Failed to get detail peminjaman. Is internet connection available?');
