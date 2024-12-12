@@ -465,7 +465,8 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                                         child: FutureBuilder(
                                                           future:
                                                               Assets.kendaraan(
-                                                                  asset.photo ?? ''),
+                                                                  asset.photo ??
+                                                                      ''),
                                                           builder: (context,
                                                               snapshot) {
                                                             if (snapshot
@@ -593,7 +594,8 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                                         child: FutureBuilder(
                                                           future:
                                                               Assets.ruangan(
-                                                                  asset.photo ?? ''),
+                                                                  asset.photo ??
+                                                                      ''),
                                                           builder: (context,
                                                               snapshot) {
                                                             if (snapshot
@@ -784,7 +786,9 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                       ),
                     ),
                   ),
-                  if (item.status == PeminjamanStatus.pending || DateTime.now().isBefore(item.borrowedDate ?? DateTime.now().subtract(Duration(days: 1))))
+                  if (item.status == PeminjamanStatus.pending ||
+                      DateTime.now().isBefore(item.borrowedDate ??
+                          DateTime.now().subtract(Duration(days: 1))))
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 80,
@@ -868,12 +872,17 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                                 fontWeight: FontWeight.w600),
                                           ),
                                           onPressed: () async {
-                                            if (await updateCanceledDetailPeminjaman(item.id, _alasanController.text) == true) {
-                                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                            if (await updateCanceledDetailPeminjaman(
+                                                    item.id,
+                                                    _alasanController.text) ==
+                                                true) {
+                                              WidgetsBinding.instance
+                                                  .addPostFrameCallback((_) {
                                                 if (context.mounted) {
                                                   context.pop();
                                                 }
-                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
                                                   const SnackBar(
                                                     content: Text(
                                                         'Peminjaman berhasil di batalkan!'),
@@ -913,15 +922,18 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                             child: FloatingActionButton(
                               backgroundColor: const Color(0xFFFCA311),
                               onPressed: () async {
-                                if (await updateReturnedDetailPeminjaman(item.id) == true) {
-                                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (await updateReturnedDetailPeminjaman(
+                                        item.id) ==
+                                    true) {
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
                                     if (context.mounted) {
                                       context.pop();
                                     }
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text(
-                                          'Peminjaman berhasil di batalkan!'),
+                                            'Peminjaman berhasil di batalkan!'),
                                       ),
                                     );
                                   });
