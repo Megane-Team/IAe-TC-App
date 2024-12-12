@@ -6,6 +6,8 @@ import 'package:inventara/actions/barang/read_barang_action.dart';
 import 'package:inventara/actions/kendaraan/read_kendaraan_action.dart';
 import 'package:inventara/actions/peminjaman/read_detail_peminjaman_action.dart';
 import 'package:inventara/actions/peminjaman/read_peminjaman_action.dart';
+import 'package:inventara/actions/peminjaman/update_canceled_detail_peminjaman.dart';
+import 'package:inventara/actions/peminjaman/update_returned_detail_peminjaman.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/structures/detailPeminjaman.dart';
@@ -463,7 +465,7 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                                         child: FutureBuilder(
                                                           future:
                                                               Assets.kendaraan(
-                                                                  asset.photo!),
+                                                                  asset.photo ?? ''),
                                                           builder: (context,
                                                               snapshot) {
                                                             if (snapshot
@@ -591,7 +593,7 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                                         child: FutureBuilder(
                                                           future:
                                                               Assets.ruangan(
-                                                                  asset.photo!),
+                                                                  asset.photo ?? ''),
                                                           builder: (context,
                                                               snapshot) {
                                                             if (snapshot
@@ -782,7 +784,7 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                       ),
                     ),
                   ),
-                  if (item.status == PeminjamanStatus.pending)
+                  if (item.status == PeminjamanStatus.pending || DateTime.now().isBefore(item.borrowedDate ?? DateTime.now().subtract(Duration(days: 1))))
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 80,
@@ -865,9 +867,20 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                                 color: const Color(0xFFFCA311),
                                                 fontWeight: FontWeight.w600),
                                           ),
-                                          onPressed: () {
-                                            // TODO: add batalkan peminjaman
-                                            context.pop();
+                                          onPressed: () async {
+                                            if (await updateCanceledDetailPeminjaman(item.id, _alasanController.text) == true) {
+                                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                                if (context.mounted) {
+                                                  context.pop();
+                                                }
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                        'Peminjaman berhasil di batalkan!'),
+                                                  ),
+                                                );
+                                              });
+                                            }
                                           },
                                         ),
                                       ],
@@ -899,9 +912,20 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                             width: MediaQuery.of(context).size.width,
                             child: FloatingActionButton(
                               backgroundColor: const Color(0xFFFCA311),
-                              onPressed: () {
-                                // Add your onPressed code here!
-                                // TODO: add selesaikan peminjaman
+                              onPressed: () async {
+                                if (await updateReturnedDetailPeminjaman(item.id) == true) {
+                                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                                    if (context.mounted) {
+                                      context.pop();
+                                    }
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Peminjaman berhasil di batalkan!'),
+                                      ),
+                                    );
+                                  });
+                                }
                               },
                               child: Text(
                                 'Selesaikan Peminjaman',

@@ -509,8 +509,8 @@ class RiwayatState extends State<Riwayat> {
                                                             child:
                                                                 ElevatedButton(
                                                               onPressed: () {
-                                                                context.go(
-                                                                    '/DetailP?dpId=${p.id}');
+                                                                context.push(
+                                                                    '/DetailP?id=${p.id}');
                                                               },
                                                               style:
                                                                   ElevatedButton
