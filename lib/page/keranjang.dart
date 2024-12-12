@@ -259,9 +259,6 @@ class KeranjangState extends State<Keranjang> {
                                                       margin:
                                                           const EdgeInsets.only(
                                                               top: 4),
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 12),
                                                       width:
                                                           MediaQuery.of(context)
                                                               .size
@@ -289,209 +286,205 @@ class KeranjangState extends State<Keranjang> {
                                                           ),
                                                         ),
                                                       ),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Row(
+                                                      child: ElevatedButton(
+                                                        onPressed: () {},
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          shape:
+                                                              const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .zero,
+                                                          ),
+                                                          elevation: 0,
+                                                          padding:
+                                                              EdgeInsets.zero,
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 12),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
                                                             children: [
-                                                              Container(
-                                                                width: 60,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              8),
-                                                                ),
-                                                                child:
-                                                                    FutureBuilder(
-                                                                  future:
-                                                                      itemPhoto(
-                                                                          item),
-                                                                  builder: (context,
-                                                                      snapshot) {
-                                                                    if (snapshot
-                                                                            .connectionState ==
-                                                                        ConnectionState
-                                                                            .waiting) {
-                                                                      return const Center(
-                                                                        child:
-                                                                            CircularProgressIndicator(),
-                                                                      );
-                                                                    } else if (snapshot
-                                                                        .hasError) {
-                                                                      return snapshot
-                                                                          .data!;
-                                                                    } else if (snapshot
-                                                                        .hasData) {
-                                                                      return snapshot
-                                                                          .data!;
-                                                                    } else {
-                                                                      return snapshot
-                                                                          .data!;
-                                                                    }
-                                                                  },
-                                                                ),
-                                                              ),
-                                                              const Gap(10),
-                                                              Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
+                                                              Row(
                                                                 children: [
-                                                                  if (item.category ==
-                                                                      PeminjamanCategory
-                                                                          .barang) ...[
-                                                                    Text(
-                                                                      barang
-                                                                          .firstWhere((b) =>
-                                                                              b.id ==
-                                                                              item.barangId)
-                                                                          .activaCode,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
+                                                                  Container(
+                                                                    width: 60,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              8),
                                                                     ),
-                                                                    Text(
-                                                                      ruangan
-                                                                          .firstWhere((r) =>
-                                                                              r.id ==
-                                                                              barang.firstWhere((b) => b.id == item.barangId).ruanganId)
-                                                                          .code,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              12),
+                                                                    child:
+                                                                        FutureBuilder(
+                                                                      future: itemPhoto(
+                                                                          item),
+                                                                      builder:
+                                                                          (context,
+                                                                              snapshot) {
+                                                                        if (snapshot.connectionState ==
+                                                                            ConnectionState
+                                                                                .waiting) {
+                                                                          return const Center(
+                                                                            child:
+                                                                                CircularProgressIndicator(),
+                                                                          );
+                                                                        } else if (snapshot
+                                                                            .hasError) {
+                                                                          return snapshot
+                                                                              .data!;
+                                                                        } else if (snapshot
+                                                                            .hasData) {
+                                                                          return snapshot
+                                                                              .data!;
+                                                                        } else {
+                                                                          return snapshot
+                                                                              .data!;
+                                                                        }
+                                                                      },
                                                                     ),
-                                                                  ] else if (item
-                                                                          .category ==
-                                                                      PeminjamanCategory
-                                                                          .ruangan) ...[
-                                                                    Text(
-                                                                      ruangan
-                                                                          .firstWhere((r) =>
-                                                                              r.id ==
-                                                                              item.ruanganId)
-                                                                          .code,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.w500),
-                                                                    ),
-                                                                    Text(
-                                                                      ruangan
+                                                                  ),
+                                                                  const Gap(10),
+                                                                  Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      if (item.category ==
+                                                                          PeminjamanCategory
+                                                                              .barang) ...[
+                                                                        Text(
+                                                                          barang
+                                                                              .firstWhere((b) => b.id == item.barangId)
+                                                                              .activaCode,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              color: Colors.black),
+                                                                        ),
+                                                                        Text(
+                                                                          ruangan
+                                                                              .firstWhere((r) => r.id == barang.firstWhere((b) => b.id == item.barangId).ruanganId)
+                                                                              .code,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 12,
+                                                                              color: Colors.black),
+                                                                        ),
+                                                                      ] else if (item
+                                                                              .category ==
+                                                                          PeminjamanCategory
+                                                                              .ruangan) ...[
+                                                                        Text(
+                                                                          ruangan
                                                                               .firstWhere((r) => r.id == item.ruanganId)
-                                                                              .status
-                                                                          ? 'Tidak digunakan'
-                                                                          : 'Digunakan',
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          color:
-                                                                              Colors.black54),
-                                                                    ),
-                                                                  ] else if (item
-                                                                          .category ==
-                                                                      PeminjamanCategory
-                                                                          .kendaraan) ...[
-                                                                    Text(
-                                                                      kendaraan
-                                                                          .firstWhere((k) =>
-                                                                              k.id ==
-                                                                              item.kendaraanId)
-                                                                          .name,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.w500),
-                                                                    ),
-                                                                    Text(
-                                                                      kendaraan
-                                                                          .firstWhere((k) =>
-                                                                              k.id ==
-                                                                              item.kendaraanId)
-                                                                          .category
-                                                                          .toString()
-                                                                          .split('.')
-                                                                          .last,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          color:
-                                                                              Colors.black54),
-                                                                    ),
-                                                                  ]
+                                                                              .code,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight.w500,
+                                                                              color: Colors.black),
+                                                                        ),
+                                                                        Text(
+                                                                          ruangan.firstWhere((r) => r.id == item.ruanganId).status
+                                                                              ? 'Tidak digunakan'
+                                                                              : 'Digunakan',
+                                                                          style: const TextStyle(
+                                                                              fontSize: 12,
+                                                                              color: Colors.black54),
+                                                                        ),
+                                                                      ] else if (item
+                                                                              .category ==
+                                                                          PeminjamanCategory
+                                                                              .kendaraan) ...[
+                                                                        Text(
+                                                                          kendaraan
+                                                                              .firstWhere((k) => k.id == item.kendaraanId)
+                                                                              .name,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight.w500),
+                                                                        ),
+                                                                        Text(
+                                                                          kendaraan
+                                                                              .firstWhere((k) => k.id == item.kendaraanId)
+                                                                              .category
+                                                                              .toString()
+                                                                              .split('.')
+                                                                              .last,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 12,
+                                                                              color: Colors.black54),
+                                                                        ),
+                                                                      ]
+                                                                    ],
+                                                                  ),
                                                                 ],
                                                               ),
-                                                            ],
-                                                          ),
-                                                          IconButton(
-                                                            onPressed: () {
-                                                              // show an pop up confirmation
-                                                              showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (context) {
-                                                                  return AlertDialog(
-                                                                    title: const Text(
-                                                                        'Konfirmasi'),
-                                                                    content:
-                                                                        const Text(
-                                                                            'Apakah anda yakin ingin menghapus item ini?'),
-                                                                    actions: [
-                                                                      TextButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                        },
-                                                                        child:
-                                                                            const Text(
-                                                                          'Batal',
-                                                                          style:
-                                                                              TextStyle(color: Colors.black54),
-                                                                        ),
-                                                                      ),
-                                                                      TextButton(
-                                                                        onPressed:
-                                                                            () async {
-                                                                          await deletePeminjaman(
-                                                                              item.id);
-                                                                          context
-                                                                              .pop();
-                                                                          setState(
-                                                                              () {});
-                                                                        },
-                                                                        child:
-                                                                            const Text(
-                                                                          'Hapus',
-                                                                          style:
-                                                                              TextStyle(color: Colors.red),
-                                                                        ),
-                                                                      )
-                                                                    ],
+                                                              IconButton(
+                                                                onPressed: () {
+                                                                  // show an pop up confirmation
+                                                                  showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (context) {
+                                                                      return AlertDialog(
+                                                                        title: const Text(
+                                                                            'Konfirmasi'),
+                                                                        content:
+                                                                            const Text('Apakah anda yakin ingin menghapus item ini?'),
+                                                                        actions: [
+                                                                          TextButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                            child:
+                                                                                const Text(
+                                                                              'Batal',
+                                                                              style: TextStyle(color: Colors.black54),
+                                                                            ),
+                                                                          ),
+                                                                          TextButton(
+                                                                            onPressed:
+                                                                                () async {
+                                                                              await deletePeminjaman(item.id);
+                                                                              context.pop();
+                                                                              setState(() {});
+                                                                            },
+                                                                            child:
+                                                                                const Text(
+                                                                              'Hapus',
+                                                                              style: TextStyle(color: Colors.red),
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      );
+                                                                    },
                                                                   );
                                                                 },
-                                                              );
-                                                            },
-                                                            icon: const Icon(
-                                                              Icons.delete,
-                                                              color: Colors.red,
-                                                            ),
-                                                          )
-                                                        ],
+                                                                icon:
+                                                                    const Icon(
+                                                                  Icons.delete,
+                                                                  color: Colors
+                                                                      .red,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ),
                                                     );
                                                   },
