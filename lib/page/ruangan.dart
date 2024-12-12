@@ -868,7 +868,8 @@ void onPressedBarang(BuildContext context, Barang items) {
                           } else if (snapshot.hasError || !snapshot.hasData) {
                             return const Text('Data tidak tersedia');
                           } else {
-                            final DetailPeminjamans dpeminjaman = snapshot.data!;
+                            final DetailPeminjamans dpeminjaman =
+                                snapshot.data!;
                             return Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1069,7 +1070,8 @@ void onPressedKendaraan(BuildContext context, Kendaraan items) {
                           } else if (snapshot.hasError || !snapshot.hasData) {
                             return const Text('Data tidak tersedia');
                           } else {
-                            final DetailPeminjamans dpeminjaman = snapshot.data!;
+                            final DetailPeminjamans dpeminjaman =
+                                snapshot.data!;
                             return Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
