@@ -62,7 +62,8 @@ class RuanganState extends State<Ruangan> {
           widget.index! <= barang.length &&
           widget.index != 0 &&
           mounted) {
-        onPressedBarang(context, barang.where((b) => b.id == widget.index!).first);
+        onPressedBarang(
+            context, barang.where((b) => b.id == widget.index!).first);
       }
       return;
     } else {
@@ -73,7 +74,8 @@ class RuanganState extends State<Ruangan> {
           widget.index! <= kendaraan.length &&
           widget.index != 0 &&
           mounted) {
-        onPressedKendaraan(context, kendaraan.where((k) => k.id == widget.index!).first);
+        onPressedKendaraan(
+            context, kendaraan.where((k) => k.id == widget.index!).first);
       }
       return;
     }
@@ -301,12 +303,12 @@ class RuanganState extends State<Ruangan> {
                                     children: [
                                       barang.isNotEmpty
                                           ? RefreshIndicator(
-                                            onRefresh: () async {
-                                              setState(() {
-                                                fetchDataFuture = fetchData();
-                                              });
-                                            },
-                                            child: ListView.builder(
+                                              onRefresh: () async {
+                                                setState(() {
+                                                  fetchDataFuture = fetchData();
+                                                });
+                                              },
+                                              child: ListView.builder(
                                                 shrinkWrap: true,
                                                 physics:
                                                     const NeverScrollableScrollPhysics(),
@@ -317,14 +319,15 @@ class RuanganState extends State<Ruangan> {
                                                     .length,
                                                 itemBuilder: (context, index) {
                                                   final uniqueNames = barang
-                                                      .map((item) =>
-                                                          item.name.capitalize())
+                                                      .map((item) => item.name
+                                                          .capitalize())
                                                       .toSet()
                                                       .toList()
                                                     ..sort();
                                                   return Container(
-                                                    margin: const EdgeInsets.only(
-                                                        bottom: 24),
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            bottom: 24),
                                                     child: Column(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
@@ -342,7 +345,8 @@ class RuanganState extends State<Ruangan> {
                                                                 const TextStyle(
                                                               fontSize: 18,
                                                               fontWeight:
-                                                                  FontWeight.w600,
+                                                                  FontWeight
+                                                                      .w600,
                                                             ),
                                                           ),
                                                         ),
@@ -356,7 +360,8 @@ class RuanganState extends State<Ruangan> {
                                                                   .only(
                                                                   left: 24,
                                                                   right: 24),
-                                                          child: ListView.builder(
+                                                          child:
+                                                              ListView.builder(
                                                             physics:
                                                                 const NeverScrollableScrollPhysics(),
                                                             shrinkWrap: true,
@@ -367,8 +372,9 @@ class RuanganState extends State<Ruangan> {
                                                                     uniqueNames[
                                                                         index])
                                                                 .length,
-                                                            itemBuilder: (context,
-                                                                index2) {
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index2) {
                                                               final items = barang
                                                                   .where((item) =>
                                                                       item.name
@@ -397,12 +403,12 @@ class RuanganState extends State<Ruangan> {
                                                                 margin:
                                                                     const EdgeInsets
                                                                         .only(
-                                                                        top: 10),
-                                                                width:
-                                                                    MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width,
+                                                                        top:
+                                                                            10),
+                                                                width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
                                                                 height: 60,
                                                                 decoration:
                                                                     BoxDecoration(
@@ -433,22 +439,21 @@ class RuanganState extends State<Ruangan> {
                                                                     ElevatedButton(
                                                                   style: ElevatedButton
                                                                       .styleFrom(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .only(
-                                                                            left:
-                                                                                10,
-                                                                            right:
-                                                                                10),
+                                                                    padding: const EdgeInsets
+                                                                        .only(
+                                                                        left:
+                                                                            10,
+                                                                        right:
+                                                                            10),
                                                                     shape:
                                                                         RoundedRectangleBorder(
                                                                       borderRadius:
                                                                           BorderRadius.circular(
                                                                               16),
                                                                     ),
-                                                                    elevation: 4,
-                                                                    backgroundColor: items[index2]
-                                                                                .status ==
+                                                                    elevation:
+                                                                        4,
+                                                                    backgroundColor: items[index2].status ==
                                                                             true
                                                                         ? Colors
                                                                             .black12
@@ -459,7 +464,8 @@ class RuanganState extends State<Ruangan> {
                                                                         .withOpacity(
                                                                             0.1),
                                                                   ),
-                                                                  onPressed: () {
+                                                                  onPressed:
+                                                                      () {
                                                                     onPressedBarang(
                                                                         context,
                                                                         items[
@@ -494,24 +500,19 @@ class RuanganState extends State<Ruangan> {
                                                                           4),
                                                                       Column(
                                                                         mainAxisAlignment:
-                                                                            MainAxisAlignment
-                                                                                .center,
+                                                                            MainAxisAlignment.center,
                                                                         crossAxisAlignment:
-                                                                            CrossAxisAlignment
-                                                                                .start,
+                                                                            CrossAxisAlignment.start,
                                                                         children: [
                                                                           Text(
                                                                             ' ${items[index2].code}',
-                                                                            style: const TextStyle(
-                                                                                color: Colors.black,
-                                                                                fontWeight: FontWeight.w600),
+                                                                            style:
+                                                                                const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                                                                           ),
                                                                           Text(
-                                                                            items[index2]
-                                                                                .condition,
-                                                                            style: const TextStyle(
-                                                                                color: Colors.black,
-                                                                                fontSize: 12),
+                                                                            items[index2].condition,
+                                                                            style:
+                                                                                const TextStyle(color: Colors.black, fontSize: 12),
                                                                           ),
                                                                         ],
                                                                       ),
@@ -527,19 +528,19 @@ class RuanganState extends State<Ruangan> {
                                                   );
                                                 },
                                               ),
-                                          )
+                                            )
                                           : Text('Tidak ada data!')
                                     ],
                                   )
                                 : Column(children: [
                                     kendaraan.isNotEmpty
                                         ? RefreshIndicator(
-                                          onRefresh: () async {
-                                            setState(() {
-                                              fetchDataFuture = fetchData();
-                                            });
-                                          },
-                                          child: ListView.builder(
+                                            onRefresh: () async {
+                                              setState(() {
+                                                fetchDataFuture = fetchData();
+                                              });
+                                            },
+                                            child: ListView.builder(
                                               shrinkWrap: true,
                                               physics:
                                                   const NeverScrollableScrollPhysics(),
@@ -566,16 +567,19 @@ class RuanganState extends State<Ruangan> {
                                                       bottom: 24),
                                                   child: Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
+                                                            const EdgeInsets
+                                                                .only(
                                                                 left: 24,
                                                                 right: 24),
                                                         child: Text(
                                                           uniqueNames[index],
-                                                          style: const TextStyle(
+                                                          style:
+                                                              const TextStyle(
                                                             fontSize: 18,
                                                             fontWeight:
                                                                 FontWeight.w600,
@@ -588,7 +592,8 @@ class RuanganState extends State<Ruangan> {
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
+                                                            const EdgeInsets
+                                                                .only(
                                                                 left: 24,
                                                                 right: 24),
                                                         child: ListView.builder(
@@ -599,14 +604,15 @@ class RuanganState extends State<Ruangan> {
                                                               .where((item) =>
                                                                   item.category
                                                                       .toString()
-                                                                      .split('.')
+                                                                      .split(
+                                                                          '.')
                                                                       .last
                                                                       .capitalize() ==
                                                                   uniqueNames[
                                                                       index])
                                                               .length,
-                                                          itemBuilder:
-                                                              (context, index2) {
+                                                          itemBuilder: (context,
+                                                              index2) {
                                                             final items = kendaraan
                                                                 .where((item) =>
                                                                     item.category
@@ -648,8 +654,8 @@ class RuanganState extends State<Ruangan> {
                                                               height: 60,
                                                               decoration:
                                                                   BoxDecoration(
-                                                                color:
-                                                                    Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
@@ -662,18 +668,19 @@ class RuanganState extends State<Ruangan> {
                                                                             0.1),
                                                                     spreadRadius:
                                                                         1,
-                                                                    blurRadius: 4,
+                                                                    blurRadius:
+                                                                        4,
                                                                     offset:
                                                                         const Offset(
-                                                                            0, 0),
+                                                                            0,
+                                                                            0),
                                                                   ),
                                                                 ],
                                                               ),
                                                               child:
                                                                   ElevatedButton(
-                                                                style:
-                                                                    ElevatedButton
-                                                                        .styleFrom(
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
                                                                   padding:
                                                                       const EdgeInsets
                                                                           .only(
@@ -684,18 +691,17 @@ class RuanganState extends State<Ruangan> {
                                                                   shape:
                                                                       RoundedRectangleBorder(
                                                                     borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                16),
+                                                                        BorderRadius.circular(
+                                                                            16),
                                                                   ),
                                                                   elevation: 4,
-                                                                  backgroundColor:
-                                                                      items[index2].status ==
-                                                                              true
-                                                                          ? Colors
-                                                                              .black12
-                                                                          : Colors
-                                                                              .white,
+                                                                  backgroundColor: items[index2]
+                                                                              .status ==
+                                                                          true
+                                                                      ? Colors
+                                                                          .black12
+                                                                      : Colors
+                                                                          .white,
                                                                   shadowColor: Colors
                                                                       .black
                                                                       .withOpacity(
@@ -710,19 +716,17 @@ class RuanganState extends State<Ruangan> {
                                                                 child: Row(
                                                                   children: [
                                                                     SizedBox(
-                                                                        width: 60,
+                                                                        width:
+                                                                            60,
                                                                         height:
                                                                             46,
                                                                         child:
                                                                             ClipRRect(
                                                                           borderRadius:
                                                                               BorderRadius.circular(10),
-                                                                          child: FutureBuilder<
-                                                                                  Widget>(
-                                                                              future: Assets.kendaraan(kendaraan[index2].photo ??
-                                                                                  ''),
-                                                                              builder:
-                                                                                  (context, snapshot) {
+                                                                          child: FutureBuilder<Widget>(
+                                                                              future: Assets.kendaraan(kendaraan[index2].photo ?? ''),
+                                                                              builder: (context, snapshot) {
                                                                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                                                                   return const CircularProgressIndicator(); // Show a loading indicator while waiting
                                                                                 } else if (snapshot.hasError) {
@@ -734,7 +738,8 @@ class RuanganState extends State<Ruangan> {
                                                                                 }
                                                                               }),
                                                                         )),
-                                                                    const Gap(4),
+                                                                    const Gap(
+                                                                        4),
                                                                     Column(
                                                                       mainAxisAlignment:
                                                                           MainAxisAlignment
@@ -747,8 +752,7 @@ class RuanganState extends State<Ruangan> {
                                                                           children: [
                                                                             Text(
                                                                               items[index2].plat,
-                                                                              style:
-                                                                                  const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+                                                                              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                                                                             ),
                                                                           ],
                                                                         ),
@@ -756,8 +760,7 @@ class RuanganState extends State<Ruangan> {
                                                                           items[index2]
                                                                               .condition,
                                                                           style: const TextStyle(
-                                                                              color:
-                                                                                  Colors.black,
+                                                                              color: Colors.black,
                                                                               fontSize: 12),
                                                                         ),
                                                                       ],
@@ -774,7 +777,7 @@ class RuanganState extends State<Ruangan> {
                                                 );
                                               },
                                             ),
-                                        )
+                                          )
                                         : noData()
                                   ]),
                           )
@@ -782,43 +785,48 @@ class RuanganState extends State<Ruangan> {
                       ),
                     ),
                     isRuangan()
-                      ?  ruangan.category != RuanganCategory.gudang
-                        ? Container(
-                          padding: const EdgeInsets.only(right: 24, left: 24),
-                          width: MediaQuery.of(context).size.width,
-                          height: 80,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
+                        ? ruangan.category != RuanganCategory.gudang
+                            ? Container(
+                                padding:
+                                    const EdgeInsets.only(right: 24, left: 24),
                                 width: MediaQuery.of(context).size.width,
-                                child: FloatingActionButton(
-                                    backgroundColor: const Color(0xFFFCA311),
-                                    onPressed: () {
-                                      var param = ruangan.id;
+                                height: 80,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: FloatingActionButton(
+                                            backgroundColor:
+                                                const Color(0xFFFCA311),
+                                            onPressed: () {
+                                              var param = ruangan.id;
 
-                                      context.push(
-                                          "/konfA?id=$param&category=ruangan");
-                                    },
-                                    child: ruangan.category == RuanganCategory.kelas ?
-                                      const Text(
-                                        "Pinjam Ruangan",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600),
-                                      ): const Text(
-                                        "Pinjam Lab",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600),
-                                      )
-                                )
+                                              context.push(
+                                                  "/konfA?id=$param&category=ruangan");
+                                            },
+                                            child: ruangan.category ==
+                                                    RuanganCategory.kelas
+                                                ? const Text(
+                                                    "Pinjam Ruangan",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  )
+                                                : const Text(
+                                                    "Pinjam Lab",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  )))
+                                  ],
+                                ),
                               )
-                            ],
-                          ),
-                        )                          : const SizedBox()
-
+                            : const SizedBox()
                         : const SizedBox()
                   ]),
                 ),
