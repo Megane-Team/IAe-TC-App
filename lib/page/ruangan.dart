@@ -1003,7 +1003,7 @@ void onPressedBarang(BuildContext context, Barang items) {
                         ),
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width / 3,
+                        width: MediaQuery.of(context).size.width / 2.4,
                         child: ElevatedButton(
                           onPressed: () {
                             var param = items.id;
