@@ -272,6 +272,15 @@ class GedungState extends State<Gedung> {
                               left: 24, right: 24, bottom: 8),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 4,
+                                offset: const Offset(0, 0),
+                              ),
+                            ],
                           ),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -282,8 +291,9 @@ class GedungState extends State<Gedung> {
                               ),
                               elevation: 4,
                               backgroundColor: ruangan.status == true
-                                  ? Colors.grey
+                                  ? Colors.black12
                                   : Colors.white,
+                              shadowColor: Colors.black.withOpacity(0.1),
                             ),
                             onPressed: () {
                               onPressed(context, ruangan, false);
