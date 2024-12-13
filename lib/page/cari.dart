@@ -426,7 +426,7 @@ class CariState extends State<Cari> {
                                                             null,
                                                             'barang');
 
-                                                    if (res) {
+                                                    if (res == 200) {
                                                       WidgetsBinding.instance
                                                           .addPostFrameCallback(
                                                               (_) {
@@ -776,7 +776,7 @@ class CariState extends State<Cari> {
                                                               item2.id,
                                                               'kendaraan');
 
-                                                      if (res) {
+                                                      if (res == 200) {
                                                         WidgetsBinding.instance
                                                             .addPostFrameCallback(
                                                                 (_) {

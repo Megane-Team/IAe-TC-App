@@ -499,7 +499,7 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                   kendaraans.id,
                                   'kendaraan');
 
-                              if (res) {
+                              if (res == 200) {
                                 WidgetsBinding.instance
                                     .addPostFrameCallback((_) {
                                   if (context.mounted) {
@@ -508,7 +508,8 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                 });
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Peminjaman berhasil!'),
+                                    content:
+                                        Text('Peminjaman berhasil diajukan!'),
                                   ),
                                 );
                               } else {

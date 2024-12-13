@@ -13,6 +13,7 @@ import 'package:inventara/structures/peminjaman.dart';
 import 'package:inventara/structures/peminjaman_category.dart';
 import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/structures/tempat.dart';
+import 'package:inventara/utils/actionwidget.dart';
 import 'package:inventara/utils/assets.dart';
 
 class Keranjang extends StatefulWidget {
@@ -28,7 +29,7 @@ class KeranjangState extends State<Keranjang> {
   late List<Ruangans> ruangan;
   late List<Barang> barang;
   late List<Kendaraan> kendaraan;
-  late List<Peminjaman> peminjaman;
+  late List<Peminjaman> peminjaman = [];
 
   @override
   void initState() {
@@ -41,6 +42,8 @@ class KeranjangState extends State<Keranjang> {
     tempat = await readTempat(context);
     ruangan = await readRuangan(context);
     kendaraan = await readKendaraan(context);
+    peminjaman = await readDraftPeminjaman();
+    setState(() {});
   }
 
   List<String> tempatNamesUsed(List<Peminjaman> peminjaman) {
@@ -171,7 +174,7 @@ class KeranjangState extends State<Keranjang> {
                               );
                             } else if (snapshot.hasError) {
                               return Center(
-                                child: SizedBox(),
+                                child: noData(),
                               );
                             } else {
                               return FutureBuilder<List<Peminjaman>>(
@@ -287,7 +290,29 @@ class KeranjangState extends State<Keranjang> {
                                                         ),
                                                       ),
                                                       child: ElevatedButton(
-                                                        onPressed: () {},
+                                                        onPressed: () {
+                                                          if (item.category ==
+                                                              PeminjamanCategory
+                                                                  .barang) {
+                                                            Barang barangs = barang
+                                                                .where((b) =>
+                                                                    b.id ==
+                                                                    item.barangId)
+                                                                .first;
+                                                            context.push(
+                                                                '/ruangan?id=${barangs.ruanganId}&category=ruangan&index=${item.barangId}');
+                                                          } else {
+                                                            Kendaraan
+                                                                kendaraans =
+                                                                kendaraan
+                                                                    .where((k) =>
+                                                                        k.id ==
+                                                                        item.kendaraanId)
+                                                                    .first;
+                                                            context.push(
+                                                                '/ruangan?id=${kendaraans.tempatId}&category=parkiran&index=${item.kendaraanId}');
+                                                          }
+                                                        },
                                                         style: ElevatedButton
                                                             .styleFrom(
                                                           backgroundColor:
@@ -386,33 +411,13 @@ class KeranjangState extends State<Keranjang> {
                                                                       ] else if (item
                                                                               .category ==
                                                                           PeminjamanCategory
-                                                                              .ruangan) ...[
-                                                                        Text(
-                                                                          ruangan
-                                                                              .firstWhere((r) => r.id == item.ruanganId)
-                                                                              .code,
-                                                                          style: const TextStyle(
-                                                                              fontSize: 16,
-                                                                              fontWeight: FontWeight.w500,
-                                                                              color: Colors.black),
-                                                                        ),
-                                                                        Text(
-                                                                          ruangan.firstWhere((r) => r.id == item.ruanganId).status
-                                                                              ? 'Tidak digunakan'
-                                                                              : 'Digunakan',
-                                                                          style: const TextStyle(
-                                                                              fontSize: 12,
-                                                                              color: Colors.black54),
-                                                                        ),
-                                                                      ] else if (item
-                                                                              .category ==
-                                                                          PeminjamanCategory
                                                                               .kendaraan) ...[
                                                                         Text(
                                                                           kendaraan
                                                                               .firstWhere((k) => k.id == item.kendaraanId)
                                                                               .name,
                                                                           style: const TextStyle(
+                                                                              color: Colors.black,
                                                                               fontSize: 16,
                                                                               fontWeight: FontWeight.w500),
                                                                         ),
@@ -449,7 +454,7 @@ class KeranjangState extends State<Keranjang> {
                                                                           TextButton(
                                                                             onPressed:
                                                                                 () {
-                                                                              Navigator.of(context).pop();
+                                                                              context.pop();
                                                                             },
                                                                             child:
                                                                                 const Text(
@@ -461,8 +466,9 @@ class KeranjangState extends State<Keranjang> {
                                                                             onPressed:
                                                                                 () async {
                                                                               await deletePeminjaman(item.id);
-                                                                              context.pop();
+                                                                              peminjaman.remove(item);
                                                                               setState(() {});
+                                                                              context.pop();
                                                                             },
                                                                             child:
                                                                                 const Text(
@@ -496,7 +502,7 @@ class KeranjangState extends State<Keranjang> {
                                       },
                                     );
                                   } else {
-                                    return const SizedBox();
+                                    return noData();
                                   }
                                 },
                               );
@@ -509,7 +515,8 @@ class KeranjangState extends State<Keranjang> {
                 ),
               ),
             ),
-            Container(
+            if (peminjaman.isNotEmpty)
+              Container(
                 width: MediaQuery.of(context).size.width,
                 height: 80,
                 decoration: BoxDecoration(
@@ -558,7 +565,8 @@ class KeranjangState extends State<Keranjang> {
                       ),
                     ],
                   ),
-                ))
+                ),
+              )
           ],
         ));
   }

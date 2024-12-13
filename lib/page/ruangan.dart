@@ -57,9 +57,7 @@ class RuanganState extends State<Ruangan> {
     if (isRuangan()) {
       ruangan = await readRuanganbyId(int.parse(widget.id), context);
       final barangs = await readBarangbyRuanganId(widget.id, context);
-      setState(() {
-        barang = barangs;
-      });
+      barang = barangs;
       if (widget.index != null &&
           widget.index! <= barang.length &&
           widget.index != 0 &&
@@ -70,9 +68,7 @@ class RuanganState extends State<Ruangan> {
     } else {
       tempat = await readTempatbyId(int.parse(widget.id), context);
       final kendaraans = await readKendaraanByGedungId(widget.id, context);
-      setState(() {
-        kendaraan = kendaraans;
-      });
+      kendaraan = kendaraans;
       if (widget.index != null &&
           widget.index! <= kendaraan.length &&
           widget.index != 0 &&
@@ -979,7 +975,7 @@ void onPressedBarang(BuildContext context, Barang items) {
                                 await createDetailPeminjaman(status: 'draft');
                             var res = await createPeminjaman(
                                 dp.id, items.id, null, null, 'barang');
-                            if (res) {
+                            if (res == 200) {
                               if (context.mounted) {
                                 context.pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -987,7 +983,7 @@ void onPressedBarang(BuildContext context, Barang items) {
                                         content: Text(
                                             'Barang Disimpan di Keranjang')));
                               }
-                            } else {
+                            } else if (res == 429) {
                               if (context.mounted) {
                                 context.pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -1206,7 +1202,7 @@ void onPressedKendaraan(BuildContext context, Kendaraan items) {
                                   await createDetailPeminjaman(status: 'draft');
                               var res = await createPeminjaman(
                                   dp.id, null, null, items.id, 'kendaraan');
-                              if (res) {
+                              if (res == 200) {
                                 if (context.mounted) {
                                   context.pop();
                                   ScaffoldMessenger.of(context).showSnackBar(
