@@ -394,7 +394,7 @@ class KeranjangState extends State<Keranjang> {
                                                                         Text(
                                                                           barang
                                                                               .firstWhere((b) => b.id == item.barangId)
-                                                                              .activaCode,
+                                                                              .code,
                                                                           style: const TextStyle(
                                                                               fontSize: 16,
                                                                               fontWeight: FontWeight.w600,

@@ -375,7 +375,7 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                                                       .w600,
                                                               color:
                                                                   Colors.grey)),
-                                                      Text(asset.activaCode,
+                                                      Text(asset.code,
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight

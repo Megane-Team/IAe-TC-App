@@ -19,7 +19,7 @@ class BarangAdapter extends TypeAdapter<Barang> {
     return Barang(
       id: fields[0] as int,
       name: fields[2] as String,
-      activaCode: fields[3] as String,
+      code: fields[3] as String,
       status: fields[4] as bool,
       condition: fields[5] as String,
       warranty: fields[6] as DateTime,
@@ -37,7 +37,7 @@ class BarangAdapter extends TypeAdapter<Barang> {
       ..writeByte(2)
       ..write(obj.name)
       ..writeByte(3)
-      ..write(obj.activaCode)
+      ..write(obj.code)
       ..writeByte(4)
       ..write(obj.status)
       ..writeByte(5)

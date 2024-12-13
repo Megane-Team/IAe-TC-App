@@ -495,7 +495,7 @@ class RuanganState extends State<Ruangan> {
                                                                               .start,
                                                                       children: [
                                                                         Text(
-                                                                          ' ${items[index2].activaCode}',
+                                                                          ' ${items[index2].code}',
                                                                           style: const TextStyle(
                                                                               color: Colors.black,
                                                                               fontWeight: FontWeight.w600),
@@ -767,36 +767,45 @@ class RuanganState extends State<Ruangan> {
                         ],
                       ),
                     ),
-                    isRuangan()
-                        ? Container(
-                            padding: const EdgeInsets.only(right: 24, left: 24),
-                            width: MediaQuery.of(context).size.width,
-                            height: 80,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: FloatingActionButton(
-                                      backgroundColor: const Color(0xFFFCA311),
-                                      onPressed: () {
-                                        var param = ruangan.id;
+                    if (ruangan.category != RuanganCategory.gudang) ...[
+                      isRuangan()
+                          ? Container(
+                        padding: const EdgeInsets.only(right: 24, left: 24),
+                        width: MediaQuery.of(context).size.width,
+                        height: 80,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: FloatingActionButton(
+                                  backgroundColor: const Color(0xFFFCA311),
+                                  onPressed: () {
+                                    var param = ruangan.id;
 
-                                        context.push(
-                                            "/konfA?id=$param&category=ruangan");
-                                      },
-                                      child: const Text(
-                                        "Pinjam Ruangan",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600),
-                                      )),
-                                )
-                              ],
-                            ),
-                          )
-                        : const SizedBox()
+                                    context.push(
+                                        "/konfA?id=$param&category=ruangan");
+                                  },
+                                  child: ruangan.category == RuanganCategory.kelas ?
+                                    const Text(
+                                      "Pinjam Ruangan",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    ): const Text(
+                                      "Pinjam Lab",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    )
+                              )
+                            )
+                          ],
+                        ),
+                      )
+                          : const SizedBox()
+                    ]
                   ]),
                 ),
               ],
@@ -914,7 +923,7 @@ void onPressedBarang(BuildContext context, Barang items) {
                     ),
                   ),
                   const Gap(8),
-                  Text(items.activaCode,
+                  Text(items.code,
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.w600)),
                   const Gap(4),
