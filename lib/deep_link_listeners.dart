@@ -22,6 +22,8 @@ class DeepLinkListener extends StatefulWidget {
 }
 
 class _DeepLinkListenerState extends State<DeepLinkListener> {
+  bool _initialLinkHandled = false;
+
   @override
   void initState() {
     super.initState();
@@ -29,8 +31,9 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
 
     // Handle initial deep link
     appLinks.getInitialLink().then((uri) {
-      if (uri != null) {
+      if (uri != null && !_initialLinkHandled) {
         _handleDeepLink(uri);
+        _initialLinkHandled = true;
       }
     });
 
