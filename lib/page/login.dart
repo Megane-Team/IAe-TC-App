@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/login_action.dart';
@@ -20,13 +22,14 @@ class LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
+    log('iniState Called');
     sessionChecker();
   }
 
   void sessionChecker() async {
     var user = await Session.refresh();
 
-    if (user != null) {
+    if (user != null && mounted) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           context.go('/beranda');

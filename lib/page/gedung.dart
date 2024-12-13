@@ -41,7 +41,9 @@ class GedungState extends State<Gedung> {
 
   void fetchData() async {
     var ruangan = await readRuanganbyGedungId(widget.id, context);
-    gedung = await readTempat(context);
+    if (mounted) {
+      gedung = await readTempat(context);
+    }
     setState(() {
       originalRuanganList = ruangan;
       filteredRuangan = List.from(originalRuanganList);
@@ -53,7 +55,7 @@ class GedungState extends State<Gedung> {
         mounted) {
       var ruangan = await readRuanganbyId(widget.rId!, context);
       if (mounted) {
-        onPressed(context, ruangan);
+        onPressed(context, ruangan, true);
       }
     }
   }
@@ -70,7 +72,12 @@ class GedungState extends State<Gedung> {
             item.code.toLowerCase().contains(value.toLowerCase());
         return matchesCategory && matchesSearch;
       }).toList()
-        ..sort((a, b) => a.status.toString().compareTo(b.status.toString()));
+        ..sort((a, b) {
+          if (a.status != b.status) {
+            return a.status ? 1 : -1;
+          }
+          return a.code.compareTo(b.code);
+        });
     });
   }
 
@@ -279,7 +286,7 @@ class GedungState extends State<Gedung> {
                                   : Colors.white,
                             ),
                             onPressed: () {
-                              onPressed(context, ruangan);
+                              onPressed(context, ruangan, false);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -391,7 +398,7 @@ class GedungState extends State<Gedung> {
   }
 }
 
-void onPressed(BuildContext context, Ruangans ruangan) {
+void onPressed(BuildContext context, Ruangans ruangan, bool isDeeplink) {
   if (ruangan.status == true) {
     showDialog(
       context: context,
@@ -474,8 +481,10 @@ void onPressed(BuildContext context, Ruangans ruangan) {
       },
     );
   } else {
-    var param1 = ruangan.id;
+    if (!isDeeplink) {
+      var param1 = ruangan.id;
 
-    context.push("/ruangan?id=$param1&category=ruangan");
+      context.push("/ruangan?id=$param1&category=ruangan");
+    }
   }
 }

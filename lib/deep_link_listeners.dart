@@ -22,61 +22,62 @@ class DeepLinkListener extends StatefulWidget {
 }
 
 class _DeepLinkListenerState extends State<DeepLinkListener> {
-  void sessionChecker() async {
-    var user = await Session.refresh();
-
-    if (user == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          context.go('/login');
-        }
-      });
-    }
-  }
-
   @override
   void initState() {
-    sessionChecker();
-
+    super.initState();
     final appLinks = AppLinks();
 
-    appLinks.uriLinkStream.listen((uri) async {
-      log('Received deep link: ${uri.toString()}');
-      final category = uri.pathSegments.firstOrNull;
-      if (mounted) {
+    // Handle initial deep link
+    appLinks.getInitialLink().then((uri) {
+      if (uri != null) {
+        _handleDeepLink(uri);
+      }
+    });
+
+    // Listen for deep link changes
+    appLinks.uriLinkStream.listen((uri) {
+      _handleDeepLink(uri);
+    });
+  }
+
+  void _handleDeepLink(Uri uri) async {
+    log('Received deep link: ${uri.toString()}');
+    final category = uri.pathSegments.firstOrNull;
+    if (mounted) {
+      var user = await Session.refresh();
+      if (user != null) {
         context.go('/beranda');
       }
-      if (category == 'barang' && mounted) {
-        var id = uri.pathSegments.lastOrNull;
-        if (id != null && mounted) {
-          Barang barang = await readBarangbyId(id);
-          Ruangans ruangan = await readRuanganbyId(barang.ruanganId, context);
-          Tempat tempat = await readTempatbyId(ruangan.tempatId, context);
-          int tempatId = tempat.id;
-          if (mounted) {
-            context.push('/gedung?id=$tempatId&rId=${ruangan.id}');
-            if (ruangan.status != true) {
-              if (mounted) {
-                context
-                    .push('/ruangan?id=$tempatId&category=ruangan&index=$id');
-              }
+    }
+    if (category == 'barang') {
+      var id = uri.pathSegments.lastOrNull;
+      if (id != null && mounted) {
+        Barang barang = await readBarangbyId(id);
+        Ruangans ruangan = await readRuanganbyId(barang.ruanganId, context);
+        Tempat tempat = await readTempatbyId(ruangan.tempatId, context);
+        int tempatId = tempat.id;
+        if (mounted) {
+          context.push('/gedung?id=$tempatId&rId=${ruangan.id}');
+          if (ruangan.status != true) {
+            if (mounted) {
+              context
+                  .push('/ruangan?id=${ruangan.id}&category=ruangan&index=$id');
             }
           }
         }
       }
-      if (category == 'kendaraan' && mounted) {
-        final id = uri.pathSegments.lastOrNull;
-        if (id != null && mounted) {
-          Kendaraan kendaraan = await readKendaraanbyId(id);
-          Tempat tempat = await readTempatbyId(kendaraan.tempatId, context);
-          int tempatId = tempat.id;
-          if (mounted) {
-            context.push('/ruangan?id=$tempatId&category=kendaraan&index=$id');
-          }
+    }
+    if (category == 'kendaraan') {
+      final id = uri.pathSegments.lastOrNull;
+      if (id != null && mounted) {
+        Kendaraan kendaraan = await readKendaraanbyId(id);
+        Tempat tempat = await readTempatbyId(kendaraan.tempatId, context);
+        int tempatId = tempat.id;
+        if (mounted) {
+          context.push('/ruangan?id=$tempatId&category=kendaraan&index=$id');
         }
       }
-    });
-    super.initState();
+    }
   }
 
   @override

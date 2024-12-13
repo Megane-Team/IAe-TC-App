@@ -408,12 +408,14 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                                     null,
                                     'ruangan');
 
-                                if (res) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Peminjaman Berhasil!'),
-                                    ),
-                                  );
+                                if (res == 200) {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Peminjaman Berhasil!'),
+                                      ),
+                                    );
+                                  }
                                   WidgetsBinding.instance
                                       .addPostFrameCallback((_) {
                                     if (context.mounted) {
@@ -421,12 +423,14 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                                     }
                                   });
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'Peminjaman gagal, coba lain kali.'),
-                                    ),
-                                  );
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'Peminjaman gagal, coba lain kali.'),
+                                      ),
+                                    );
+                                  }
                                 }
                               } else if (widget.category == 'barang') {
                                 DetailPeminjamans detailPeminjaman =
@@ -444,25 +448,30 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                                     null,
                                     'barang');
 
-                                if (res) {
+                                if (res == 200) {
                                   WidgetsBinding.instance
                                       .addPostFrameCallback((_) {
                                     if (context.mounted) {
                                       context.pop();
                                     }
                                   });
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Peminjaman berhasil!'),
-                                    ),
-                                  );
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Peminjaman berhasil diajukan!'),
+                                      ),
+                                    );
+                                  }
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                          'Peminjaman gagal! coba lagi nanti'),
-                                    ),
-                                  );
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Peminjaman gagal! coba lagi nanti'),
+                                      ),
+                                    );
+                                  }
                                 }
                               } else if (widget.category == 'draft') {
                                 var res = await updateDetailPeminjaman(
@@ -481,18 +490,22 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                                       context.go('/beranda');
                                     }
                                   });
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Peminjaman berhasil!'),
-                                    ),
-                                  );
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Peminjaman berhasil!'),
+                                      ),
+                                    );
+                                  }
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                          'Peminjaman gagal! coba lagi nanti'),
-                                    ),
-                                  );
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Peminjaman gagal! coba lagi nanti'),
+                                      ),
+                                    );
+                                  }
                                 }
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(

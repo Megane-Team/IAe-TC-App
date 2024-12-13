@@ -336,7 +336,8 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                                                 .circular(8),
                                                         child: FutureBuilder(
                                                           future: Assets.barang(
-                                                              asset.photo!),
+                                                              asset.photo ??
+                                                                  ''),
                                                           builder: (context,
                                                               snapshot) {
                                                             if (snapshot
@@ -880,6 +881,9 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                                   .addPostFrameCallback((_) {
                                                 if (context.mounted) {
                                                   context.pop();
+                                                  if (mounted) {
+                                                    context.pop();
+                                                  }
                                                 }
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
@@ -933,7 +937,7 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text(
-                                            'Peminjaman berhasil di batalkan!'),
+                                            'Peminjaman berhasil di selesaikan!'),
                                       ),
                                     );
                                   });
@@ -958,39 +962,3 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
     );
   }
 }
-
-// List<Map<String, dynamic>> data = [
-//   {
-//     'status': 'canceled',
-//     'createdAt': DateTime.parse('2024-01-03T19:00:00'),
-//     'borrowedDate': DateTime.parse('2024-01-03T19:00:00'),
-//     'estimatedTime': DateTime.parse('2024-01-03T19:00:00'),
-//     'returnDate': null,
-//     'destination': null,
-//     'canceledReason': 'Salah Pilih Barang',
-//     'objective': null,
-//     'penumpang': null,
-//     'asset': [
-//       {
-//         'name': 'Pensil',
-//         'kode': '123',
-//         'photo': 'assets/images/icons/no_image.png',
-//         'asal': 'Gedung 1',
-//         'kategori': 'asset'
-//       },
-//       {
-//         'name': 'Innova',
-//         'photo': 'assets/images/icons/no_image.png',
-//         'asal': 'Parkiran 1',
-//         'kategori': 'kendaraan',
-//         'plat': 'Z 10 AD'
-//       },
-//       {
-//         'kode': 'R205',
-//         'photo': 'assets/images/icons/no_image.png',
-//         'asal': 'Gedung 1',
-//         'kategori': 'ruangan'
-//       },
-//     ]
-//   },
-// ];

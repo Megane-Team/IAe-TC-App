@@ -4,7 +4,7 @@ import 'package:inventara/constants/variables.dart';
 import 'package:inventara/main.dart';
 import 'package:inventara/utils/sessions.dart';
 
-Future<bool> createPeminjaman(
+Future<int> createPeminjaman(
     int dpId, int? bId, int? rId, int? kId, String category) async {
   var token = await Session.getToken();
 
@@ -19,9 +19,11 @@ Future<bool> createPeminjaman(
       }));
 
   if (response.statusCode == 200) {
-    return true;
+    return 200;
   } else if (response.statusCode == 429) {
-    return false;
+    return 429;
+  } else if (response.statusCode == 400) {
+    return 400;
   } else {
     throw Exception(
         'Failed to create peminjaman. Is internet connection available?');
