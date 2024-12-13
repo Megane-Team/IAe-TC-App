@@ -217,36 +217,14 @@ class RuanganState extends State<Ruangan> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   isRuangan()
-                                      ? Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              isRuangan()
-                                                  ? ruangan.code
-                                                  : tempat.name,
-                                              style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            if (ruangan.category !=
-                                                RuanganCategory.gudang) ...[
-                                              Text(
-                                                isRuangan()
-                                                    ? ''
-                                                    : ruangan.status == false
-                                                        ? 'Tidak Digunakan'
-                                                        : 'Digunakan',
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              )
-                                            ]
-                                          ],
+                                      ? Text(
+                                          isRuangan()
+                                              ? ruangan.code
+                                              : tempat.name,
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         )
                                       : Column(
                                           mainAxisAlignment:
@@ -402,7 +380,7 @@ class RuanganState extends State<Ruangan> {
                                                                 if (a.status !=
                                                                         true &&
                                                                     b.status ==
-                                                                        false) {
+                                                                        true) {
                                                                   return -1;
                                                                 }
                                                                 return a.id
@@ -1003,7 +981,7 @@ void onPressedBarang(BuildContext context, Barang items) {
                         ),
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width / 3,
+                        width: MediaQuery.of(context).size.width / 2.4,
                         child: ElevatedButton(
                           onPressed: () {
                             var param = items.id;

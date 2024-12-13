@@ -80,6 +80,7 @@ class App extends StatelessWidget {
       title: 'Inventara',
       routerConfig: appRouter,
       theme: mainTheme,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
