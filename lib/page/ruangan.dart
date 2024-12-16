@@ -67,7 +67,7 @@ class RuanganState extends State<Ruangan> {
       }
       return;
     } else {
-      tempat = await readTempatbyId(int.parse(widget.id), context);
+      tempat = (await readTempatbyId(int.parse(widget.id), context))!;
       final kendaraans = await readKendaraanByGedungId(widget.id, context);
       kendaraan = kendaraans;
       if (widget.index != null &&

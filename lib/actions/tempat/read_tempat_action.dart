@@ -37,7 +37,7 @@ Future<List<Tempat>> readTempat(BuildContext context) async {
   }
 }
 
-Future<Tempat> readTempatbyId(int id, BuildContext context) async {
+Future<Tempat?> readTempatbyId(int id, BuildContext context) async {
   final token = await Session.getToken();
 
   if (token == null) {
@@ -59,6 +59,8 @@ Future<Tempat> readTempatbyId(int id, BuildContext context) async {
     return Tempat.fromJson(data);
   } else if (response.statusCode == 401) {
     throw Exception('Unauthorized');
+  } else if (response.statusCode == 404) {
+    return null;
   } else {
     throw Exception('Failed to get tempat. Is internet connection available?');
   }
