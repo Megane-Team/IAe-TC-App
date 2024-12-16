@@ -22,8 +22,6 @@ Future<bool> loginAction(String email, String password) async {
     await Session.set(responseBody['token']);
 
     return true;
-  } else if (response.statusCode == 400) {
-    return false;
   } else {
     return false;
     // If the server returns an unexpected response, throw an error.
