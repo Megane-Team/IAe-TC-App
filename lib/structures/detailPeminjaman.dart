@@ -46,7 +46,7 @@ class DetailPeminjamans {
         id: json['id'],
         status: PeminjamanStatus.values.firstWhere(
             (e) => e.toString() == 'PeminjamanStatus.${json['status']}'),
-        borrowedDate: json['returnDate'] != null
+        borrowedDate: json['borrowedDate'] != null
             ? DateTime.parse(json['borrowedDate'])
             : null,
         estimatedTime: json['estimatedTime'] != null

@@ -212,7 +212,7 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                 ),
                                 onChanged: (date) {}, onConfirm: (date) {
                               DateTime tomorrow =
-                                  DateTime.now().add(Duration(days: 1));
+                                  DateTime.now().add(Duration(days: 3));
                               DateTime startOfTomorrow = DateTime(
                                   tomorrow.year, tomorrow.month, tomorrow.day);
                               if (date.isBefore(startOfTomorrow)) {

@@ -788,7 +788,7 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                     ),
                   ),
                   if (item.status == PeminjamanStatus.pending ||
-                      DateTime.now().isBefore(item.borrowedDate ??
+                      DateTime.now().isAfter(item.borrowedDate ??
                           DateTime.now().subtract(Duration(days: 1))))
                     SizedBox(
                       width: MediaQuery.of(context).size.width,

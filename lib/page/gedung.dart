@@ -11,6 +11,7 @@ import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/actions/users/read_user_action.dart';
 import 'package:inventara/structures/detailPeminjaman.dart';
 import 'package:inventara/structures/peminjaman.dart';
+import 'package:inventara/structures/peminjaman_status.dart';
 import 'package:inventara/structures/ruangan.dart';
 import 'package:inventara/structures/ruangan_category.dart';
 import 'package:inventara/structures/tempat.dart';
@@ -357,47 +358,68 @@ class GedungState extends State<Gedung> {
                                         builder: (BuildContext context) {
                                           return AlertDialog(
                                             title: const Text('Informasi Ruangan',
-                                                style: TextStyle(fontSize: 20)),
-                                            content: FutureBuilder(
-                                                future: readPeminjamanbyRuanganId(ruangan.id),
-                                                builder: (context, snapshot) {
-                                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                                    return const CircularProgressIndicator();
-                                                  } else if (snapshot.hasError) {
-                                                    return const Text('No data available');
-                                                  } else if (snapshot.hasData) {
-                                                    final Peminjaman peminjaman = snapshot.data!;
-                                                    return FutureBuilder(
-                                                        future: readUserById('${peminjaman.userId}'),
+                                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                                            content: Container(
+                                              height: 200,
+                                              child: SingleChildScrollView(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text('Kode: ${ruangan.code}'),
+                                                    Text('Kapasitas: ${ruangan.capacity.toString()}'),
+                                                    Text("Kategori: ${ruangan.category.toString().split('.').last}"),
+                                                    Text('Status: ${ruangan.status ? 'Digunakan' : 'Tidak Digunakan'}'),
+                                                    FutureBuilder(
+                                                        future: readPeminjamanbyRuanganId(ruangan.id),
                                                         builder: (context, snapshot) {
-                                                          if (snapshot.connectionState ==
-                                                              ConnectionState.waiting) {
+                                                          if (snapshot.connectionState == ConnectionState.waiting) {
                                                             return const CircularProgressIndicator();
                                                           } else if (snapshot.hasError) {
-                                                            return const Text('No data available');
+                                                            return SizedBox();
                                                           } else if (snapshot.hasData) {
-                                                            final user = snapshot.data!;
+                                                            final Peminjaman peminjaman = snapshot.data!;
                                                             return FutureBuilder(
-                                                                future: readDetailPeminjamanbyId(
-                                                                    peminjaman.detailPeminjamanId),
+                                                                future: readUserById('${peminjaman.userId}'),
                                                                 builder: (context, snapshot) {
                                                                   if (snapshot.connectionState ==
                                                                       ConnectionState.waiting) {
                                                                     return const CircularProgressIndicator();
                                                                   } else if (snapshot.hasError) {
-                                                                    return const Text('No data available');
+                                                                    return SizedBox();
                                                                   } else if (snapshot.hasData) {
-                                                                    final DetailPeminjamans dpeminjaman =
-                                                                    snapshot.data!;
-                                                                    return Column(
-                                                                        crossAxisAlignment:
-                                                                        CrossAxisAlignment.start,
-                                                                        mainAxisSize: MainAxisSize.min,
-                                                                        children: [
-                                                                          Text('Digunakan oleh: ${user.name}'),
-                                                                          Text(
-                                                                              'Divisi: ${user.unit}\nEstimasi : ${DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!)}')
-                                                                        ]);
+                                                                    final user = snapshot.data!;
+                                                                    return FutureBuilder(
+                                                                        future: readDetailPeminjamanbyId(
+                                                                            peminjaman.detailPeminjamanId),
+                                                                        builder: (context, snapshot) {
+                                                                          if (snapshot.connectionState ==
+                                                                              ConnectionState.waiting) {
+                                                                            return const CircularProgressIndicator();
+                                                                          } else if (snapshot.hasError) {
+                                                                            return SizedBox();
+                                                                          } else if (snapshot.hasData) {
+                                                                            final DetailPeminjamans dpeminjaman =
+                                                                            snapshot.data!;
+                                                                            if ((dpeminjaman.borrowedDate!.isBefore(DateTime.now()) || dpeminjaman.borrowedDate!.isAtSameMomentAs(DateTime.now())) && (dpeminjaman.status == PeminjamanStatus.approved))
+                                                                            {
+                                                                              return Column(
+                                                                                  crossAxisAlignment:
+                                                                                  CrossAxisAlignment.start,
+                                                                                  children: [
+                                                                                    Gap(8),
+                                                                                    Text('Peminjaman', style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16),),
+                                                                                    Gap(4),
+                                                                                    Text('Digunakan oleh: ${user.name}'),
+                                                                                    Text(
+                                                                                        'Divisi: ${user.unit}\nEstimasi : ${DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!)}')
+                                                                                  ]);
+                                                                            } else {
+                                                                              return SizedBox();
+                                                                            }
+                                                                          } else {
+                                                                            return const Text('Tidak ada data');
+                                                                          }
+                                                                        });
                                                                   } else {
                                                                     return const Text('Tidak ada data');
                                                                   }
@@ -405,11 +427,11 @@ class GedungState extends State<Gedung> {
                                                           } else {
                                                             return const Text('Tidak ada data');
                                                           }
-                                                        });
-                                                  } else {
-                                                    return const Text('Tidak ada data');
-                                                  }
-                                                }),
+                                                        }),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
                                             actions: [
                                               SizedBox(
                                                 width: MediaQuery.of(context).size.width,
