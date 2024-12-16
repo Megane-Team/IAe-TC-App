@@ -37,7 +37,7 @@ Future<List<Barang>> readBarang(BuildContext context) async {
   }
 }
 
-Future<Barang> readBarangbyId(String id) async {
+Future<Barang?> readBarangbyId(String id) async {
   var token = await Session.getToken();
 
   final response = await App.api.get(apiBaseURl.resolve('/barangs/$id'),
@@ -47,9 +47,10 @@ Future<Barang> readBarangbyId(String id) async {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final Map<String, dynamic> data = responseData['data'];
     return Barang.fromJson(data);
+  } else if (response.statusCode == 404) {
+    return null;
   } else {
-    throw Exception(
-        'Failed to get draft peminjaman. Is internet connection available?');
+    throw Exception('Failed to get barang. Is internet connection available?');
   }
 }
 

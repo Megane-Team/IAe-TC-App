@@ -18,13 +18,15 @@ Future<List<DetailPeminjamans>> readDetailPeminjaman() async {
         data.map((item) => DetailPeminjamans.fromJson(item)).toList();
 
     return detailPeminjaman;
+  } else if (response.statusCode == 404) {
+    return [];
   } else {
     throw Exception(
         'Failed to get detail peminjaman. Is internet connection available?');
   }
 }
 
-Future<DetailPeminjamans> readDetailPeminjamanbyId(int id) async {
+Future<DetailPeminjamans?> readDetailPeminjamanbyId(int id) async {
   var token = await Session.getToken();
 
   var response = await App.api.get(apiBaseURl.resolve('/detailPeminjaman/$id'),
@@ -34,6 +36,8 @@ Future<DetailPeminjamans> readDetailPeminjamanbyId(int id) async {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final Map<String, dynamic> data = responseData['data'];
     return DetailPeminjamans.fromJson(data);
+  } else if (response.statusCode == 404) {
+    return null;
   } else {
     throw Exception(
         'Failed to get detail peminjaman. Is internet connection available?');

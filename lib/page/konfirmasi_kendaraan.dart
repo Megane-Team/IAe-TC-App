@@ -53,9 +53,10 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
 
   Future<void> fetchData() async {
     if (widget.category == 'kendaraan') {
-      kendaraans = await readKendaraanbyId(widget.id);
+      kendaraans = (await readKendaraanbyId(widget.id))!;
     } else {
-      detailPeminjaman = await readDetailPeminjamanbyId(int.parse(widget.id));
+      detailPeminjaman =
+          (await readDetailPeminjamanbyId(int.parse(widget.id)))!;
     }
   }
 

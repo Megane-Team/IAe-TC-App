@@ -17,6 +17,8 @@ Future<List<Peminjaman>> readPeminjaman(String? id) async {
         data.map((item) => Peminjaman.fromJson(item)).toList();
 
     return peminjaman;
+  } else if (response.statusCode == 404) {
+    return [];
   } else {
     throw Exception(
         'Failed to get peminjaman. Is internet connection available?');
@@ -36,6 +38,8 @@ Future<List<Peminjaman>> readDraftPeminjaman() async {
         data.map((item) => Peminjaman.fromJson(item)).toList();
 
     return peminjaman;
+  } else if (response.statusCode == 404) {
+    return [];
   } else {
     throw Exception(
         'Failed to get draft peminjaman. Is internet connection available?');
@@ -56,13 +60,15 @@ Future<List<Peminjaman>> readPeminjamanbyDetailId(int id) async {
         data.map((item) => Peminjaman.fromJson(item)).toList();
 
     return peminjaman;
+  } else if (response.statusCode == 404) {
+    return [];
   } else {
     throw Exception(
         'Failed to get peminjaman. Is internet connection available?');
   }
 }
 
-Future<Peminjaman> readPeminjamanbyRuanganId(int id) async {
+Future<Peminjaman?> readPeminjamanbyRuanganId(int id) async {
   var token = await Session.getToken();
 
   var response = await App.api.get(
@@ -73,13 +79,15 @@ Future<Peminjaman> readPeminjamanbyRuanganId(int id) async {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final Map<String, dynamic> data = responseData['data'];
     return Peminjaman.fromJson(data);
+  } else if (response.statusCode == 404) {
+    return null;
   } else {
     throw Exception(
         'Failed to get draft peminjaman. Is internet connection available?');
   }
 }
 
-Future<Peminjaman> readPeminjamanbyBarangId(int id) async {
+Future<Peminjaman?> readPeminjamanbyBarangId(int id) async {
   var token = await Session.getToken();
 
   var response = await App.api.get(apiBaseURl.resolve('/peminjaman/barang/$id'),
@@ -89,13 +97,15 @@ Future<Peminjaman> readPeminjamanbyBarangId(int id) async {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final Map<String, dynamic> data = responseData['data'];
     return Peminjaman.fromJson(data);
+  } else if (response.statusCode == 404) {
+    return null;
   } else {
     throw Exception(
         'Failed to get draft peminjaman. Is internet connection available?');
   }
 }
 
-Future<Peminjaman> readPeminjamanbyKendaraanId(int id) async {
+Future<Peminjaman?> readPeminjamanbyKendaraanId(int id) async {
   var token = await Session.getToken();
 
   var response = await App.api.get(
@@ -106,6 +116,8 @@ Future<Peminjaman> readPeminjamanbyKendaraanId(int id) async {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final Map<String, dynamic> data = responseData['data'];
     return Peminjaman.fromJson(data);
+  } else if (response.statusCode == 404) {
+    return null;
   } else {
     throw Exception(
         'Failed to get draft peminjaman. Is internet connection available?');

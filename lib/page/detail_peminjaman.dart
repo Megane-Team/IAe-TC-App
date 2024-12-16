@@ -39,7 +39,7 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
       int id, PeminjamanCategory peminjamanCategory) async {
     if (peminjamanCategory == PeminjamanCategory.barang) {
       var ruangan = await readRuanganbyId(id, context);
-      var tempat = await readTempatbyId(ruangan.id, context);
+      var tempat = await readTempatbyId(ruangan!.id, context);
       return tempat.name;
     } else if (peminjamanCategory == PeminjamanCategory.kendaraan ||
         peminjamanCategory == PeminjamanCategory.ruangan) {
@@ -90,7 +90,7 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
       ),
       body: Padding(
         padding: EdgeInsets.only(right: 24, left: 24, top: 20),
-        child: FutureBuilder<DetailPeminjamans>(
+        child: FutureBuilder(
             future: readDetailPeminjamanbyId(dpId),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {

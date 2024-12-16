@@ -55,7 +55,7 @@ class RuanganState extends State<Ruangan> {
     category = widget.category;
 
     if (isRuangan()) {
-      ruangan = await readRuanganbyId(int.parse(widget.id), context);
+      ruangan = (await readRuanganbyId(int.parse(widget.id), context))!;
       final barangs = await readBarangbyRuanganId(widget.id, context);
       barang = barangs;
       if (widget.index != null &&
