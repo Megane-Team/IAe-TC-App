@@ -9,7 +9,7 @@ class Barang {
   @HiveField(2)
   late String name;
   @HiveField(3)
-  late String activaCode;
+  late String code;
   @HiveField(4)
   late bool status;
   @HiveField(5)
@@ -24,7 +24,7 @@ class Barang {
   Barang(
       {required this.id,
       required this.name,
-      required this.activaCode,
+      required this.code,
       required this.status,
       required this.condition,
       required this.warranty,
@@ -35,7 +35,7 @@ class Barang {
     return Barang(
         id: json['id'],
         name: json['name'],
-        activaCode: json['activaCode'],
+        code: json['code'],
         status: json['status'],
         condition: json['condition'],
         warranty: DateTime.parse(json['warranty']),

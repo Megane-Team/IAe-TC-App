@@ -57,7 +57,7 @@ class CariState extends State<Cari> {
           bfilteredList = barangs
               .where((item) =>
                   item.name.toLowerCase().contains(value.toLowerCase()) ||
-                  item.activaCode.toLowerCase().contains(value.toLowerCase()))
+                  item.code.toLowerCase().contains(value.toLowerCase()))
               .toList();
         }
       } else {
@@ -359,7 +359,7 @@ class CariState extends State<Cari> {
                                           ),
                                           Gap(8),
                                           Text(
-                                            item.activaCode,
+                                            item.code,
                                             style: const TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w600),
@@ -920,7 +920,7 @@ class CariState extends State<Cari> {
                             children: [
                               if (isRuangan) ...[
                                 Text(
-                                  item.activaCode,
+                                  item.code,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w600,
