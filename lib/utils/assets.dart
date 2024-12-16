@@ -23,6 +23,10 @@ class Assets {
   }
 
   static Future<Widget> tempat(String name) async {
+    if (name == '') {
+      return Image.asset(Assets.noImage());
+    }
+
     final token = await Session.getToken();
 
     try {
@@ -46,6 +50,10 @@ class Assets {
   }
 
   static Future<Widget> ruangan(String name) async {
+    if (name == '') {
+      return Image.asset(Assets.noImage());
+    }
+
     final token = await Session.getToken();
 
     try {
@@ -69,6 +77,10 @@ class Assets {
   }
 
   static Future<Widget> barang(String name) async {
+    if (name == '') {
+      return Image.asset(Assets.noImage());
+    }
+
     final token = await Session.getToken();
 
     try {
@@ -92,6 +104,10 @@ class Assets {
   }
 
   static Future<Widget> kendaraan(String name) async {
+    if (name == '') {
+      return Image.asset(Assets.noImage());
+    }
+
     final token = await Session.getToken();
 
     try {

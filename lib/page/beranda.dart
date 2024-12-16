@@ -380,7 +380,7 @@ class BerandaState extends State<Beranda> {
                                                       BorderRadius.circular(12),
                                                   child: FutureBuilder<Widget>(
                                                     future: Assets.tempat(
-                                                        tempat.name),
+                                                        tempat.photo ?? ''),
                                                     builder:
                                                         (context, snapshot) {
                                                       if (snapshot
