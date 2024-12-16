@@ -44,7 +44,7 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
     final category = uri.pathSegments.firstOrNull;
     if (mounted) {
       var user = await Session.refresh();
-      if (user != null) {
+      if (user != null && mounted) {
         context.go('/beranda');
       }
     }
@@ -57,11 +57,9 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
         int tempatId = tempat!.id;
         if (mounted) {
           context.push('/gedung?id=$tempatId&rId=${ruangan.id}');
-          if (ruangan.status != true) {
-            if (mounted) {
-              context
-                  .push('/ruangan?id=${ruangan.id}&category=ruangan&index=$id');
-            }
+          if (mounted) {
+            context
+                .push('/ruangan?id=${ruangan.id}&category=ruangan&index=$id');
           }
         }
       }
@@ -74,6 +72,20 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
         int tempatId = tempat!.id;
         if (mounted) {
           context.push('/ruangan?id=$tempatId&category=kendaraan&index=$id');
+        }
+      }
+    }
+    if (category == 'ruangan') {
+      final id = uri.pathSegments.lastOrNull;
+      if (id != null && mounted) {
+        var ruangan = await readRuanganbyId(int.parse(id), context);
+        var tempat = await readTempatbyId(ruangan!.tempatId, context);
+        int tempatId = tempat!.id;
+        if (mounted) {
+          context.push('/gedung?id=$tempatId&rId=${ruangan.id}');
+          if (mounted) {
+            context.push('/ruangan?id=${ruangan.id}&category=ruangan');
+          }
         }
       }
     }
