@@ -65,7 +65,7 @@ Future<List<Ruangans>> readRuanganbyGedungId(
   }
 }
 
-Future<Ruangans> readRuanganbyId(int id, BuildContext context) async {
+Future<Ruangans?> readRuanganbyId(int id, BuildContext context) async {
   final token = await Session.getToken();
 
   if (token == null) {
@@ -85,6 +85,8 @@ Future<Ruangans> readRuanganbyId(int id, BuildContext context) async {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final Map<String, dynamic> data = responseData['data'];
     return Ruangans.fromJson(data);
+  } else if (response.statusCode == 404) {
+    return null;
   } else {
     throw Exception('Failed to get ruangan. Is internet connection available?');
   }

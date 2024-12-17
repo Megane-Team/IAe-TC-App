@@ -38,7 +38,7 @@ Future<List<Kendaraan>> readKendaraan(BuildContext context) async {
   }
 }
 
-Future<Kendaraan> readKendaraanbyId(String id) async {
+Future<Kendaraan?> readKendaraanbyId(String id) async {
   var token = await Session.getToken();
 
   final response = await App.api.get(apiBaseURl.resolve('/kendaraans/$id'),
@@ -48,6 +48,8 @@ Future<Kendaraan> readKendaraanbyId(String id) async {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final Map<String, dynamic> data = responseData['data'];
     return Kendaraan.fromJson(data);
+  } else if (response.statusCode == 404) {
+    return null;
   } else {
     throw Exception(
         'Failed to get kendaraan. Is internet connection available?');

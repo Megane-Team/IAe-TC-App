@@ -168,7 +168,9 @@ class LoginState extends State<Login> {
                             ],
                           );
                         } else {
-                          context.go('/beranda');
+                          if (context.mounted) {
+                            context.go('/beranda');
+                          }
                         }
                       }
                     },

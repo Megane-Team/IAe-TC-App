@@ -56,7 +56,7 @@ class GedungState extends State<Gedung> {
         mounted) {
       var ruangan = await readRuanganbyId(widget.rId!, context);
       if (mounted) {
-        onPressed(context, ruangan, true);
+        onPressed(context, ruangan!, true);
       }
     }
   }
