@@ -5,6 +5,7 @@ import 'package:app_links/app_links.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventara/actions/barang/read_barang_action.dart';
 import 'package:inventara/actions/kendaraan/read_kendaraan_action.dart';
+import 'package:inventara/actions/peminjaman/read_detail_peminjaman_action.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
 import 'package:inventara/utils/sessions.dart';
@@ -24,6 +25,7 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
   void initState() {
     super.initState();
     final appLinks = AppLinks();
+    fetchData();
 
     // Handle initial deep link
     appLinks.getInitialLink().then((uri) {
@@ -37,6 +39,10 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
     appLinks.uriLinkStream.listen((uri) {
       _handleDeepLink(uri);
     });
+  }
+
+  void fetchData() async {
+    await checkDetailPeminjamanItemsStatus();
   }
 
   void _handleDeepLink(Uri uri) async {
