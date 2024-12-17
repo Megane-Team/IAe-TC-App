@@ -179,7 +179,7 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          'Tanggal peminjaman harus 1 hari setelah pengajuan.'),
+                                          'Tanggal peminjaman harus 3 hari setelah pengajuan.'),
                                     ),
                                   );
                                 } else if (_pengembalianController

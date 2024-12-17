@@ -32,6 +32,7 @@ class GedungState extends State<Gedung> {
   bool isGudangActive = false;
   bool isLabActive = false;
   late List<Ruangans> filteredRuangan = [];
+  late DetailPeminjamans? dpeminjaman;
   late List<Ruangans> originalRuanganList = [];
   late List<Tempat> gedung = [];
   TextEditingController searchController = TextEditingController();
@@ -73,12 +74,7 @@ class GedungState extends State<Gedung> {
             item.code.toLowerCase().contains(value.toLowerCase());
         return matchesCategory && matchesSearch;
       }).toList()
-        ..sort((a, b) {
-          if (a.status != b.status) {
-            return a.status ? 1 : -1;
-          }
-          return a.code.compareTo(b.code);
-        });
+        ..sort((a, b) => a.code.compareTo(b.code));
     });
   }
 
@@ -299,7 +295,8 @@ class GedungState extends State<Gedung> {
                                 onPressed(context, ruangan, false);
                               },
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
                                     child: Row(
@@ -314,10 +311,12 @@ class GedungState extends State<Gedung> {
                                                 future: Assets.ruangan(
                                                     ruangan.photo ?? ''),
                                                 builder: (context, snapshot) {
-                                                  if (snapshot.connectionState ==
+                                                  if (snapshot
+                                                          .connectionState ==
                                                       ConnectionState.waiting) {
                                                     return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                  } else if (snapshot.hasError) {
+                                                  } else if (snapshot
+                                                      .hasError) {
                                                     return Image.asset(Assets
                                                         .noImage()); // Show error message if any
                                                   } else if (snapshot.hasData) {
@@ -357,113 +356,232 @@ class GedungState extends State<Gedung> {
                                       ],
                                     ),
                                   ),
-                                if (ruangan.category != RuanganCategory.gudang)
-                                  IconButton(
-                                    icon: const Icon(Icons.info_outline),
-                                    color: Color(0xFFFCA311),
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('Informasi Ruangan',
-                                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-                                            content: Container(
-                                              height: 200,
-                                              child: SingleChildScrollView(
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text('Kode: ${ruangan.code}'),
-                                                    Text('Kapasitas: ${ruangan.capacity.toString()}'),
-                                                    Text("Kategori: ${ruangan.category.toString().split('.').last}"),
-                                                    Text('Status: ${ruangan.status ? 'Digunakan' : 'Tidak Digunakan'}'),
-                                                    FutureBuilder(
-                                                        future: readPeminjamanbyRuanganId(ruangan.id),
-                                                        builder: (context, snapshot) {
-                                                          if (snapshot.connectionState == ConnectionState.waiting) {
-                                                            return const CircularProgressIndicator();
-                                                          } else if (snapshot.hasError) {
-                                                            return SizedBox();
-                                                          } else if (snapshot.hasData) {
-                                                            final Peminjaman peminjaman = snapshot.data!;
-                                                            return FutureBuilder(
-                                                                future: readUserById('${peminjaman.userId}'),
-                                                                builder: (context, snapshot) {
-                                                                  if (snapshot.connectionState ==
-                                                                      ConnectionState.waiting) {
-                                                                    return const CircularProgressIndicator();
-                                                                  } else if (snapshot.hasError) {
-                                                                    return SizedBox();
-                                                                  } else if (snapshot.hasData) {
-                                                                    final user = snapshot.data!;
-                                                                    return FutureBuilder(
-                                                                        future: readDetailPeminjamanbyId(
-                                                                            peminjaman.detailPeminjamanId),
-                                                                        builder: (context, snapshot) {
-                                                                          if (snapshot.connectionState ==
-                                                                              ConnectionState.waiting) {
-                                                                            return const CircularProgressIndicator();
-                                                                          } else if (snapshot.hasError) {
-                                                                            return SizedBox();
-                                                                          } else if (snapshot.hasData) {
-                                                                            final DetailPeminjamans dpeminjaman =
-                                                                            snapshot.data!;
-                                                                            if ((dpeminjaman.borrowedDate!.isBefore(DateTime.now()) || dpeminjaman.borrowedDate!.isAtSameMomentAs(DateTime.now())) && (dpeminjaman.status == PeminjamanStatus.approved))
-                                                                            {
-                                                                              return Column(
-                                                                                  crossAxisAlignment:
-                                                                                  CrossAxisAlignment.start,
-                                                                                  children: [
-                                                                                    Gap(8),
-                                                                                    Text('Peminjaman', style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16),),
-                                                                                    Gap(4),
-                                                                                    Text('Digunakan oleh: ${user.name}'),
-                                                                                    Text(
-                                                                                        'Divisi: ${user.unit}\nEstimasi : ${DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!)}')
-                                                                                  ]);
-                                                                            } else {
-                                                                              return SizedBox();
-                                                                            }
-                                                                          } else {
-                                                                            return const Text('Tidak ada data');
-                                                                          }
-                                                                        });
-                                                                  } else {
-                                                                    return const Text('Tidak ada data');
-                                                                  }
-                                                                });
-                                                          } else {
-                                                            return const Text('Tidak ada data');
-                                                          }
-                                                        }),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            actions: [
-                                              SizedBox(
-                                                width: MediaQuery.of(context).size.width,
-                                                child: ElevatedButton(
-                                                  style: ElevatedButton.styleFrom(
-                                                    padding: EdgeInsets.zero,
-                                                    backgroundColor: const Color(0xFFFCA311),
+                                  if (ruangan.category !=
+                                      RuanganCategory.gudang)
+                                    IconButton(
+                                      icon: const Icon(Icons.info_outline),
+                                      color: Color(0xFFFCA311),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                  'Informasi Ruangan',
+                                                  style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w600)),
+                                              content: FutureBuilder(
+                                                  future:
+                                                      readPeminjamanbyRuanganId(
+                                                          ruangan.id),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return const CircularProgressIndicator();
+                                                    } else if (snapshot
+                                                        .hasError) {
+                                                      return SizedBox();
+                                                    } else if (snapshot
+                                                        .hasData) {
+                                                      final Peminjaman
+                                                          peminjaman =
+                                                          snapshot.data!;
+                                                      return FutureBuilder(
+                                                          future: readUserById(
+                                                              '${peminjaman.userId}'),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            if (snapshot
+                                                                    .connectionState ==
+                                                                ConnectionState
+                                                                    .waiting) {
+                                                              return const CircularProgressIndicator();
+                                                            } else if (snapshot
+                                                                .hasError) {
+                                                              return SizedBox();
+                                                            } else if (snapshot
+                                                                .hasData) {
+                                                              final user =
+                                                                  snapshot
+                                                                      .data!;
+                                                              return FutureBuilder(
+                                                                  future: readDetailPeminjamanbyId(
+                                                                      peminjaman
+                                                                          .detailPeminjamanId),
+                                                                  builder: (context,
+                                                                      snapshot) {
+                                                                    if (snapshot
+                                                                            .connectionState ==
+                                                                        ConnectionState
+                                                                            .waiting) {
+                                                                      return const CircularProgressIndicator();
+                                                                    } else if (snapshot
+                                                                        .hasError) {
+                                                                      return SizedBox();
+                                                                    } else if (snapshot
+                                                                        .hasData) {
+                                                                      dpeminjaman =
+                                                                          snapshot
+                                                                              .data;
+                                                                      if ((dpeminjaman!.borrowedDate!.isBefore(DateTime.now()) ||
+                                                                              dpeminjaman!.borrowedDate!.isAtSameMomentAs(DateTime
+                                                                                  .now())) &&
+                                                                          (dpeminjaman!.status ==
+                                                                              PeminjamanStatus.approved)) {
+                                                                        return SizedBox(
+                                                                          height:
+                                                                              180,
+                                                                          child:
+                                                                              Column(
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text('Kode', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                  Text(ruangan.code, style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                                ],
+                                                                              ),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text('Kategori', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                  Text(ruangan.category.toString().split('.').last, style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                                ],
+                                                                              ),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text('Kapasitas', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                  Text('${ruangan.capacity.toString()} Orang', style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                                ],
+                                                                              ),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text('Status', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                  Text(ruangan.status ? 'Digunakan' : 'Tidak Digunakan', style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                                ],
+                                                                              ),
+                                                                              const Gap(4),
+                                                                              Text('Peminjaman', style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                              Gap(4),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text('Dipinjam', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                  Text(user.name, style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                                ],
+                                                                              ),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text('Divisi', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                  Text(user.unit, style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                                ],
+                                                                              ),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text('Estimasi Selesai', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                  Text(DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman!.estimatedTime!), style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                                ],
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        );
+                                                                      } else {
+                                                                        return SizedBox(
+                                                                          height:
+                                                                              80,
+                                                                          child:
+                                                                              Column(
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text('Kode', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                  Text(ruangan.code, style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                                ],
+                                                                              ),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text('Kategori', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                  Text(ruangan.category.toString().split('.').last, style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                                ],
+                                                                              ),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text('Kapasitas', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                  Text('${ruangan.capacity.toString()} Orang', style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                                ],
+                                                                              ),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text('Status', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                  Text(ruangan.status ? 'Digunakan' : 'Tidak Digunakan', style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                                ],
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        );
+                                                                      }
+                                                                    } else {
+                                                                      return const Text(
+                                                                          'Tidak ada data');
+                                                                    }
+                                                                  });
+                                                            } else {
+                                                              return const Text(
+                                                                  'Tidak ada data');
+                                                            }
+                                                          });
+                                                    } else {
+                                                      return const Text(
+                                                          'Tidak ada data');
+                                                    }
+                                                  }),
+                                              actions: [
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  child: ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      padding: EdgeInsets.zero,
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xFFFCA311),
+                                                    ),
+                                                    onPressed: () {
+                                                      context.pop();
+                                                    },
+                                                    child: const Text(
+                                                      'OK',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
                                                   ),
-                                                  onPressed: () {
-                                                    context.pop();
-                                                  },
-                                                  child: const Text(
-                                                    'OK',
-                                                    style: TextStyle(
-                                                        color: Colors.white, fontWeight: FontWeight.w600),
-                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },)
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                    )
                                   // isRuanganHasCapacity(ruangan)
                                   //     ? ruangan.category != RuanganCategory.gudang
                                   //         ? Container(
@@ -505,7 +623,6 @@ class GedungState extends State<Gedung> {
                                   //           )
                                   //         : const SizedBox()
                                   //     : const SizedBox()
-
                                 ],
                               ),
                             ),
@@ -527,9 +644,9 @@ class GedungState extends State<Gedung> {
 }
 
 void onPressed(BuildContext context, Ruangans ruangan, bool isDeeplink) {
-    if (!isDeeplink) {
-      var param1 = ruangan.id;
+  if (!isDeeplink) {
+    var param1 = ruangan.id;
 
-      context.push("/ruangan?id=$param1&category=ruangan");
-    }
+    context.push("/ruangan?id=$param1&category=ruangan");
+  }
 }
