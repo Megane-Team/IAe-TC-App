@@ -15,9 +15,10 @@ Future<bool> updateDetailPeminjaman(
   var token = await Session.getToken();
 
   var response =
-      await App.api.patch(apiBaseURl.resolve('/detailPeminjaman/$id'),
+      await App.api.patch(apiBaseURl.resolve('/detailPeminjaman/pending'),
           headers: {'authorization': 'Bearer $token'},
           body: jsonEncode({
+            'id': id,
             'borrowedDate': borrowedDate?.toIso8601String(),
             'estimatedTime': estimatedTime?.toIso8601String(),
             'objective': objective,

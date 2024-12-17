@@ -9,8 +9,8 @@ Future<bool> updateCanceledDetailPeminjaman(
   var token = await Session.getToken();
 
   var response = await App.api.patch(
-      apiBaseURl.resolve('/detailPeminjaman/$id/canceled'),
-      body: jsonEncode({'canceledReason': canceledReason}),
+      apiBaseURl.resolve('/detailPeminjaman/canceled'),
+      body: jsonEncode({'id': id, 'canceledReason': canceledReason}),
       headers: {'authorization': 'Bearer $token'});
 
   if (response.statusCode == 200) {

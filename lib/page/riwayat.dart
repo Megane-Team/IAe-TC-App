@@ -257,10 +257,10 @@ class RiwayatState extends State<Riwayat> {
                               return noData();
                             }
                             if (snapshot.hasData) {
-                              var dpeminjaman = snapshot.data!;
-                              if (dpeminjaman.isEmpty) {
-                                return Center(child: SizedBox());
+                              if (snapshot.data!.isEmpty) {
+                                return noData();
                               }
+                              var dpeminjaman = snapshot.data!;
                               return ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: isBerlangsungActive
@@ -435,11 +435,8 @@ class RiwayatState extends State<Riwayat> {
                                                                                 }
                                                                                 if (snapshot.hasError) {
                                                                                   return snapshot.data!;
-                                                                                }
-                                                                                if (snapshot.hasData) {
-                                                                                  return snapshot.data!;
                                                                                 } else {
-                                                                                  return const SizedBox();
+                                                                                  return snapshot.data!;
                                                                                 }
                                                                               }),
                                                                         )),
