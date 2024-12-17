@@ -511,8 +511,10 @@ class RuanganState extends State<Ruangan> {
                                                                           ),
                                                                           Text(
                                                                             items[index2].condition,
-                                                                            style:
-                                                                                const TextStyle(color: Colors.black, fontSize: 12),
+                                                                            style: const TextStyle(
+                                                                                color: Colors.grey,
+                                                                                fontSize: 12,
+                                                                                fontWeight: FontWeight.w600),
                                                                           ),
                                                                         ],
                                                                       ),
@@ -760,8 +762,9 @@ class RuanganState extends State<Ruangan> {
                                                                           items[index2]
                                                                               .condition,
                                                                           style: const TextStyle(
-                                                                              color: Colors.black,
-                                                                              fontSize: 12),
+                                                                              color: Colors.grey,
+                                                                              fontSize: 12,
+                                                                              fontWeight: FontWeight.w600),
                                                                         ),
                                                                       ],
                                                                     ),
@@ -952,7 +955,10 @@ void onPressedBarang(BuildContext context, Barang items) {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Nama'),
+                        const Text('Nama',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w600)),
                         Text(items.name,
                             style: const TextStyle(fontWeight: FontWeight.w600))
                       ]),
@@ -960,7 +966,10 @@ void onPressedBarang(BuildContext context, Barang items) {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Kondisi'),
+                        const Text('Kondisi',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w600)),
                         Text(items.condition,
                             style: const TextStyle(fontWeight: FontWeight.w600))
                       ]),
@@ -968,7 +977,10 @@ void onPressedBarang(BuildContext context, Barang items) {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Garansi'),
+                        const Text('Garansi',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w600)),
                         Text(DateFormat('dd MMM yy').format(items.warranty),
                             style: const TextStyle(fontWeight: FontWeight.w600))
                       ]),
@@ -1168,7 +1180,10 @@ void onPressedKendaraan(BuildContext context, Kendaraan items) {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Kategori'),
+                            const Text('Kategori',
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w600)),
                             Text(
                                 items.category
                                     .toString()
@@ -1182,7 +1197,10 @@ void onPressedKendaraan(BuildContext context, Kendaraan items) {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Kondisi'),
+                            const Text('Kondisi',
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w600)),
                             Text(items.condition,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w600))
@@ -1191,7 +1209,10 @@ void onPressedKendaraan(BuildContext context, Kendaraan items) {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Pajak'),
+                            const Text('Pajak',
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w600)),
                             Text(DateFormat('yyyy MMM dd').format(items.tax),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w600))

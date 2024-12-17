@@ -788,8 +788,9 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                     ),
                   ),
                   if (item.status == PeminjamanStatus.pending ||
-                      DateTime.now().isBefore(item.borrowedDate ??
-                          DateTime.now().subtract(Duration(days: 1))))
+                      (item.status == PeminjamanStatus.approved &&
+                          DateTime.now()
+                              .isBefore(item.borrowedDate ?? DateTime.now())))
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 80,
@@ -913,7 +914,9 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                         ],
                       ),
                     ),
-                  if (item.status == PeminjamanStatus.approved)
+                  if (item.status == PeminjamanStatus.approved &&
+                      (item.borrowedDate!.isAtSameMomentAs(DateTime.now()) ||
+                          item.borrowedDate!.isBefore(DateTime.now())))
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 80,

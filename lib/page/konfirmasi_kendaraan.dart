@@ -213,14 +213,14 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                 ),
                                 onChanged: (date) {}, onConfirm: (date) {
                               DateTime tomorrow =
-                                  DateTime.now().add(Duration(days: 1));
+                                  DateTime.now().add(Duration(days: 3));
                               DateTime startOfTomorrow = DateTime(
                                   tomorrow.year, tomorrow.month, tomorrow.day);
                               if (date.isBefore(startOfTomorrow)) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                        'Tanggal peminjaman harus 1 hari setelah pengajuan.'),
+                                        'Tanggal peminjaman harus 3 hari setelah pengajuan.'),
                                   ),
                                 );
                               } else if (_pengembalianController
