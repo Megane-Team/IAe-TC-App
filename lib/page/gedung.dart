@@ -340,9 +340,18 @@ class GedungState extends State<Gedung> {
                                               Text(
                                                 ruangan.code,
                                                 style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600,
                                                     color: Colors.black),
+                                              ),
+                                              Text(
+                                                ruangan.status
+                                                    ? 'Digunakan'
+                                                    : 'Tidak Digunakan',
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.grey),
                                               ),
                                             ])
                                       ],
