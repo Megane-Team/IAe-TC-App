@@ -43,3 +43,17 @@ Future<DetailPeminjamans?> readDetailPeminjamanbyId(int id) async {
         'Failed to get detail peminjaman. Is internet connection available?');
   }
 }
+
+Future<bool> checkDetailPeminjamanItemsStatus() async {
+  var token = await Session.getToken();
+
+  var response = await App.api.get(
+      apiBaseURl.resolve('/detailPeminjaman/checkItemsStatus'),
+      headers: {'Authorization': 'Bearer $token'});
+
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    return false;
+  }
+}
