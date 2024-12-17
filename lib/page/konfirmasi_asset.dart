@@ -13,6 +13,7 @@ import 'package:inventara/actions/peminjaman/update_detail_peminjaman.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/structures/barang.dart';
 import 'package:inventara/structures/detailPeminjaman.dart';
+import 'package:inventara/structures/peminjaman_status.dart';
 import 'package:inventara/structures/ruangan.dart';
 
 class Konfirmasiasset extends StatefulWidget {
@@ -28,9 +29,10 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
   late Ruangans ruangans;
   late Barang barangs;
   late DetailPeminjamans detailPeminjaman;
+  late List<DetailPeminjamans> peminjamanList;
+  late Future<void> fetchDataFuture;
   DateTime peminjamanDateTime = DateTime.now();
   DateTime pengembalianDateTime = DateTime.now();
-  late Future<void> fetchDataFuture;
   final TextEditingController _peminjamanController = TextEditingController();
   final TextEditingController _pengembalianController = TextEditingController();
   final TextEditingController _tujuanController = TextEditingController();
@@ -48,14 +50,27 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
     fetchDataFuture = fetchData();
   }
 
+  bool hasConflict(DateTime startDate, DateTime endDate) {
+    return peminjamanList.any((peminjaman) {
+      return (peminjaman.status == PeminjamanStatus.pending ||
+              peminjaman.status == PeminjamanStatus.approved) &&
+          ((startDate.isBefore(peminjaman.estimatedTime!) &&
+              endDate.isAfter(peminjaman.borrowedDate!)));
+    });
+  }
+
   Future<void> fetchData() async {
     if (widget.category == 'ruangan') {
       ruangans = (await readRuanganbyId(int.parse(widget.id), context))!;
+      peminjamanList = await readAllDetailPeminjamansbyRuanganId(ruangans.id);
     } else if (widget.category == 'barang') {
       barangs = (await readBarangbyId(widget.id))!;
+      peminjamanList = await readAllDetailPeminjamansbyBarangId(barangs.id);
     } else {
       detailPeminjaman =
           (await readDetailPeminjamanbyId(int.parse(widget.id)))!;
+      peminjamanList =
+          await readAllDetailPeminjamansbyDraftId(int.parse(widget.id));
     }
   }
 
@@ -191,6 +206,14 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                                           'Tanggal peminjaman tidak boleh sesudah tanggal akhir peminjaman.'),
                                     ),
                                   );
+                                } else if (hasConflict(
+                                    date, pengembalianDateTime)) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'Tanggal peminjaman tidak boleh bertabrakan dengan peminjaman lain.'),
+                                    ),
+                                  );
                                 } else {
                                   setState(() {
                                     peminjamanDateTime = date;
@@ -278,6 +301,14 @@ class KonfimasiassetState extends State<Konfirmasiasset> {
                                       SnackBar(
                                         content: Text(
                                             'Tanggal pengembalian tidak boleh sebelum tanggal peminjaman.'),
+                                      ),
+                                    );
+                                  } else if (hasConflict(
+                                      peminjamanDateTime, date)) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'Tanggal pengembalian tidak boleh bertabrakan dengan peminjaman lain.'),
                                       ),
                                     );
                                   } else {

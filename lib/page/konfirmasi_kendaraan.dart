@@ -13,6 +13,7 @@ import 'package:inventara/actions/peminjaman/update_detail_peminjaman.dart';
 import 'package:inventara/structures/barang.dart';
 import 'package:inventara/structures/detailPeminjaman.dart';
 import 'package:inventara/structures/kendaraan.dart';
+import 'package:inventara/structures/peminjaman_status.dart';
 
 class Konfirmasikendaraan extends StatefulWidget {
   final String id;
@@ -28,6 +29,7 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
   late Barang barangs;
   late Kendaraan kendaraans;
   late DetailPeminjamans detailPeminjaman;
+  late List<DetailPeminjamans> peminjamanList;
   late Future<void> fetchDataFuture;
   DateTime peminjamanDateTime = DateTime.now();
   DateTime pengembalianDateTime = DateTime.now();
@@ -51,12 +53,25 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
     super.initState();
   }
 
+  bool hasConflict(DateTime startDate, DateTime endDate) {
+    return peminjamanList.any((peminjaman) {
+      return (peminjaman.status == PeminjamanStatus.pending ||
+              peminjaman.status == PeminjamanStatus.approved) &&
+          ((startDate.isBefore(peminjaman.estimatedTime!) &&
+              endDate.isAfter(peminjaman.borrowedDate!)));
+    });
+  }
+
   Future<void> fetchData() async {
     if (widget.category == 'kendaraan') {
       kendaraans = (await readKendaraanbyId(widget.id))!;
+      peminjamanList =
+          await readAllDetailPeminjamansbyKendaraanId(int.parse(widget.id));
     } else {
       detailPeminjaman =
           (await readDetailPeminjamanbyId(int.parse(widget.id)))!;
+      peminjamanList =
+          await readAllDetailPeminjamansbyDraftId(int.parse(widget.id));
     }
   }
 
@@ -232,6 +247,14 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                         'Tanggal peminjaman tidak boleh sesudah tanggal akhir peminjaman.'),
                                   ),
                                 );
+                              } else if (hasConflict(
+                                  date, pengembalianDateTime)) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'Ada konflik dengan peminjaman lain.'),
+                                  ),
+                                );
                               } else {
                                 setState(() {
                                   peminjamanDateTime = date;
@@ -318,6 +341,14 @@ class KonfimasikendaraanState extends State<Konfirmasikendaraan> {
                                     SnackBar(
                                       content: Text(
                                           'Tanggal akhir tidak boleh sebelum tanggal mulai.'),
+                                    ),
+                                  );
+                                } else if (hasConflict(
+                                    peminjamanDateTime, date)) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'Ada konflik dengan peminjaman lain.'),
                                     ),
                                   );
                                 } else {
