@@ -628,12 +628,12 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                                     children: [
                                                       Text(asset.code,
                                                           style: TextStyle(
-                                                              fontSize: 8,
+                                                              fontSize: 12,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w600,
                                                               color:
-                                                                  Colors.grey)),
+                                                                  Colors.black)),
                                                       FutureBuilder<String>(
                                                         future: itemsTempat(
                                                             asset.tempatId,

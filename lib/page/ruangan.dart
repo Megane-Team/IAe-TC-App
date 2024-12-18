@@ -218,31 +218,38 @@ class RuanganState extends State<Ruangan> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  isRuangan()
-                                      ? Text(
-                                          isRuangan()
-                                              ? ruangan.code
-                                              : tempat.name,
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        )
-                                      : Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              tempat.name,
-                                              style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ],
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      isRuangan()
+                                          ? Text(
+                                        isRuangan()
+                                            ? ruangan.code
+                                            : tempat.name,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
                                         ),
+                                      )
+                                          : Text(
+                                        tempat.name,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      if (isRuangan() && ruangan.category != RuanganCategory.gudang)
+                                        Text(
+                                          ruangan.status? 'Digunakan' : 'Tidak Digunakan',
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.w600
+                                          ),
+                                        ),
+                                    ],
+                                  ),
                                   isRuangan()
                                       ? ruangan.category !=
                                               RuanganCategory.gudang
@@ -453,12 +460,8 @@ class RuanganState extends State<Ruangan> {
                                                                     ),
                                                                     elevation:
                                                                         4,
-                                                                    backgroundColor: items[index2].status ==
-                                                                            true
-                                                                        ? Colors
-                                                                            .black12
-                                                                        : Colors
-                                                                            .white,
+                                                                    backgroundColor: Colors
+                                                                        .white,
                                                                     shadowColor: Colors
                                                                         .black
                                                                         .withOpacity(
@@ -472,52 +475,136 @@ class RuanganState extends State<Ruangan> {
                                                                             index2]);
                                                                   },
                                                                   child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment
+                                                                        .spaceBetween,
                                                                     children: [
-                                                                      SizedBox(
-                                                                          width:
-                                                                              60,
-                                                                          height:
-                                                                              46,
-                                                                          child:
-                                                                              ClipRRect(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(10),
-                                                                            child: FutureBuilder<Widget>(
-                                                                                future: Assets.barang(barang[index2].photo ?? ''),
-                                                                                builder: (context, snapshot) {
-                                                                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                                    return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                                                  } else if (snapshot.hasError) {
-                                                                                    return Image.asset(Assets.noImage()); // Show error message if any
-                                                                                  } else if (snapshot.hasData) {
-                                                                                    return snapshot.data!; // Return the widget once the future completes
-                                                                                  } else {
-                                                                                    return const Text('No data available'); // Show message if no data
-                                                                                  }
-                                                                                }),
-                                                                          )),
-                                                                      const Gap(
-                                                                          4),
-                                                                      Column(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
+                                                                      Row(
                                                                         children: [
-                                                                          Text(
-                                                                            ' ${items[index2].code}',
-                                                                            style:
+                                                                          SizedBox(
+                                                                              width:
+                                                                                  60,
+                                                                              height:
+                                                                                  46,
+                                                                              child:
+                                                                                  ClipRRect(
+                                                                                borderRadius:
+                                                                                    BorderRadius.circular(10),
+                                                                                child: FutureBuilder<Widget>(
+                                                                                    future: Assets.barang(barang[index2].photo ?? ''),
+                                                                                    builder: (context, snapshot) {
+                                                                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                        return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                                      } else if (snapshot.hasError) {
+                                                                                        return Image.asset(Assets.noImage()); // Show error message if any
+                                                                                      } else if (snapshot.hasData) {
+                                                                                        return snapshot.data!; // Return the widget once the future completes
+                                                                                      } else {
+                                                                                        return const Text('No data available'); // Show message if no data
+                                                                                      }
+                                                                                    }),
+                                                                              )),
+                                                                          const Gap(
+                                                                              4),
+                                                                          Column(
+                                                                            mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                            crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              Text(
+                                                                                ' ${items[index2].code}',
+                                                                                style:
                                                                                 const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-                                                                          ),
-                                                                          Text(
-                                                                            items[index2].condition,
-                                                                            style: const TextStyle(
-                                                                                color: Colors.grey,
-                                                                                fontSize: 12,
-                                                                                fontWeight: FontWeight.w600),
+                                                                              ),
+                                                                              Text(
+                                                                                items[index2].condition,
+                                                                                style: const TextStyle(
+                                                                                    color: Colors.grey,
+                                                                                    fontSize: 12,
+                                                                                    fontWeight: FontWeight.w600),
+                                                                              ),
+                                                                            ],
                                                                           ),
                                                                         ],
                                                                       ),
+                                                                      if (items[index].status)
+                                                                        IconButton(
+                                                                          icon: const Icon(Icons.info_outline),
+                                                                          color: Color(0xFFFCA311),
+                                                                          onPressed: () {
+                                                                            showDialog(
+                                                                              context: context,
+                                                                              builder: (context) {
+                                                                                return AlertDialog(
+                                                                                  title: const Text('Asset sedang Dipinjam',
+                                                                                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
+                                                                                  content: FutureBuilder(
+                                                                                    future: readPeminjamanbyBarangId(items[index2].id),
+                                                                                    builder: (context, snapshot) {
+                                                                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                        return const CircularProgressIndicator();
+                                                                                      } else if (snapshot.hasError || !snapshot.hasData) {
+                                                                                        return const Text('Data tidak tersedia');
+                                                                                      } else {
+                                                                                        final Peminjaman peminjaman = snapshot.data!;
+                                                                                        return FutureBuilder(
+                                                                                          future: readUserById('${peminjaman.userId}'),
+                                                                                          builder: (context, snapshot) {
+                                                                                            if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                              return const CircularProgressIndicator();
+                                                                                            } else if (snapshot.hasError || !snapshot.hasData) {
+                                                                                              return const Text('Data tidak tersedia');
+                                                                                            } else {
+                                                                                              final User user = snapshot.data!;
+                                                                                              return FutureBuilder(
+                                                                                                future: readDetailPeminjamanbyId(
+                                                                                                    peminjaman.detailPeminjamanId),
+                                                                                                builder: (context, snapshot) {
+                                                                                                  if (snapshot.connectionState ==
+                                                                                                      ConnectionState.waiting) {
+                                                                                                    return const CircularProgressIndicator();
+                                                                                                  } else if (snapshot.hasError || !snapshot.hasData) {
+                                                                                                    return const Text('Data tidak tersedia');
+                                                                                                  } else {
+                                                                                                    final DetailPeminjamans dpeminjaman =
+                                                                                                    snapshot.data!;
+                                                                                                    return Column(
+                                                                                                      mainAxisSize: MainAxisSize.min,
+                                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                      children: [
+                                                                                                        Text('Digunakan oleh: ${user.name}'),
+                                                                                                        Text(
+                                                                                                            'Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
+                                                                                                      ],
+                                                                                                    );
+                                                                                                  }
+                                                                                                },
+                                                                                              );
+                                                                                            }
+                                                                                          },
+                                                                                        );
+                                                                                      }
+                                                                                    },
+                                                                                  ),
+                                                                                  actions: [
+                                                                                    SizedBox(
+                                                                                      width: MediaQuery.of(context).size.width,
+                                                                                      child: ElevatedButton(
+                                                                                        style: ElevatedButton.styleFrom(
+                                                                                            padding: EdgeInsets.zero,
+                                                                                            backgroundColor: const Color(0xFFFCA311)),
+                                                                                        onPressed: () => context.pop(),
+                                                                                        child: const Text('OK',
+                                                                                            style: TextStyle(
+                                                                                                color: Colors.white, fontWeight: FontWeight.w600)),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                );
+                                                                              },
+                                                                            );
+                                                                          },
+                                                                        )
                                                                     ],
                                                                   ),
                                                                 ),
@@ -697,13 +784,8 @@ class RuanganState extends State<Ruangan> {
                                                                             16),
                                                                   ),
                                                                   elevation: 4,
-                                                                  backgroundColor: items[index2]
-                                                                              .status ==
-                                                                          true
-                                                                      ? Colors
-                                                                          .black12
-                                                                      : Colors
-                                                                          .white,
+                                                                  backgroundColor: Colors
+                                                                      .white,
                                                                   shadowColor: Colors
                                                                       .black
                                                                       .withOpacity(
@@ -716,58 +798,138 @@ class RuanganState extends State<Ruangan> {
                                                                           index2]);
                                                                 },
                                                                 child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment
+                                                                      .spaceBetween,
                                                                   children: [
-                                                                    SizedBox(
-                                                                        width:
+                                                                    Row(
+                                                                      children: [
+                                                                        SizedBox(
+                                                                            width:
                                                                             60,
-                                                                        height:
+                                                                            height:
                                                                             46,
-                                                                        child:
+                                                                            child:
                                                                             ClipRRect(
-                                                                          borderRadius:
+                                                                              borderRadius:
                                                                               BorderRadius.circular(10),
-                                                                          child: FutureBuilder<Widget>(
-                                                                              future: Assets.kendaraan(kendaraan[index2].photo ?? ''),
-                                                                              builder: (context, snapshot) {
-                                                                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                                  return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                                                } else if (snapshot.hasError) {
-                                                                                  return Image.asset(Assets.noImage()); // Show error message if any
-                                                                                } else if (snapshot.hasData) {
-                                                                                  return snapshot.data!; // Return the widget once the future completes
-                                                                                } else {
-                                                                                  return const Text('No data available'); // Show message if no data
-                                                                                }
-                                                                              }),
-                                                                        )),
-                                                                    const Gap(
-                                                                        4),
-                                                                    Column(
-                                                                      mainAxisAlignment:
+                                                                              child: FutureBuilder<Widget>(
+                                                                                  future: Assets.kendaraan(kendaraan[index2].photo ?? ''),
+                                                                                  builder: (context, snapshot) {
+                                                                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                      return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                                                    } else if (snapshot.hasError) {
+                                                                                      return Image.asset(Assets.noImage()); // Show error message if any
+                                                                                    } else if (snapshot.hasData) {
+                                                                                      return snapshot.data!; // Return the widget once the future completes
+                                                                                    } else {
+                                                                                      return const Text('No data available'); // Show message if no data
+                                                                                    }
+                                                                                  }),
+                                                                            )),
+                                                                        const Gap(
+                                                                            4),
+                                                                        Column(
+                                                                          mainAxisAlignment:
                                                                           MainAxisAlignment
                                                                               .center,
-                                                                      crossAxisAlignment:
+                                                                          crossAxisAlignment:
                                                                           CrossAxisAlignment
                                                                               .start,
-                                                                      children: [
-                                                                        Row(
                                                                           children: [
                                                                             Text(
                                                                               items[index2].plat,
                                                                               style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                                                                             ),
+                                                                            Text(
+                                                                              items[index2]
+                                                                                  .condition,
+                                                                              style: const TextStyle(
+                                                                                  color: Colors.grey,
+                                                                                  fontSize: 12,
+                                                                                  fontWeight: FontWeight.w600),
+                                                                            ),
                                                                           ],
-                                                                        ),
-                                                                        Text(
-                                                                          items[index2]
-                                                                              .condition,
-                                                                          style: const TextStyle(
-                                                                              color: Colors.grey,
-                                                                              fontSize: 12,
-                                                                              fontWeight: FontWeight.w600),
                                                                         ),
                                                                       ],
                                                                     ),
+                                                                    if (items[index2].status)
+                                                                      IconButton(
+                                                                        icon: const Icon(Icons.info_outline),
+                                                                        color: Color(0xFFFCA311),
+                                                                        onPressed: () {
+                                                                          showDialog(
+                                                                            context: context,
+                                                                            builder: (context) {
+                                                                              return AlertDialog(
+                                                                                title: const Text('Asset sedang Digunakan',
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600)),
+                                                                                content: FutureBuilder(
+                                                                                  future: readPeminjamanbyKendaraanId(items[index2].id),
+                                                                                  builder: (context, snapshot) {
+                                                                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                      return const CircularProgressIndicator();
+                                                                                    } else if (snapshot.hasError || !snapshot.hasData) {
+                                                                                      return const Text('Data tidak tersedia');
+                                                                                    } else {
+                                                                                      final Peminjaman peminjaman = snapshot.data!;
+                                                                                      return FutureBuilder(
+                                                                                        future: readUserById('${peminjaman.userId}'),
+                                                                                        builder: (context, snapshot) {
+                                                                                          if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                            return const CircularProgressIndicator();
+                                                                                          } else if (snapshot.hasError || !snapshot.hasData) {
+                                                                                            return const Text('Data tidak tersedia');
+                                                                                          } else {
+                                                                                            final User user = snapshot.data!;
+                                                                                            return FutureBuilder(
+                                                                                              future: readDetailPeminjamanbyId(
+                                                                                                  peminjaman.detailPeminjamanId),
+                                                                                              builder: (context, snapshot) {
+                                                                                                if (snapshot.connectionState ==
+                                                                                                    ConnectionState.waiting) {
+                                                                                                  return const CircularProgressIndicator();
+                                                                                                } else if (snapshot.hasError || !snapshot.hasData) {
+                                                                                                  return const Text('Data tidak tersedia');
+                                                                                                } else {
+                                                                                                  final DetailPeminjamans dpeminjaman =
+                                                                                                  snapshot.data!;
+                                                                                                  return Column(
+                                                                                                    mainAxisSize: MainAxisSize.min,
+                                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                    children: [
+                                                                                                      Text('Digunakan oleh: ${user.name}'),
+                                                                                                      Text(
+                                                                                                          'Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
+                                                                                                    ],
+                                                                                                  );
+                                                                                                }
+                                                                                              },
+                                                                                            );
+                                                                                          }
+                                                                                        },
+                                                                                      );
+                                                                                    }
+                                                                                  },
+                                                                                ),
+                                                                                actions: [
+                                                                                  SizedBox(
+                                                                                    width: MediaQuery.of(context).size.width,
+                                                                                    child: ElevatedButton(
+                                                                                      style: ElevatedButton.styleFrom(
+                                                                                          padding: EdgeInsets.zero,
+                                                                                          backgroundColor: const Color(0xFFFCA311)),
+                                                                                      onPressed: () => Navigator.of(context).pop(),
+                                                                                      child: const Text('OK',
+                                                                                          style: TextStyle(
+                                                                                              color: Colors.white, fontWeight: FontWeight.w600)),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              );
+                                                                            },
+                                                                          );
+                                                                        },
+                                                                      )
                                                                   ],
                                                                 ),
                                                               ),
@@ -841,79 +1003,6 @@ class RuanganState extends State<Ruangan> {
 }
 
 void onPressedBarang(BuildContext context, Barang items) {
-  if (items.status == true) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Asset sedang Dipinjam',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
-          content: FutureBuilder(
-            future: readPeminjamanbyBarangId(items.id),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError || !snapshot.hasData) {
-                return const Text('Data tidak tersedia');
-              } else {
-                final Peminjaman peminjaman = snapshot.data!;
-                return FutureBuilder(
-                  future: readUserById('${peminjaman.userId}'),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError || !snapshot.hasData) {
-                      return const Text('Data tidak tersedia');
-                    } else {
-                      final User user = snapshot.data!;
-                      return FutureBuilder(
-                        future: readDetailPeminjamanbyId(
-                            peminjaman.detailPeminjamanId),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          } else if (snapshot.hasError || !snapshot.hasData) {
-                            return const Text('Data tidak tersedia');
-                          } else {
-                            final DetailPeminjamans dpeminjaman =
-                                snapshot.data!;
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Digunakan oleh: ${user.name}'),
-                                Text(
-                                    'Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
-                              ],
-                            );
-                          }
-                        },
-                      );
-                    }
-                  },
-                );
-              }
-            },
-          ),
-          actions: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    backgroundColor: const Color(0xFFFCA311)),
-                onPressed: () => context.pop(),
-                child: const Text('OK',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w600)),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  } else {
     showModalBottomSheet(
       showDragHandle: true,
       context: context,
@@ -1048,83 +1137,10 @@ void onPressedBarang(BuildContext context, Barang items) {
         );
       },
     );
-  }
+
 }
 
 void onPressedKendaraan(BuildContext context, Kendaraan items) {
-  if (items.status == true) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Asset sedang Digunakan',
-              style: TextStyle(fontWeight: FontWeight.w600)),
-          content: FutureBuilder(
-            future: readPeminjamanbyKendaraanId(items.id),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError || !snapshot.hasData) {
-                return const Text('Data tidak tersedia');
-              } else {
-                final Peminjaman peminjaman = snapshot.data!;
-                return FutureBuilder(
-                  future: readUserById('${peminjaman.userId}'),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError || !snapshot.hasData) {
-                      return const Text('Data tidak tersedia');
-                    } else {
-                      final User user = snapshot.data!;
-                      return FutureBuilder(
-                        future: readDetailPeminjamanbyId(
-                            peminjaman.detailPeminjamanId),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          } else if (snapshot.hasError || !snapshot.hasData) {
-                            return const Text('Data tidak tersedia');
-                          } else {
-                            final DetailPeminjamans dpeminjaman =
-                                snapshot.data!;
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Digunakan oleh: ${user.name}'),
-                                Text(
-                                    'Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
-                              ],
-                            );
-                          }
-                        },
-                      );
-                    }
-                  },
-                );
-              }
-            },
-          ),
-          actions: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    backgroundColor: const Color(0xFFFCA311)),
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w600)),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  } else {
     showModalBottomSheet(
       showDragHandle: true,
       context: context,
@@ -1213,7 +1229,7 @@ void onPressedKendaraan(BuildContext context, Kendaraan items) {
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.w600)),
-                            Text(DateFormat('yyyy MMM dd').format(items.tax),
+                            Text(DateFormat('dd MMM yy').format(items.tax),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w600))
                           ]),
@@ -1289,5 +1305,5 @@ void onPressedKendaraan(BuildContext context, Kendaraan items) {
         );
       },
     );
-  }
+
 }
