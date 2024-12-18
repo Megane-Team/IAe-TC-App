@@ -505,9 +505,19 @@ class RiwayatState extends State<Riwayat> {
                                                             ),
                                                             child:
                                                                 ElevatedButton(
-                                                              onPressed: () {
-                                                                context.push(
-                                                                    '/DetailP?id=${p.id}');
+                                                              onPressed:
+                                                                  () async {
+                                                                final result =
+                                                                    await context
+                                                                        .push(
+                                                                            '/DetailP?id=${p.id}');
+                                                                if (result ==
+                                                                    true) {
+                                                                  setState(() {
+                                                                    fetchDataFuture =
+                                                                        fetchData();
+                                                                  });
+                                                                }
                                                               },
                                                               style:
                                                                   ElevatedButton

@@ -219,34 +219,38 @@ class RuanganState extends State<Ruangan> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       isRuangan()
                                           ? Text(
-                                        isRuangan()
-                                            ? ruangan.code
-                                            : tempat.name,
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      )
+                                              isRuangan()
+                                                  ? ruangan.code
+                                                  : tempat.name,
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            )
                                           : Text(
-                                        tempat.name,
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      if (isRuangan() && ruangan.category != RuanganCategory.gudang)
+                                              tempat.name,
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                      if (isRuangan() &&
+                                          ruangan.category !=
+                                              RuanganCategory.gudang)
                                         Text(
-                                          ruangan.status? 'Digunakan' : 'Tidak Digunakan',
+                                          ruangan.status
+                                              ? 'Digunakan'
+                                              : 'Tidak Digunakan',
                                           style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.w600
-                                          ),
+                                              fontSize: 12,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.w600),
                                         ),
                                     ],
                                   ),
@@ -390,18 +394,6 @@ class RuanganState extends State<Ruangan> {
                                                                           index])
                                                                   .toList()
                                                                 ..sort((a, b) {
-                                                                  if (a.status ==
-                                                                          true &&
-                                                                      b.status !=
-                                                                          true) {
-                                                                    return 1;
-                                                                  }
-                                                                  if (a.status !=
-                                                                          true &&
-                                                                      b.status ==
-                                                                          true) {
-                                                                    return -1;
-                                                                  }
                                                                   return a.id
                                                                       .compareTo(
                                                                           b.id);
@@ -460,8 +452,9 @@ class RuanganState extends State<Ruangan> {
                                                                     ),
                                                                     elevation:
                                                                         4,
-                                                                    backgroundColor: Colors
-                                                                        .white,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .white,
                                                                     shadowColor: Colors
                                                                         .black
                                                                         .withOpacity(
@@ -475,20 +468,17 @@ class RuanganState extends State<Ruangan> {
                                                                             index2]);
                                                                   },
                                                                   child: Row(
-                                                                    mainAxisAlignment: MainAxisAlignment
-                                                                        .spaceBetween,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
                                                                     children: [
                                                                       Row(
                                                                         children: [
                                                                           SizedBox(
-                                                                              width:
-                                                                                  60,
-                                                                              height:
-                                                                                  46,
-                                                                              child:
-                                                                                  ClipRRect(
-                                                                                borderRadius:
-                                                                                    BorderRadius.circular(10),
+                                                                              width: 60,
+                                                                              height: 46,
+                                                                              child: ClipRRect(
+                                                                                borderRadius: BorderRadius.circular(10),
                                                                                 child: FutureBuilder<Widget>(
                                                                                     future: Assets.barang(barang[index2].photo ?? ''),
                                                                                     builder: (context, snapshot) {
@@ -507,37 +497,37 @@ class RuanganState extends State<Ruangan> {
                                                                               4),
                                                                           Column(
                                                                             mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
+                                                                                MainAxisAlignment.center,
                                                                             crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
+                                                                                CrossAxisAlignment.start,
                                                                             children: [
                                                                               Text(
-                                                                                ' ${items[index2].code}',
-                                                                                style:
-                                                                                const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+                                                                                items[index2].code,
+                                                                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                                                                               ),
                                                                               Text(
                                                                                 items[index2].condition,
-                                                                                style: const TextStyle(
-                                                                                    color: Colors.grey,
-                                                                                    fontSize: 12,
-                                                                                    fontWeight: FontWeight.w600),
+                                                                                style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w600),
                                                                               ),
                                                                             ],
                                                                           ),
                                                                         ],
                                                                       ),
-                                                                      if (items[index].status)
+                                                                      if (items[
+                                                                              index2]
+                                                                          .status) ...[
                                                                         IconButton(
-                                                                          icon: const Icon(Icons.info_outline),
-                                                                          color: Color(0xFFFCA311),
-                                                                          onPressed: () {
+                                                                          icon:
+                                                                              const Icon(Icons.info_outline),
+                                                                          color:
+                                                                              Color(0xFFFCA311),
+                                                                          onPressed:
+                                                                              () {
                                                                             showDialog(
                                                                               context: context,
                                                                               builder: (context) {
                                                                                 return AlertDialog(
-                                                                                  title: const Text('Asset sedang Dipinjam',
-                                                                                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
+                                                                                  title: const Text('Asset sedang Dipinjam', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
                                                                                   content: FutureBuilder(
                                                                                     future: readPeminjamanbyBarangId(items[index2].id),
                                                                                     builder: (context, snapshot) {
@@ -557,24 +547,20 @@ class RuanganState extends State<Ruangan> {
                                                                                             } else {
                                                                                               final User user = snapshot.data!;
                                                                                               return FutureBuilder(
-                                                                                                future: readDetailPeminjamanbyId(
-                                                                                                    peminjaman.detailPeminjamanId),
+                                                                                                future: readDetailPeminjamanbyId(peminjaman.detailPeminjamanId),
                                                                                                 builder: (context, snapshot) {
-                                                                                                  if (snapshot.connectionState ==
-                                                                                                      ConnectionState.waiting) {
+                                                                                                  if (snapshot.connectionState == ConnectionState.waiting) {
                                                                                                     return const CircularProgressIndicator();
                                                                                                   } else if (snapshot.hasError || !snapshot.hasData) {
                                                                                                     return const Text('Data tidak tersedia');
                                                                                                   } else {
-                                                                                                    final DetailPeminjamans dpeminjaman =
-                                                                                                    snapshot.data!;
+                                                                                                    final DetailPeminjamans dpeminjaman = snapshot.data!;
                                                                                                     return Column(
                                                                                                       mainAxisSize: MainAxisSize.min,
                                                                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                                                                       children: [
                                                                                                         Text('Digunakan oleh: ${user.name}'),
-                                                                                                        Text(
-                                                                                                            'Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
+                                                                                                        Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
                                                                                                       ],
                                                                                                     );
                                                                                                   }
@@ -590,13 +576,9 @@ class RuanganState extends State<Ruangan> {
                                                                                     SizedBox(
                                                                                       width: MediaQuery.of(context).size.width,
                                                                                       child: ElevatedButton(
-                                                                                        style: ElevatedButton.styleFrom(
-                                                                                            padding: EdgeInsets.zero,
-                                                                                            backgroundColor: const Color(0xFFFCA311)),
+                                                                                        style: ElevatedButton.styleFrom(padding: EdgeInsets.zero, backgroundColor: const Color(0xFFFCA311)),
                                                                                         onPressed: () => context.pop(),
-                                                                                        child: const Text('OK',
-                                                                                            style: TextStyle(
-                                                                                                color: Colors.white, fontWeight: FontWeight.w600)),
+                                                                                        child: const Text('OK', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
                                                                                       ),
                                                                                     ),
                                                                                   ],
@@ -605,6 +587,7 @@ class RuanganState extends State<Ruangan> {
                                                                             );
                                                                           },
                                                                         )
+                                                                      ]
                                                                     ],
                                                                   ),
                                                                 ),
@@ -784,8 +767,9 @@ class RuanganState extends State<Ruangan> {
                                                                             16),
                                                                   ),
                                                                   elevation: 4,
-                                                                  backgroundColor: Colors
-                                                                      .white,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white,
                                                                   shadowColor: Colors
                                                                       .black
                                                                       .withOpacity(
@@ -798,20 +782,20 @@ class RuanganState extends State<Ruangan> {
                                                                           index2]);
                                                                 },
                                                                 child: Row(
-                                                                  mainAxisAlignment: MainAxisAlignment
-                                                                      .spaceBetween,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
                                                                   children: [
                                                                     Row(
                                                                       children: [
                                                                         SizedBox(
                                                                             width:
-                                                                            60,
+                                                                                60,
                                                                             height:
-                                                                            46,
+                                                                                46,
                                                                             child:
-                                                                            ClipRRect(
-                                                                              borderRadius:
-                                                                              BorderRadius.circular(10),
+                                                                                ClipRRect(
+                                                                              borderRadius: BorderRadius.circular(10),
                                                                               child: FutureBuilder<Widget>(
                                                                                   future: Assets.kendaraan(kendaraan[index2].photo ?? ''),
                                                                                   builder: (context, snapshot) {
@@ -830,39 +814,39 @@ class RuanganState extends State<Ruangan> {
                                                                             4),
                                                                         Column(
                                                                           mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
+                                                                              MainAxisAlignment.center,
                                                                           crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
+                                                                              CrossAxisAlignment.start,
                                                                           children: [
                                                                             Text(
                                                                               items[index2].plat,
                                                                               style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                                                                             ),
                                                                             Text(
-                                                                              items[index2]
-                                                                                  .condition,
-                                                                              style: const TextStyle(
-                                                                                  color: Colors.grey,
-                                                                                  fontSize: 12,
-                                                                                  fontWeight: FontWeight.w600),
+                                                                              items[index2].condition,
+                                                                              style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w600),
                                                                             ),
                                                                           ],
                                                                         ),
                                                                       ],
                                                                     ),
-                                                                    if (items[index2].status)
+                                                                    if (items[
+                                                                            index2]
+                                                                        .status)
                                                                       IconButton(
-                                                                        icon: const Icon(Icons.info_outline),
-                                                                        color: Color(0xFFFCA311),
-                                                                        onPressed: () {
+                                                                        icon: const Icon(
+                                                                            Icons.info_outline),
+                                                                        color: Color(
+                                                                            0xFFFCA311),
+                                                                        onPressed:
+                                                                            () {
                                                                           showDialog(
-                                                                            context: context,
-                                                                            builder: (context) {
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (context) {
                                                                               return AlertDialog(
-                                                                                title: const Text('Asset sedang Digunakan',
-                                                                                    style: TextStyle(fontWeight: FontWeight.w600)),
+                                                                                title: const Text('Asset sedang Digunakan', style: TextStyle(fontWeight: FontWeight.w600)),
                                                                                 content: FutureBuilder(
                                                                                   future: readPeminjamanbyKendaraanId(items[index2].id),
                                                                                   builder: (context, snapshot) {
@@ -882,24 +866,20 @@ class RuanganState extends State<Ruangan> {
                                                                                           } else {
                                                                                             final User user = snapshot.data!;
                                                                                             return FutureBuilder(
-                                                                                              future: readDetailPeminjamanbyId(
-                                                                                                  peminjaman.detailPeminjamanId),
+                                                                                              future: readDetailPeminjamanbyId(peminjaman.detailPeminjamanId),
                                                                                               builder: (context, snapshot) {
-                                                                                                if (snapshot.connectionState ==
-                                                                                                    ConnectionState.waiting) {
+                                                                                                if (snapshot.connectionState == ConnectionState.waiting) {
                                                                                                   return const CircularProgressIndicator();
                                                                                                 } else if (snapshot.hasError || !snapshot.hasData) {
                                                                                                   return const Text('Data tidak tersedia');
                                                                                                 } else {
-                                                                                                  final DetailPeminjamans dpeminjaman =
-                                                                                                  snapshot.data!;
+                                                                                                  final DetailPeminjamans dpeminjaman = snapshot.data!;
                                                                                                   return Column(
                                                                                                     mainAxisSize: MainAxisSize.min,
                                                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                                                     children: [
                                                                                                       Text('Digunakan oleh: ${user.name}'),
-                                                                                                      Text(
-                                                                                                          'Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
+                                                                                                      Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
                                                                                                     ],
                                                                                                   );
                                                                                                 }
@@ -915,13 +895,9 @@ class RuanganState extends State<Ruangan> {
                                                                                   SizedBox(
                                                                                     width: MediaQuery.of(context).size.width,
                                                                                     child: ElevatedButton(
-                                                                                      style: ElevatedButton.styleFrom(
-                                                                                          padding: EdgeInsets.zero,
-                                                                                          backgroundColor: const Color(0xFFFCA311)),
+                                                                                      style: ElevatedButton.styleFrom(padding: EdgeInsets.zero, backgroundColor: const Color(0xFFFCA311)),
                                                                                       onPressed: () => Navigator.of(context).pop(),
-                                                                                      child: const Text('OK',
-                                                                                          style: TextStyle(
-                                                                                              color: Colors.white, fontWeight: FontWeight.w600)),
+                                                                                      child: const Text('OK', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
                                                                                     ),
                                                                                   ),
                                                                                 ],
@@ -1003,78 +979,236 @@ class RuanganState extends State<Ruangan> {
 }
 
 void onPressedBarang(BuildContext context, Barang items) {
-    showModalBottomSheet(
-      showDragHandle: true,
-      context: context,
-      builder: (context) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 32),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 380,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 218,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: FutureBuilder<Widget>(
-                        future: Assets.barang(items.photo ?? ''),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          } else if (snapshot.hasError || !snapshot.hasData) {
-                            return Image.asset(Assets.noImage());
-                          } else {
-                            return snapshot.data!;
-                          }
-                        },
-                      ),
+  showModalBottomSheet(
+    showDragHandle: true,
+    context: context,
+    builder: (context) {
+      return SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 32),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 380,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 218,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: FutureBuilder<Widget>(
+                      future: Assets.barang(items.photo ?? ''),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError || !snapshot.hasData) {
+                          return Image.asset(Assets.noImage());
+                        } else {
+                          return snapshot.data!;
+                        }
+                      },
                     ),
                   ),
-                  const Gap(8),
-                  Text(items.code,
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w600)),
-                  const Gap(4),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Nama',
+                ),
+                const Gap(8),
+                Text(items.code,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w600)),
+                const Gap(4),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Nama',
+                          style: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.w600)),
+                      Text(items.name,
+                          style: const TextStyle(fontWeight: FontWeight.w600))
+                    ]),
+                const Gap(4),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Kondisi',
+                          style: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.w600)),
+                      Text(items.condition,
+                          style: const TextStyle(fontWeight: FontWeight.w600))
+                    ]),
+                const Gap(4),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Garansi',
+                          style: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.w600)),
+                      Text(DateFormat('dd MMM yy').format(items.warranty),
+                          style: const TextStyle(fontWeight: FontWeight.w600))
+                    ]),
+                const Expanded(child: SizedBox()),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2.4,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          DetailPeminjamans dp =
+                              await createDetailPeminjaman(status: 'draft');
+                          var res = await createPeminjaman(
+                              dp.id, items.id, null, null, 'barang');
+                          if (res == 200) {
+                            if (context.mounted) {
+                              context.pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'Barang Disimpan di Keranjang')));
+                            }
+                          } else if (res == 429) {
+                            if (context.mounted) {
+                              context.pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'Barang sudah berada di keranjang!')));
+                            }
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            side: const BorderSide(color: Color(0xFFFCA311))),
+                        child: const Text('Masukan keranjang',
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: Color(0xFFFCA311),
                                 fontWeight: FontWeight.w600)),
-                        Text(items.name,
-                            style: const TextStyle(fontWeight: FontWeight.w600))
-                      ]),
-                  const Gap(4),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Kondisi',
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2.4,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          var param = items.id;
+                          context.push('/KonfA?id=$param&category=barang');
+                        },
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            backgroundColor: const Color(0xFFFCA311)),
+                        child: const Text('Pinjam Barang',
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: Colors.white,
                                 fontWeight: FontWeight.w600)),
-                        Text(items.condition,
-                            style: const TextStyle(fontWeight: FontWeight.w600))
-                      ]),
-                  const Gap(4),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Garansi',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w600)),
-                        Text(DateFormat('dd MMM yy').format(items.warranty),
-                            style: const TextStyle(fontWeight: FontWeight.w600))
-                      ]),
-                  const Expanded(child: SizedBox()),
-                  Row(
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+void onPressedKendaraan(BuildContext context, Kendaraan items) {
+  showModalBottomSheet(
+    showDragHandle: true,
+    context: context,
+    builder: (context) {
+      return SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 420,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 218,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: FutureBuilder<Widget>(
+                          future: Assets.kendaraan(items.photo ?? ''),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError || !snapshot.hasData) {
+                              return Image.asset(Assets.noImage());
+                            } else {
+                              return snapshot.data!;
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    const Gap(8),
+                    Text(items.plat,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600)),
+                    const Gap(4),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Nama'),
+                          Text(items.name,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600))
+                        ]),
+                    const Gap(4),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Kategori',
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w600)),
+                          Text(
+                              items.category
+                                  .toString()
+                                  .split('.')
+                                  .last
+                                  .capitalize(),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600))
+                        ]),
+                    const Gap(4),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Kondisi',
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w600)),
+                          Text(items.condition,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600))
+                        ]),
+                    const Gap(4),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Pajak',
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w600)),
+                          Text(DateFormat('dd MMM yy').format(items.tax),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600))
+                        ]),
+                  ],
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
@@ -1084,29 +1218,29 @@ void onPressedBarang(BuildContext context, Barang items) {
                             DetailPeminjamans dp =
                                 await createDetailPeminjaman(status: 'draft');
                             var res = await createPeminjaman(
-                                dp.id, items.id, null, null, 'barang');
+                                dp.id, null, null, items.id, 'kendaraan');
                             if (res == 200) {
                               if (context.mounted) {
                                 context.pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                         content: Text(
-                                            'Barang Disimpan di Keranjang')));
+                                            'Kendaraan Disimpan di Keranjang')));
                               }
-                            } else if (res == 429) {
+                            } else {
                               if (context.mounted) {
                                 context.pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                         content: Text(
-                                            'Barang sudah berada di keranjang!')));
+                                            'Kendaraan sudah berada di keranjang!')));
                               }
                             }
                           },
                           style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.zero,
                               side: const BorderSide(color: Color(0xFFFCA311))),
-                          child: const Text('Masukan keranjang',
+                          child: const Text('Masukan Keranjang',
                               style: TextStyle(
                                   color: Color(0xFFFCA311),
                                   fontWeight: FontWeight.w600)),
@@ -1117,11 +1251,12 @@ void onPressedBarang(BuildContext context, Barang items) {
                         child: ElevatedButton(
                           onPressed: () {
                             var param = items.id;
-                            context.push('/KonfA?id=$param&category=barang');
+                            context.push('/KonfK?id=$param&category=kendaraan');
                           },
                           style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.zero,
-                              backgroundColor: const Color(0xFFFCA311)),
+                              backgroundColor: const Color(0xFFFCA311),
+                              side: const BorderSide(color: Color(0xFFFCA311))),
                           child: const Text('Pinjam Barang',
                               style: TextStyle(
                                   color: Colors.white,
@@ -1130,180 +1265,12 @@ void onPressedBarang(BuildContext context, Barang items) {
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        );
-      },
-    );
-
-}
-
-void onPressedKendaraan(BuildContext context, Kendaraan items) {
-    showModalBottomSheet(
-      showDragHandle: true,
-      context: context,
-      builder: (context) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 420,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: 218,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: FutureBuilder<Widget>(
-                            future: Assets.kendaraan(items.photo ?? ''),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const CircularProgressIndicator();
-                              } else if (snapshot.hasError ||
-                                  !snapshot.hasData) {
-                                return Image.asset(Assets.noImage());
-                              } else {
-                                return snapshot.data!;
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      const Gap(8),
-                      Text(items.plat,
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600)),
-                      const Gap(4),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Nama'),
-                            Text(items.name,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600))
-                          ]),
-                      const Gap(4),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Kategori',
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w600)),
-                            Text(
-                                items.category
-                                    .toString()
-                                    .split('.')
-                                    .last
-                                    .capitalize(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600))
-                          ]),
-                      const Gap(4),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Kondisi',
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w600)),
-                            Text(items.condition,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600))
-                          ]),
-                      const Gap(4),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Pajak',
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w600)),
-                            Text(DateFormat('dd MMM yy').format(items.tax),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600))
-                          ]),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 2.4,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              DetailPeminjamans dp =
-                                  await createDetailPeminjaman(status: 'draft');
-                              var res = await createPeminjaman(
-                                  dp.id, null, null, items.id, 'kendaraan');
-                              if (res == 200) {
-                                if (context.mounted) {
-                                  context.pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              'Kendaraan Disimpan di Keranjang')));
-                                }
-                              } else {
-                                if (context.mounted) {
-                                  context.pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              'Kendaraan sudah berada di keranjang!')));
-                                }
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                side:
-                                    const BorderSide(color: Color(0xFFFCA311))),
-                            child: const Text('Masukan Keranjang',
-                                style: TextStyle(
-                                    color: Color(0xFFFCA311),
-                                    fontWeight: FontWeight.w600)),
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 2.4,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              var param = items.id;
-                              context
-                                  .push('/KonfK?id=$param&category=kendaraan');
-                            },
-                            style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                backgroundColor: const Color(0xFFFCA311),
-                                side:
-                                    const BorderSide(color: Color(0xFFFCA311))),
-                            child: const Text('Pinjam Barang',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-
+        ),
+      );
+    },
+  );
 }
