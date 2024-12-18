@@ -191,151 +191,241 @@ class CariState extends State<Cari> {
                           borderRadius: BorderRadius.circular(16),
                         ),
                         elevation: 4,
-                        backgroundColor: isRuangan
-                            ? item.status == true
-                                ? Colors.black12
-                                : Colors.white
-                            : item2.status == true
-                                ? Colors.black12
-                                : Colors.white,
+                        backgroundColor: Colors.white,
                         shadowColor: Colors.black.withOpacity(0.1),
                       ),
                       onPressed: () {
                         if (isRuangan) {
-                          if (item.status == true) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(
-                                    'Asset sedang Digunakan',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                  content: FutureBuilder(
-                                      future: readPeminjamanbyBarangId(item.id),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                        } else if (snapshot.hasError) {
-                                          return const Text(
-                                              'Data tidak tersedia'); // Show error message if any
-                                        } else if (snapshot.hasData) {
-                                          final Peminjaman peminjaman =
-                                              snapshot.data!;
-                                          return FutureBuilder(
-                                              future: readUserById(
-                                                  '${peminjaman.userId}'),
-                                              builder: (context, snapshot) {
-                                                if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
-                                                  return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                } else if (snapshot.hasError) {
-                                                  return const Text(
-                                                      'Data tidak tersedia'); // Show error message if any
-                                                } else if (snapshot.hasData) {
-                                                  final User user =
-                                                      snapshot.data!;
-                                                  return FutureBuilder(
-                                                      future: readDetailPeminjamanbyId(
-                                                          peminjaman
-                                                              .detailPeminjamanId),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        if (snapshot
-                                                                .connectionState ==
-                                                            ConnectionState
-                                                                .waiting) {
-                                                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                        } else if (snapshot
-                                                            .hasError) {
-                                                          return const Text(
-                                                              'Data tidak tersedia'); // Show error message if any
-                                                        } else if (snapshot
-                                                            .hasData) {
-                                                          final DetailPeminjamans
-                                                              dpeminjaman =
-                                                              snapshot.data!;
-                                                          return Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                    'Digunakan oleh: ${user.name}'),
-                                                                Text(
-                                                                    'Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
-                                                              ]);
-                                                        } else {
-                                                          return const Text(
-                                                              'Data tidak tersedia');
-                                                        }
-                                                      });
-                                                } else {
-                                                  return const Text(
-                                                      'Data tidak tersedia');
-                                                }
-                                              });
-                                        } else {
-                                          return const Text(
-                                              'Data tidak tersedia');
-                                        }
-                                      }),
-                                  actions: [
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.zero,
-                                          backgroundColor:
-                                              const Color(0xFFFCA311),
+                          showModalBottomSheet(
+                            showDragHandle: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SingleChildScrollView(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 24, right: 24, bottom: 32),
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 380,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 218,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: FutureBuilder<Widget>(
+                                                future: Assets.barang(
+                                                    item.photo ?? ''),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                  } else if (snapshot
+                                                      .hasError) {
+                                                    return Image.asset(Assets
+                                                        .noImage()); // Show error message if any
+                                                  } else if (snapshot.hasData) {
+                                                    return snapshot
+                                                        .data!; // Return the widget once the future completes
+                                                  } else {
+                                                    return const Text(
+                                                        'No data available'); // Show message if no data
+                                                  }
+                                                }),
+                                          ),
                                         ),
-                                        onPressed: () {
-                                          context.pop();
-                                        },
-                                        child: Text(
-                                          'OK',
-                                          style: TextStyle(
-                                              color: Colors.white,
+                                        Gap(8),
+                                        Text(
+                                          item.code,
+                                          style: const TextStyle(
+                                              fontSize: 20,
                                               fontWeight: FontWeight.w600),
                                         ),
-                                      ),
+                                        Gap(4),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('Nama'),
+                                            Text(item.name,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w600)),
+                                          ],
+                                        ),
+                                        Gap(4),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('Kondisi'),
+                                            Text(item.condition,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w600)),
+                                          ],
+                                        ),
+                                        Gap(4),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('Garansi'),
+                                            Text(
+                                                DateFormat('dd MMM yy')
+                                                    .format(item.warranty),
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w600)),
+                                          ],
+                                        ),
+                                        Expanded(child: SizedBox()),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2.4,
+                                              child: ElevatedButton(
+                                                onPressed: () async {
+                                                  DetailPeminjamans dp =
+                                                      await createDetailPeminjaman(
+                                                          status: 'draft');
+
+                                                  var res =
+                                                      await createPeminjaman(
+                                                          dp.id,
+                                                          item.id,
+                                                          null,
+                                                          null,
+                                                          'barang');
+
+                                                  if (res == 200) {
+                                                    WidgetsBinding.instance
+                                                        .addPostFrameCallback(
+                                                            (_) {
+                                                      if (context.mounted) {
+                                                        context.pop();
+                                                      }
+                                                    });
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      const SnackBar(
+                                                        content: Text(
+                                                            'Barang Disimpan di Keranjang'),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    WidgetsBinding.instance
+                                                        .addPostFrameCallback(
+                                                            (_) {
+                                                      if (context.mounted) {
+                                                        context.pop();
+                                                      }
+                                                    });
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      const SnackBar(
+                                                        content: Text(
+                                                            'Barang sudah berada di keranjang!'),
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  padding: EdgeInsets.zero,
+                                                  side: const BorderSide(
+                                                      color: Color(0xFFFCA311)),
+                                                ),
+                                                child: const Text(
+                                                  'Masukan keranjang',
+                                                  style: TextStyle(
+                                                      color: Color(0xFFFCA311),
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2.4,
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  var param = item.id;
+                                                  context.push(
+                                                      '/KonfA?id=$param&category=barang');
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  padding: EdgeInsets.zero,
+                                                  backgroundColor:
+                                                      const Color(0xFFFCA311),
+                                                  side: const BorderSide(
+                                                      color: Color(0xFFFCA311)),
+                                                ),
+                                                child: const Text(
+                                                  'Pinjam Barang',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                );
-                              },
-                            );
-                          } else {
-                            showModalBottomSheet(
-                              showDragHandle: true,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SingleChildScrollView(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 24, right: 24, bottom: 32),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 380,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 218,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              child: FutureBuilder<Widget>(
-                                                  future: Assets.barang(
-                                                      item.photo ?? ''),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          showModalBottomSheet(
+                            showDragHandle: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SingleChildScrollView(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 24, right: 24, bottom: 24),
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 420,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 218,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: FutureBuilder<Widget>(
+                                                  future: Assets.kendaraan(
+                                                      item2.photo ?? ''),
                                                   builder: (context, snapshot) {
                                                     if (snapshot
                                                             .connectionState ==
@@ -354,56 +444,81 @@ class CariState extends State<Cari> {
                                                       return const Text(
                                                           'No data available'); // Show message if no data
                                                     }
-                                                  }),
+                                                  },
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                          Gap(8),
-                                          Text(
-                                            item.code,
-                                            style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          Gap(4),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text('Nama'),
-                                              Text(item.name,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600)),
-                                            ],
-                                          ),
-                                          Gap(4),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text('Kondisi'),
-                                              Text(item.condition,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600)),
-                                            ],
-                                          ),
-                                          Gap(4),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text('Garansi'),
-                                              Text(
-                                                  DateFormat('dd MMM yy')
-                                                      .format(item.warranty),
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600)),
-                                            ],
-                                          ),
-                                          Expanded(child: SizedBox()),
-                                          Row(
+                                            Gap(8),
+                                            Text(
+                                              item2.plat,
+                                              style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            Gap(4),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text('Nama'),
+                                                Text(item2.name,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600)),
+                                              ],
+                                            ),
+                                            Gap(4),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text('Kategori'),
+                                                Text(
+                                                    item2.category
+                                                        .toString()
+                                                        .split('.')
+                                                        .last,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600)),
+                                              ],
+                                            ),
+                                            Gap(4),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text('Kondisi'),
+                                                Text(item2.condition,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600)),
+                                              ],
+                                            ),
+                                            Gap(4),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text('Pajak'),
+                                                Text(
+                                                    DateFormat('yyyy MMM dd')
+                                                        .format(item2.tax),
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600)),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          padding:
+                                              const EdgeInsets.only(top: 16),
+                                          child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
@@ -421,10 +536,10 @@ class CariState extends State<Cari> {
                                                     var res =
                                                         await createPeminjaman(
                                                             dp.id,
-                                                            item.id,
                                                             null,
                                                             null,
-                                                            'barang');
+                                                            item2.id,
+                                                            'kendaraan');
 
                                                     if (res == 200) {
                                                       WidgetsBinding.instance
@@ -439,7 +554,7 @@ class CariState extends State<Cari> {
                                                           .showSnackBar(
                                                         const SnackBar(
                                                           content: Text(
-                                                              'Barang Disimpan di Keranjang'),
+                                                              'Kendaraan Disimpan di Keranjang'),
                                                         ),
                                                       );
                                                     } else {
@@ -455,7 +570,7 @@ class CariState extends State<Cari> {
                                                           .showSnackBar(
                                                         const SnackBar(
                                                           content: Text(
-                                                              'Barang sudah berada di keranjang!'),
+                                                              'Kendaraan sudah berada di keranjang!'),
                                                         ),
                                                       );
                                                     }
@@ -468,7 +583,7 @@ class CariState extends State<Cari> {
                                                             Color(0xFFFCA311)),
                                                   ),
                                                   child: const Text(
-                                                    'Masukan keranjang',
+                                                    'Masukan Keranjang',
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xFFFCA311),
@@ -484,9 +599,9 @@ class CariState extends State<Cari> {
                                                     2.4,
                                                 child: ElevatedButton(
                                                   onPressed: () {
-                                                    var param = item.id;
+                                                    var param = item2.id;
                                                     context.push(
-                                                        '/KonfA?id=$param&category=barang');
+                                                        '/KonfK?id=$param&category=kendaraan');
                                                   },
                                                   style:
                                                       ElevatedButton.styleFrom(
@@ -508,156 +623,138 @@ class CariState extends State<Cari> {
                                               ),
                                             ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                );
-                              },
-                            );
-                          }
-                        } else {
-                          if (item2.status == true) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(
-                                    'Asset sedang Digunakan',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                  width: 60,
+                                  height: 46,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  content: FutureBuilder(
-                                      future:
-                                          readPeminjamanbyKendaraanId(item2.id),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                        } else if (snapshot.hasError) {
-                                          return const Text(
-                                              'Data tidak tersedia'); // Show error message if any
-                                        } else if (snapshot.hasData) {
-                                          final Peminjaman peminjaman =
-                                              snapshot.data!;
-                                          return FutureBuilder(
-                                              future: readUserById(
-                                                  '${peminjaman.userId}'),
+                                  child: isRuangan
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: FutureBuilder(
+                                              future: Assets.barang(
+                                                  item.photo ?? ''),
                                               builder: (context, snapshot) {
                                                 if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
-                                                  return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                } else if (snapshot.hasError) {
-                                                  return const Text(
-                                                      'Data tidak tersedia'); // Show error message if any
-                                                } else if (snapshot.hasData) {
-                                                  final User user =
-                                                      snapshot.data!;
-                                                  return FutureBuilder(
-                                                      future: readDetailPeminjamanbyId(
-                                                          peminjaman
-                                                              .detailPeminjamanId),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        if (snapshot
-                                                                .connectionState ==
-                                                            ConnectionState
-                                                                .waiting) {
-                                                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                                                        } else if (snapshot
-                                                            .hasError) {
-                                                          return const Text(
-                                                              'Data tidak tersedia'); // Show error message if any
-                                                        } else if (snapshot
-                                                            .hasData) {
-                                                          final DetailPeminjamans
-                                                              dpeminjaman =
-                                                              snapshot.data!;
-                                                          return Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                    'Digunakan oleh: ${user.name}'),
-                                                                Text(
-                                                                    'Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
-                                                              ]);
-                                                        } else {
-                                                          return const Text(
-                                                              'Data tidak tersedia');
-                                                        }
-                                                      });
+                                                    ConnectionState.done) {
+                                                  return snapshot.data
+                                                      as Widget;
                                                 } else {
-                                                  return const Text(
-                                                      'Data tidak tersedia');
+                                                  return const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
                                                 }
-                                              });
-                                        } else {
-                                          return const Text(
-                                              'Data tidak tersedia');
-                                        }
-                                      }),
-                                  actions: [
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.zero,
-                                          backgroundColor:
-                                              const Color(0xFFFCA311),
-                                        ),
-                                        onPressed: () {
-                                          context.pop();
-                                        },
-                                        child: Text(
-                                          'OK',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600),
-                                        ),
+                                              }),
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: FutureBuilder(
+                                              future: Assets.kendaraan(
+                                                  item2.photo ?? ''),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.done) {
+                                                  return snapshot.data
+                                                      as Widget;
+                                                } else {
+                                                  return const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                                }
+                                              }),
+                                        )),
+                              const Gap(4),
+                              if (isRuangan) ...[
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.code,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
+                                    Text(
+                                      item.condition,
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 12),
+                                    ),
                                   ],
-                                );
-                              },
-                            );
-                          } else {
-                            showModalBottomSheet(
-                              showDragHandle: true,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SingleChildScrollView(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 24, right: 24, bottom: 24),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 420,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                height: 218,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: FutureBuilder<Widget>(
-                                                    future: Assets.kendaraan(
-                                                        item2.photo ?? ''),
+                                ),
+                              ] else ...[
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item2.plat,
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      item2.condition,
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ],
+                          ),
+                          if (isRuangan) ...[
+                            if (item.status)
+                              IconButton(
+                                icon: Icon(Icons.info_outline,
+                                    color: Color(0xFFFCA311)),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          'Asset sedang Digunakan',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        content: FutureBuilder(
+                                            future: readPeminjamanbyBarangId(
+                                                item.id),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                              } else if (snapshot.hasError) {
+                                                return const Text(
+                                                    'Data tidak tersedia'); // Show error message if any
+                                              } else if (snapshot.hasData) {
+                                                final Peminjaman peminjaman =
+                                                    snapshot.data!;
+                                                return FutureBuilder(
+                                                    future: readUserById(
+                                                        '${peminjaman.userId}'),
                                                     builder:
                                                         (context, snapshot) {
                                                       if (snapshot
@@ -667,285 +764,215 @@ class CariState extends State<Cari> {
                                                         return const CircularProgressIndicator(); // Show a loading indicator while waiting
                                                       } else if (snapshot
                                                           .hasError) {
-                                                        return Image.asset(Assets
-                                                            .noImage()); // Show error message if any
+                                                        return const Text(
+                                                            'Data tidak tersedia'); // Show error message if any
                                                       } else if (snapshot
                                                           .hasData) {
-                                                        return snapshot
-                                                            .data!; // Return the widget once the future completes
+                                                        final User user =
+                                                            snapshot.data!;
+                                                        return FutureBuilder(
+                                                            future: readDetailPeminjamanbyId(
+                                                                peminjaman
+                                                                    .detailPeminjamanId),
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              if (snapshot
+                                                                      .connectionState ==
+                                                                  ConnectionState
+                                                                      .waiting) {
+                                                                return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                              } else if (snapshot
+                                                                  .hasError) {
+                                                                return const Text(
+                                                                    'Data tidak tersedia'); // Show error message if any
+                                                              } else if (snapshot
+                                                                  .hasData) {
+                                                                final DetailPeminjamans
+                                                                    dpeminjaman =
+                                                                    snapshot
+                                                                        .data!;
+                                                                return Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                          'Digunakan oleh: ${user.name}'),
+                                                                      Text(
+                                                                          'Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
+                                                                    ]);
+                                                              } else {
+                                                                return const Text(
+                                                                    'Data tidak tersedia');
+                                                              }
+                                                            });
                                                       } else {
                                                         return const Text(
-                                                            'No data available'); // Show message if no data
+                                                            'Data tidak tersedia');
                                                       }
-                                                    },
-                                                  ),
-                                                ),
+                                                    });
+                                              } else {
+                                                return const Text(
+                                                    'Data tidak tersedia');
+                                              }
+                                            }),
+                                        actions: [
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                padding: EdgeInsets.zero,
+                                                backgroundColor:
+                                                    const Color(0xFFFCA311),
                                               ),
-                                              Gap(8),
-                                              Text(
-                                                item2.plat,
-                                                style: const TextStyle(
-                                                    fontSize: 20,
+                                              onPressed: () {
+                                                context.pop();
+                                              },
+                                              child: Text(
+                                                'OK',
+                                                style: TextStyle(
+                                                    color: Colors.white,
                                                     fontWeight:
                                                         FontWeight.w600),
                                               ),
-                                              Gap(4),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text('Nama'),
-                                                  Text(item2.name,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600)),
-                                                ],
-                                              ),
-                                              Gap(4),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text('Kategori'),
-                                                  Text(
-                                                      item2.category
-                                                          .toString()
-                                                          .split('.')
-                                                          .last,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600)),
-                                                ],
-                                              ),
-                                              Gap(4),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text('Kondisi'),
-                                                  Text(item2.condition,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600)),
-                                                ],
-                                              ),
-                                              Gap(4),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text('Pajak'),
-                                                  Text(
-                                                      DateFormat('yyyy MMM dd')
-                                                          .format(item2.tax),
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600)),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          Container(
-                                            padding:
-                                                const EdgeInsets.only(top: 16),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      2.4,
-                                                  child: ElevatedButton(
-                                                    onPressed: () async {
-                                                      DetailPeminjamans dp =
-                                                          await createDetailPeminjaman(
-                                                              status: 'draft');
-
-                                                      var res =
-                                                          await createPeminjaman(
-                                                              dp.id,
-                                                              null,
-                                                              null,
-                                                              item2.id,
-                                                              'kendaraan');
-
-                                                      if (res == 200) {
-                                                        WidgetsBinding.instance
-                                                            .addPostFrameCallback(
-                                                                (_) {
-                                                          if (context.mounted) {
-                                                            context.pop();
-                                                          }
-                                                        });
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                                'Kendaraan Disimpan di Keranjang'),
-                                                          ),
-                                                        );
-                                                      } else {
-                                                        WidgetsBinding.instance
-                                                            .addPostFrameCallback(
-                                                                (_) {
-                                                          if (context.mounted) {
-                                                            context.pop();
-                                                          }
-                                                        });
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                                'Kendaraan sudah berada di keranjang!'),
-                                                          ),
-                                                        );
-                                                      }
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      padding: EdgeInsets.zero,
-                                                      side: const BorderSide(
-                                                          color: Color(
-                                                              0xFFFCA311)),
-                                                    ),
-                                                    child: const Text(
-                                                      'Masukan Keranjang',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xFFFCA311),
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      2.4,
-                                                  child: ElevatedButton(
-                                                    onPressed: () {
-                                                      var param = item2.id;
-                                                      context.push(
-                                                          '/KonfK?id=$param&category=kendaraan');
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      padding: EdgeInsets.zero,
-                                                      backgroundColor:
-                                                          const Color(
-                                                              0xFFFCA311),
-                                                      side: const BorderSide(
-                                                          color: Color(
-                                                              0xFFFCA311)),
-                                                    ),
-                                                    child: const Text(
-                                                      'Pinjam Barang',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
                                             ),
                                           ),
                                         ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          }
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                              width: 60,
-                              height: 46,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
+                                      );
+                                    },
+                                  );
+                                },
                               ),
-                              child: isRuangan
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: FutureBuilder(
-                                          future:
-                                              Assets.barang(item.photo ?? ''),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.done) {
-                                              return snapshot.data as Widget;
-                                            } else {
-                                              return const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            }
-                                          }),
-                                    )
-                                  : ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: FutureBuilder(
-                                          future: Assets.kendaraan(
-                                              item2.photo ?? ''),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.done) {
-                                              return snapshot.data as Widget;
-                                            } else {
-                                              return const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            }
-                                          }),
-                                    )),
-                          const Gap(4),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (isRuangan) ...[
-                                Text(
-                                  item.code,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                Text(
-                                  item.condition,
-                                  style: const TextStyle(
-                                      color: Colors.black, fontSize: 12),
-                                ),
-                              ] else ...[
-                                Text(
-                                  item2.plat,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Text(
-                                  item2.condition,
-                                  style: const TextStyle(
-                                      color: Colors.black, fontSize: 12),
-                                ),
-                              ]
-                            ],
-                          ),
+                          ] else ...[
+                            if (item2.status)
+                              IconButton(
+                                icon: Icon(Icons.info_outline,
+                                    color: Color(0xFFFCA311)),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          'Asset sedang Digunakan',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        content: FutureBuilder(
+                                            future: readPeminjamanbyKendaraanId(
+                                                item2.id),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                              } else if (snapshot.hasError) {
+                                                return const Text(
+                                                    'Data tidak tersedia'); // Show error message if any
+                                              } else if (snapshot.hasData) {
+                                                final Peminjaman peminjaman =
+                                                    snapshot.data!;
+                                                return FutureBuilder(
+                                                    future: readUserById(
+                                                        '${peminjaman.userId}'),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                      } else if (snapshot
+                                                          .hasError) {
+                                                        return const Text(
+                                                            'Data tidak tersedia'); // Show error message if any
+                                                      } else if (snapshot
+                                                          .hasData) {
+                                                        final User user =
+                                                            snapshot.data!;
+                                                        return FutureBuilder(
+                                                            future: readDetailPeminjamanbyId(
+                                                                peminjaman
+                                                                    .detailPeminjamanId),
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              if (snapshot
+                                                                      .connectionState ==
+                                                                  ConnectionState
+                                                                      .waiting) {
+                                                                return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                                                              } else if (snapshot
+                                                                  .hasError) {
+                                                                return const Text(
+                                                                    'Data tidak tersedia'); // Show error message if any
+                                                              } else if (snapshot
+                                                                  .hasData) {
+                                                                final DetailPeminjamans
+                                                                    dpeminjaman =
+                                                                    snapshot
+                                                                        .data!;
+                                                                return Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                          'Digunakan oleh: ${user.name}'),
+                                                                      Text(
+                                                                          'Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
+                                                                    ]);
+                                                              } else {
+                                                                return const Text(
+                                                                    'Data tidak tersedia');
+                                                              }
+                                                            });
+                                                      } else {
+                                                        return const Text(
+                                                            'Data tidak tersedia');
+                                                      }
+                                                    });
+                                              } else {
+                                                return const Text(
+                                                    'Data tidak tersedia');
+                                              }
+                                            }),
+                                        actions: [
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                padding: EdgeInsets.zero,
+                                                backgroundColor:
+                                                    const Color(0xFFFCA311),
+                                              ),
+                                              onPressed: () {
+                                                context.pop();
+                                              },
+                                              child: Text(
+                                                'OK',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                          ]
                         ],
                       ),
                     ),

@@ -188,9 +188,10 @@ class GedungState extends State<Gedung> {
                     shadowColor: Colors.black,
                     elevation: 2,
                   ),
-                  child: const Text(
+                  child: Text(
                     "Kelas",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(
+                        color: isKelasActive ? Colors.white : Colors.black),
                   ),
                 ),
                 const Gap(12),
@@ -210,9 +211,10 @@ class GedungState extends State<Gedung> {
                     shadowColor: Colors.black,
                     elevation: 2,
                   ),
-                  child: const Text(
+                  child: Text(
                     "Lab",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(
+                        color: isLabActive ? Colors.white : Colors.black),
                   ),
                 ),
                 const Gap(12),
@@ -232,9 +234,10 @@ class GedungState extends State<Gedung> {
                     shadowColor: Colors.black,
                     elevation: 2,
                   ),
-                  child: const Text(
+                  child: Text(
                     "Gudang",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(
+                        color: isGudangActive ? Colors.white : Colors.black),
                   ),
                 ),
               ],
@@ -343,15 +346,18 @@ class GedungState extends State<Gedung> {
                                                     fontWeight: FontWeight.w600,
                                                     color: Colors.black),
                                               ),
-                                              Text(
-                                                ruangan.status
-                                                    ? 'Digunakan'
-                                                    : 'Tidak Digunakan',
-                                                style: const TextStyle(
+                                              if (ruangan.category !=
+                                                  RuanganCategory.gudang)
+                                                Text(
+                                                  ruangan.status
+                                                      ? 'Digunakan'
+                                                      : 'Tidak Digunakan',
+                                                  style: const TextStyle(
                                                     fontSize: 12,
+                                                    color: Colors.grey,
                                                     fontWeight: FontWeight.w600,
-                                                    color: Colors.grey),
-                                              ),
+                                                  ),
+                                                ),
                                             ])
                                       ],
                                     ),
@@ -489,7 +495,7 @@ class GedungState extends State<Gedung> {
                                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                 children: [
                                                                                   Text('Estimasi Selesai', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
-                                                                                  Text(DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman!.estimatedTime!), style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                                  Text(DateFormat('d MMMM yy', 'id_ID').format(dpeminjaman!.estimatedTime!), style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
                                                                                 ],
                                                                               ),
                                                                             ],
@@ -537,18 +543,256 @@ class GedungState extends State<Gedung> {
                                                                         );
                                                                       }
                                                                     } else {
-                                                                      return const Text(
-                                                                          'Tidak ada data');
+                                                                      return SizedBox(
+                                                                        height:
+                                                                            80,
+                                                                        child:
+                                                                            Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              children: [
+                                                                                const Text('Kode', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                Text(ruangan.code, style: const TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                              ],
+                                                                            ),
+                                                                            Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              children: [
+                                                                                Text('Kategori', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                Text(ruangan.category.toString().split('.').last, style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                              ],
+                                                                            ),
+                                                                            Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              children: [
+                                                                                Text('Kapasitas', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                Text('${ruangan.capacity.toString()} Orang', style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                              ],
+                                                                            ),
+                                                                            Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              children: [
+                                                                                const Text('Status', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                                                Text(ruangan.status ? 'Digunakan' : 'Tidak Digunakan', style: const TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600)),
+                                                                              ],
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      );
                                                                     }
                                                                   });
                                                             } else {
-                                                              return const Text(
-                                                                  'Tidak ada data');
+                                                              return SizedBox(
+                                                                height: 80,
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        const Text(
+                                                                            'Kode',
+                                                                            style: TextStyle(
+                                                                                fontSize: 12,
+                                                                                color: Colors.grey,
+                                                                                fontWeight: FontWeight.w600)),
+                                                                        Text(
+                                                                            ruangan
+                                                                                .code,
+                                                                            style: const TextStyle(
+                                                                                fontSize: 12,
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.w600)),
+                                                                      ],
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Text(
+                                                                            'Kategori',
+                                                                            style: TextStyle(
+                                                                                fontSize: 12,
+                                                                                color: Colors.grey,
+                                                                                fontWeight: FontWeight.w600)),
+                                                                        Text(ruangan.category.toString().split('.').last,
+                                                                            style: TextStyle(
+                                                                                fontSize: 12,
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.w600)),
+                                                                      ],
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Text(
+                                                                            'Kapasitas',
+                                                                            style: TextStyle(
+                                                                                fontSize: 12,
+                                                                                color: Colors.grey,
+                                                                                fontWeight: FontWeight.w600)),
+                                                                        Text(
+                                                                            '${ruangan.capacity.toString()} Orang',
+                                                                            style: TextStyle(
+                                                                                fontSize: 12,
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.w600)),
+                                                                      ],
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        const Text(
+                                                                            'Status',
+                                                                            style: TextStyle(
+                                                                                fontSize: 12,
+                                                                                color: Colors.grey,
+                                                                                fontWeight: FontWeight.w600)),
+                                                                        Text(
+                                                                            ruangan.status
+                                                                                ? 'Digunakan'
+                                                                                : 'Tidak Digunakan',
+                                                                            style: const TextStyle(
+                                                                                fontSize: 12,
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.w600)),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
                                                             }
                                                           });
                                                     } else {
-                                                      return const Text(
-                                                          'Tidak ada data');
+                                                      return SizedBox(
+                                                        height: 80,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                const Text(
+                                                                    'Kode',
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                                Text(
+                                                                    ruangan
+                                                                        .code,
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                              ],
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text('Kategori',
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                                Text(
+                                                                    ruangan
+                                                                        .category
+                                                                        .toString()
+                                                                        .split(
+                                                                            '.')
+                                                                        .last,
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                              ],
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                    'Kapasitas',
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                                Text(
+                                                                    '${ruangan.capacity.toString()} Orang',
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                              ],
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                const Text(
+                                                                    'Status',
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                                Text(
+                                                                    ruangan.status
+                                                                        ? 'Digunakan'
+                                                                        : 'Tidak Digunakan',
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
                                                     }
                                                   }),
                                               actions: [
@@ -582,47 +826,6 @@ class GedungState extends State<Gedung> {
                                         );
                                       },
                                     )
-                                  // isRuanganHasCapacity(ruangan)
-                                  //     ? ruangan.category != RuanganCategory.gudang
-                                  //         ? Container(
-                                  //             width: 46,
-                                  //             height: 22,
-                                  //             decoration: BoxDecoration(
-                                  //               boxShadow: [
-                                  //                 BoxShadow(
-                                  //                   color: const Color(0xFFFCA311)
-                                  //                       .withOpacity(1),
-                                  //                   spreadRadius: 1,
-                                  //                   blurRadius: 4,
-                                  //                   offset: const Offset(0, 0),
-                                  //                 )
-                                  //               ],
-                                  //               color: Colors.white,
-                                  //               borderRadius:
-                                  //                   BorderRadius.circular(20),
-                                  //             ),
-                                  //             child: Row(
-                                  //               crossAxisAlignment:
-                                  //                   CrossAxisAlignment.center,
-                                  //               mainAxisAlignment:
-                                  //                   MainAxisAlignment.center,
-                                  //               children: [
-                                  //                 const Icon(
-                                  //                   Icons.person,
-                                  //                   color: Color(0xFFFCA311),
-                                  //                   size: 16,
-                                  //                 ),
-                                  //                 Text(
-                                  //                   ruangan.capacity.toString(),
-                                  //                   style: const TextStyle(
-                                  //                       fontSize: 12,
-                                  //                       color: Color(0xFFFCA311)),
-                                  //                 ),
-                                  //               ],
-                                  //             ),
-                                  //           )
-                                  //         : const SizedBox()
-                                  //     : const SizedBox()
                                 ],
                               ),
                             ),

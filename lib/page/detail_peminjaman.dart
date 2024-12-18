@@ -628,12 +628,12 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                                     children: [
                                                       Text(asset.code,
                                                           style: TextStyle(
-                                                              fontSize: 8,
+                                                              fontSize: 12,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w600,
-                                                              color:
-                                                                  Colors.grey)),
+                                                              color: Colors
+                                                                  .black)),
                                                       FutureBuilder<String>(
                                                         future: itemsTempat(
                                                             asset.tempatId,
@@ -883,7 +883,7 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                                 if (context.mounted) {
                                                   context.pop();
                                                   if (mounted) {
-                                                    context.pop();
+                                                    context.pop(true);
                                                   }
                                                 }
                                                 ScaffoldMessenger.of(context)
@@ -935,7 +935,7 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                   WidgetsBinding.instance
                                       .addPostFrameCallback((_) {
                                     if (context.mounted) {
-                                      context.pop();
+                                      context.pop(true);
                                     }
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
