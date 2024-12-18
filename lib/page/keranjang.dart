@@ -190,6 +190,12 @@ class KeranjangState extends State<Keranjang> {
                                       child: Text(snapshot.error.toString()),
                                     );
                                   } else if (snapshot.hasData) {
+                                    if (snapshot.data!.isEmpty) {
+                                      return Center(
+                                        child: Text(
+                                            'Tidak ada barang dalam keranjang!'),
+                                      );
+                                    }
                                     peminjaman = snapshot.data!;
                                     return ListView.builder(
                                       shrinkWrap: true,
