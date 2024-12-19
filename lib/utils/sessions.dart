@@ -47,7 +47,6 @@ class Session {
     final user = await readUser(token);
 
     if (user == null) {
-      await Session.unset();
       return null;
     }
 

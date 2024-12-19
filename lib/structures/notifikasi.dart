@@ -14,7 +14,7 @@ class Notifikasis {
   @HiveField(3)
   late int userId;
   @HiveField(4)
-  late int detailNotifikasiId;
+  late int detailPeminjamanId;
   @HiveField(5)
   late DateTime createdAt;
 
@@ -23,7 +23,7 @@ class Notifikasis {
     required this.category,
     required this.isRead,
     required this.userId,
-    required this.detailNotifikasiId,
+    required this.detailPeminjamanId,
     required this.createdAt,
   });
 
@@ -34,7 +34,7 @@ class Notifikasis {
           (e) => e.toString() == 'NotifikasiCategory.${json['category']}'),
       isRead: json['isRead'],
       userId: json['userId'],
-      detailNotifikasiId: json['detailNotifikasiId'],
+      detailPeminjamanId: json['detailPeminjamanId'],
       createdAt: DateTime.parse(
         json['createdAt'],
       ),
