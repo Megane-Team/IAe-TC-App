@@ -35,7 +35,6 @@ Future<DetailPeminjamans?> readDetailPeminjamanbyId(int id) async {
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final Map<String, dynamic> data = responseData['data'];
-    print(data);
     return DetailPeminjamans.fromJson(data);
   } else if (response.statusCode == 404) {
     return null;
