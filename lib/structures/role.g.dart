@@ -14,20 +14,20 @@ class RoleAdapter extends TypeAdapter<Role> {
   Role read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return Role.headAdmin;
+        return Role.headOffice;
       case 1:
         return Role.admin;
       case 2:
         return Role.user;
       default:
-        return Role.headAdmin;
+        return Role.headOffice;
     }
   }
 
   @override
   void write(BinaryWriter writer, Role obj) {
     switch (obj) {
-      case Role.headAdmin:
+      case Role.headOffice:
         writer.writeByte(0);
         break;
       case Role.admin:
