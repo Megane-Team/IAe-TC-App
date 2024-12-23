@@ -18,8 +18,6 @@ class Beranda extends StatefulWidget {
   State<Beranda> createState() => BerandaState();
 }
 
-var user = Session.get();
-
 String getTime() {
   var hour = DateTime.now().hour;
   if (hour < 12) return 'pagi';
@@ -30,12 +28,21 @@ String getTime() {
 class BerandaState extends State<Beranda> {
   bool isGedungActive = false;
   bool isParkiranActive = false;
-  late List<Tempat> filteredTempat;
+  late List<Tempat> filteredTempat = [];
   late List<Tempat> originalTempatList;
   TextEditingController searchController = TextEditingController();
 
+  var user = Session.get();
+
+  void callSetState() {
+    setState(() {
+      fetchData();
+    });
+  }
+
   void fetchData() async {
     var tempat = await readTempat(context);
+
     setState(() {
       originalTempatList = tempat;
       filteredTempat = List.from(originalTempatList);
@@ -94,10 +101,12 @@ class BerandaState extends State<Beranda> {
                             ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         } else if (snapshot.hasError) {
+                          print(snapshot.error);
+                          print(snapshot.stackTrace);
                           return const SizedBox();
                         } else if (snapshot.hasData &&
                             snapshot.data!.isNotEmpty &&
-                            snapshot.data!.any((e) => !e.isRead)) {
+                            snapshot.data!.any((e) => e.isRead == false)) {
                           return Positioned(
                             right: 0,
                             top: 0,
@@ -105,7 +114,11 @@ class BerandaState extends State<Beranda> {
                               padding: const EdgeInsets.all(4),
                               decoration: const BoxDecoration(
                                   color: Colors.red, shape: BoxShape.circle),
-                              child: Text(snapshot.data!.length.toString(),
+                              child: Text(
+                                  snapshot.data!
+                                      .where((e) => !e.isRead)
+                                      .length
+                                      .toString(),
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 12)),
                             ),
@@ -117,7 +130,7 @@ class BerandaState extends State<Beranda> {
                 ],
               ),
               onPressed: () async {
-                context.push('/notifikasi');
+                context.push('/notifikasi', extra: callSetState);
               },
             )
           ],
