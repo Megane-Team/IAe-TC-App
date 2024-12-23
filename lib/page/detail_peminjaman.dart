@@ -150,7 +150,7 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                         fontSize: 12)),
                               ] else if (item.status ==
                                   PeminjamanStatus.canceled) ...[
-                                Text('Dibatalkan User',
+                                Text('Dibatalkan',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w600,
