@@ -9,7 +9,9 @@ import 'package:inventara/structures/notifikasi_category.dart';
 import 'package:inventara/utils/actionwidget.dart';
 
 class Notifikasi extends StatefulWidget {
-  const Notifikasi({super.key});
+  final VoidCallback onRefresh;
+
+  const Notifikasi({super.key, required this.onRefresh});
 
   @override
   State<Notifikasi> createState() => _NotifikasiState();
@@ -64,6 +66,7 @@ class _NotifikasiState extends State<Notifikasi> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
+                      widget.onRefresh();
                       context.pop();
                     });
                   },
@@ -108,6 +111,14 @@ class _NotifikasiState extends State<Notifikasi> {
                           onPressed: () {
                             if (notif.isRead == false) {
                               updateNotifikasi(notif.id);
+                              setState(() {
+                                // Refresh the data by calling the method to fetch notifications again
+                                readNotifikasi().then((newList) {
+                                  setState(() {
+                                    listNotif = newList;
+                                  });
+                                });
+                              });
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -120,7 +131,7 @@ class _NotifikasiState extends State<Notifikasi> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                right: 24, top: 20, bottom: 30),
+                                right: 24, top: 20, bottom: 20),
                             child: Row(
                               children: [
                                 const Gap(6),
@@ -168,11 +179,22 @@ class _NotifikasiState extends State<Notifikasi> {
                                               fontWeight: FontWeight.bold,
                                               color: Colors.black)),
                                       const Gap(16),
-                                      const Text('Klik untuk detail peminjaman',
+                                      TextButton(
+                                        onPressed: () {
+                                          context.push(
+                                              '/DetailP?id=${notif.detailPeminjamanId}');
+                                        },
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                        child: const Text(
+                                          'Klik disini untuk melihat detail',
                                           style: TextStyle(
                                               fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black)),
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ),

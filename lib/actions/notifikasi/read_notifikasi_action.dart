@@ -14,6 +14,7 @@ Future<List<Notifikasis>> readNotifikasi() async {
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final List<dynamic> data = responseData['data'];
+    print(data);
     final List<Notifikasis> notifikasis =
         data.map((item) => Notifikasis.fromJson(item)).toList();
 
