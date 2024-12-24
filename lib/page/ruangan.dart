@@ -1091,6 +1091,7 @@ void onPressedBarang(BuildContext context, Barang items) {
                         onPressed: () {
                           var param = items.id;
                           context.push('/KonfA?id=$param&category=barang');
+                          context.pop();
                         },
                         style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -1252,6 +1253,7 @@ void onPressedKendaraan(BuildContext context, Kendaraan items) {
                           onPressed: () {
                             var param = items.id;
                             context.push('/KonfK?id=$param&category=kendaraan');
+                            context.pop();
                           },
                           style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.zero,
