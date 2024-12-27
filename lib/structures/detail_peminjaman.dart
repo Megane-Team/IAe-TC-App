@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:inventara/structures/peminjaman_status.dart';
 
-part 'detailPeminjaman.g.dart';
+part 'detail_peminjaman.g.dart';
 
 @HiveType(typeId: 15)
 class DetailPeminjamans {

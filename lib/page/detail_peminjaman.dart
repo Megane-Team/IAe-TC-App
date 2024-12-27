@@ -10,7 +10,7 @@ import 'package:inventara/actions/peminjaman/update_canceled_detail_peminjaman.d
 import 'package:inventara/actions/peminjaman/update_returned_detail_peminjaman.dart';
 import 'package:inventara/actions/ruangan/read_ruangan_action.dart';
 import 'package:inventara/actions/tempat/read_tempat_action.dart';
-import 'package:inventara/structures/detailPeminjaman.dart';
+import 'package:inventara/structures/detail_peminjaman.dart';
 import 'package:inventara/structures/peminjaman.dart';
 import 'package:inventara/structures/peminjaman_category.dart';
 import 'package:inventara/structures/peminjaman_status.dart';
@@ -291,388 +291,171 @@ class _DetailPeminjamanState extends State<DetailPeminjaman> {
                                   itemCount: peminjamans.length,
                                   itemBuilder: (context, index) {
                                     var peminjaman = peminjamans[index];
-                                    if (peminjaman.category ==
-                                        PeminjamanCategory.barang) {
+                                    bool isRuangan = peminjaman.category ==
+                                        PeminjamanCategory.ruangan;
+                                    bool hasRuangan = peminjamans.any((p) =>
+                                        p.category ==
+                                        PeminjamanCategory.ruangan);
+
+                                    Widget buildAssetWidget(Future future,
+                                        Function snapshotBuilder) {
                                       return FutureBuilder(
-                                          future: readBarangbyId(
-                                              peminjaman.barangId.toString()),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return const Center(
+                                        future: future,
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const Center(
                                                 child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            }
-                                            if (snapshot.hasError) {
-                                              return Center(
+                                                    CircularProgressIndicator());
+                                          }
+                                          if (snapshot.hasError) {
+                                            return Center(
                                                 child: Text(
-                                                    'Error: ${snapshot.error}'),
-                                              );
-                                            }
-                                            var asset = snapshot.data!;
-                                            return Container(
-                                              margin:
-                                                  const EdgeInsets.only(top: 8),
-                                              decoration: BoxDecoration(),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    width: 60,
-                                                    height: 46,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                      color: Colors.white,
-                                                    ),
-                                                    child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                        child: FutureBuilder(
-                                                          future: Assets.barang(
-                                                              asset.photo ??
-                                                                  ''),
-                                                          builder: (context,
-                                                              snapshot) {
-                                                            if (snapshot
-                                                                    .connectionState ==
-                                                                ConnectionState
-                                                                    .waiting) {
-                                                              return const Center(
-                                                                child:
-                                                                    CircularProgressIndicator(),
-                                                              );
-                                                            }
-                                                            if (snapshot
-                                                                .hasError) {
-                                                              return Center(
-                                                                child: Text(
-                                                                    'Error: ${snapshot.error}'),
-                                                              );
-                                                            }
-                                                            return snapshot
-                                                                .data!;
-                                                          },
-                                                        )),
-                                                  ),
-                                                  Gap(4),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(asset.name,
-                                                          style: TextStyle(
-                                                              fontSize: 8,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color:
-                                                                  Colors.grey)),
-                                                      Text(asset.code,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 12)),
-                                                      FutureBuilder<String>(
-                                                        future: itemsTempat(
-                                                            asset.ruanganId,
-                                                            peminjaman
-                                                                .category),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          if (snapshot
-                                                                  .connectionState ==
-                                                              ConnectionState
-                                                                  .waiting) {
-                                                            return const CircularProgressIndicator();
-                                                          }
-                                                          if (snapshot
-                                                              .hasError) {
-                                                            return Text(
-                                                                'Error: ${snapshot.error}');
-                                                          }
-                                                          return Text(
-                                                            snapshot.data!,
-                                                            style: TextStyle(
-                                                              fontSize: 8,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          });
+                                                    'Error: ${snapshot.error}'));
+                                          }
+                                          return snapshotBuilder(
+                                              snapshot.data!);
+                                        },
+                                      );
                                     }
-                                    if (peminjaman.category ==
-                                        PeminjamanCategory.kendaraan) {
-                                      return FutureBuilder(
-                                          future: readKendaraanbyId(peminjaman
-                                              .kendaraanId
-                                              .toString()),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            }
-                                            if (snapshot.hasError) {
-                                              return Center(
-                                                child: Text(
-                                                    'Error: ${snapshot.error}'),
-                                              );
-                                            }
-                                            var asset = snapshot.data!;
-                                            return Container(
-                                              margin:
-                                                  const EdgeInsets.only(top: 8),
-                                              decoration: BoxDecoration(),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    width: 60,
-                                                    height: 46,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                      color: Colors.white,
-                                                    ),
-                                                    child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                        child: FutureBuilder(
-                                                          future:
-                                                              Assets.kendaraan(
-                                                                  asset.photo ??
-                                                                      ''),
-                                                          builder: (context,
-                                                              snapshot) {
-                                                            if (snapshot
-                                                                    .connectionState ==
-                                                                ConnectionState
-                                                                    .waiting) {
-                                                              return const Center(
-                                                                child:
-                                                                    CircularProgressIndicator(),
-                                                              );
-                                                            }
-                                                            if (snapshot
-                                                                .hasError) {
-                                                              return Center(
-                                                                child: Text(
-                                                                    'Error: ${snapshot.error}'),
-                                                              );
-                                                            }
-                                                            return snapshot
-                                                                .data!;
-                                                          },
-                                                        )),
-                                                  ),
-                                                  Gap(4),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(asset.name,
-                                                          style: TextStyle(
-                                                              fontSize: 8,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color:
-                                                                  Colors.grey)),
-                                                      Text(asset.plat,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 12)),
-                                                      FutureBuilder<String>(
-                                                        future: itemsTempat(
-                                                            asset.tempatId,
-                                                            peminjaman
-                                                                .category),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          if (snapshot
-                                                                  .connectionState ==
-                                                              ConnectionState
-                                                                  .waiting) {
-                                                            return const CircularProgressIndicator();
-                                                          }
-                                                          if (snapshot
-                                                              .hasError) {
-                                                            return Text(
-                                                                'Error: ${snapshot.error}');
-                                                          }
-                                                          return Text(
-                                                            snapshot.data!,
-                                                            style: TextStyle(
-                                                              fontSize: 8,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+
+                                    Widget buildAssetRow(
+                                        asset, peminjaman, String type) {
+                                      return Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: 60,
+                                            height: 46,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              color: Colors.white,
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: FutureBuilder(
+                                                future: type == 'barang'
+                                                    ? Assets.barang(
+                                                        asset.photo ?? '')
+                                                    : type == 'kendaraan'
+                                                        ? Assets.kendaraan(
+                                                            asset.photo ?? '')
+                                                        : Assets.ruangan(
+                                                            asset.photo ?? ''),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return const Center(
+                                                        child:
+                                                            CircularProgressIndicator());
+                                                  }
+                                                  if (snapshot.hasError) {
+                                                    return Center(
+                                                        child: Text(
+                                                            'Error: ${snapshot.error}'));
+                                                  }
+                                                  return snapshot.data!;
+                                                },
                                               ),
-                                            );
-                                          });
-                                    }
-                                    if (peminjaman.category ==
-                                        PeminjamanCategory.ruangan) {
-                                      return FutureBuilder(
-                                          future: readRuanganbyId(
-                                              peminjaman.ruanganId!, context),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            }
-                                            if (snapshot.hasError) {
-                                              return Center(
-                                                child: Text(
-                                                    'Error: ${snapshot.error}'),
-                                              );
-                                            }
-                                            var asset = snapshot.data!;
-                                            return Container(
-                                              margin:
-                                                  const EdgeInsets.only(top: 8),
-                                              decoration: BoxDecoration(),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    width: 60,
-                                                    height: 46,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                      color: Colors.white,
-                                                    ),
-                                                    child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                        child: FutureBuilder(
-                                                          future:
-                                                              Assets.ruangan(
-                                                                  asset.photo ??
-                                                                      ''),
-                                                          builder: (context,
-                                                              snapshot) {
-                                                            if (snapshot
-                                                                    .connectionState ==
-                                                                ConnectionState
-                                                                    .waiting) {
-                                                              return const Center(
-                                                                child:
-                                                                    CircularProgressIndicator(),
-                                                              );
-                                                            }
-                                                            if (snapshot
-                                                                .hasError) {
-                                                              return Center(
-                                                                child: Text(
-                                                                    'Error: ${snapshot.error}'),
-                                                              );
-                                                            }
-                                                            return snapshot
-                                                                .data!;
-                                                          },
-                                                        )),
-                                                  ),
-                                                  Gap(4),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(asset.code,
-                                                          style: TextStyle(
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color: Colors
-                                                                  .black)),
-                                                      FutureBuilder<String>(
-                                                        future: itemsTempat(
-                                                            asset.tempatId,
-                                                            peminjaman
-                                                                .category),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          if (snapshot
-                                                                  .connectionState ==
-                                                              ConnectionState
-                                                                  .waiting) {
-                                                            return const CircularProgressIndicator();
-                                                          }
-                                                          if (snapshot
-                                                              .hasError) {
-                                                            return Text(
-                                                                'Error: ${snapshot.error}');
-                                                          }
-                                                          return Text(
-                                                            snapshot.data!,
-                                                            style: TextStyle(
-                                                              fontSize: 8,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                            ),
+                                          ),
+                                          const Gap(4),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                type == 'barang'
+                                                    ? asset.name
+                                                    : type == 'kendaraan'
+                                                        ? asset.name
+                                                        : asset.code,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black),
                                               ),
-                                            );
-                                          });
+                                              FutureBuilder<String>(
+                                                future: itemsTempat(
+                                                  type == 'barang'
+                                                      ? asset.ruanganId
+                                                      : asset.tempatId,
+                                                  peminjaman.category,
+                                                ),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return const CircularProgressIndicator();
+                                                  }
+                                                  if (snapshot.hasError) {
+                                                    return Text(
+                                                        'Error: ${snapshot.error}');
+                                                  }
+                                                  return Text(
+                                                    snapshot.data!,
+                                                    style: const TextStyle(
+                                                        fontSize: 8,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: Colors.grey),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
                                     }
-                                    return null;
+
+                                    return Container(
+                                      margin: const EdgeInsets.only(top: 8),
+                                      padding: hasRuangan
+                                          ? isRuangan
+                                              ? EdgeInsets.zero
+                                              : const EdgeInsets.only(left: 16)
+                                          : EdgeInsets.zero,
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          if (peminjaman.category ==
+                                              PeminjamanCategory.barang)
+                                            buildAssetWidget(
+                                              readBarangbyId(peminjaman.barangId
+                                                  .toString()),
+                                              (asset) => buildAssetRow(
+                                                  asset, peminjaman, 'barang'),
+                                            ),
+                                          if (peminjaman.category ==
+                                              PeminjamanCategory.kendaraan)
+                                            buildAssetWidget(
+                                              readKendaraanbyId(peminjaman
+                                                  .kendaraanId
+                                                  .toString()),
+                                              (asset) => buildAssetRow(asset,
+                                                  peminjaman, 'kendaraan'),
+                                            ),
+                                          if (peminjaman.category ==
+                                              PeminjamanCategory.ruangan)
+                                            buildAssetWidget(
+                                              readRuanganbyId(
+                                                  peminjaman.ruanganId!,
+                                                  context),
+                                              (asset) => buildAssetRow(
+                                                  asset, peminjaman, 'ruangan'),
+                                            ),
+                                        ],
+                                      ),
+                                    );
                                   },
                                 );
                               }),

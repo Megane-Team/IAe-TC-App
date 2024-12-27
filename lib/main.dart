@@ -6,7 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:inventara/constants/themes.dart';
 import 'package:inventara/router.dart';
 import 'package:inventara/structures/barang.dart';
-import 'package:inventara/structures/detailPeminjaman.dart';
+import 'package:inventara/structures/detail_peminjaman.dart';
 import 'package:inventara/structures/kendaraan.dart';
 import 'package:inventara/structures/kendaraan_category.dart';
 import 'package:inventara/structures/notifikasi_category.dart';
