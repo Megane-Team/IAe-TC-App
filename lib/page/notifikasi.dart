@@ -95,6 +95,16 @@ class _NotifikasiState extends State<Notifikasi> {
                     return SizedBox();
                   }
                   listNotif = snapshot.data!;
+
+                  listNotif.sort((a, b) {
+                    if (a.isRead == b.isRead) {
+                      return b.createdAt.compareTo(a.createdAt);
+                    } else if (!a.isRead && b.isRead) {
+                      return -1;
+                    } else {
+                      return 1;
+                    }
+                  });
                   return ListView.builder(
                     itemCount: listNotif.length,
                     itemBuilder: (context, index) {
@@ -112,7 +122,6 @@ class _NotifikasiState extends State<Notifikasi> {
                             if (notif.isRead == false) {
                               updateNotifikasi(notif.id);
                               setState(() {
-                                // Refresh the data by calling the method to fetch notifications again
                                 readNotifikasi().then((newList) {
                                   setState(() {
                                     listNotif = newList;
