@@ -560,7 +560,7 @@ class RuanganState extends State<Ruangan> {
                                                                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                                                                       children: [
                                                                                                         Text('Digunakan oleh: ${user.name}'),
-                                                                                                        Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
+                                                                                                        Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
                                                                                                       ],
                                                                                                     );
                                                                                                   }
@@ -879,7 +879,7 @@ class RuanganState extends State<Ruangan> {
                                                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                                                     children: [
                                                                                                       Text('Digunakan oleh: ${user.name}'),
-                                                                                                      Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
+                                                                                                      Text('Divisi: ${user.unit}\nEstimasi : ${dpeminjaman.estimatedTime != null ? DateFormat('d MMMM yyyy', 'id_ID').format(dpeminjaman.estimatedTime!) : 'draft'}')
                                                                                                     ],
                                                                                                   );
                                                                                                 }

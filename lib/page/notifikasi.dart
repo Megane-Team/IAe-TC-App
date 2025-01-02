@@ -95,15 +95,11 @@ class _NotifikasiState extends State<Notifikasi> {
                     return SizedBox();
                   }
                   listNotif = snapshot.data!;
-
                   listNotif.sort((a, b) {
                     if (a.isRead == b.isRead) {
                       return b.createdAt.compareTo(a.createdAt);
-                    } else if (!a.isRead && b.isRead) {
-                      return -1;
-                    } else {
-                      return 1;
                     }
+                    return a.isRead ? 1 : -1;
                   });
                   return ListView.builder(
                     itemCount: listNotif.length,
@@ -192,6 +188,17 @@ class _NotifikasiState extends State<Notifikasi> {
                                         onPressed: () {
                                           context.push(
                                               '/DetailP?id=${notif.detailPeminjamanId}');
+                                          if (notif.isRead == false) {
+                                            updateNotifikasi(notif.id);
+                                            setState(() {
+                                              // Refresh the data by calling the method to fetch notifications again
+                                              readNotifikasi().then((newList) {
+                                                setState(() {
+                                                  listNotif = newList;
+                                                });
+                                              });
+                                            });
+                                          }
                                         },
                                         style: TextButton.styleFrom(
                                           padding: EdgeInsets.zero,
