@@ -118,7 +118,6 @@ class _NotifikasiState extends State<Notifikasi> {
                             if (notif.isRead == false) {
                               updateNotifikasi(notif.id);
                               setState(() {
-                                // Refresh the data by calling the method to fetch notifications again
                                 readNotifikasi().then((newList) {
                                   setState(() {
                                     listNotif = newList;

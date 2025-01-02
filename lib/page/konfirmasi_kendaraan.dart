@@ -11,7 +11,7 @@ import 'package:inventara/actions/peminjaman/create_peminjaman_action.dart';
 import 'package:inventara/actions/peminjaman/read_detail_peminjaman_action.dart';
 import 'package:inventara/actions/peminjaman/update_detail_peminjaman.dart';
 import 'package:inventara/structures/barang.dart';
-import 'package:inventara/structures/detailPeminjaman.dart';
+import 'package:inventara/structures/detail_peminjaman.dart';
 import 'package:inventara/structures/kendaraan.dart';
 import 'package:inventara/structures/peminjaman_status.dart';
 

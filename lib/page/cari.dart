@@ -10,7 +10,7 @@ import 'package:inventara/actions/peminjaman/read_detail_peminjaman_action.dart'
 import 'package:inventara/actions/peminjaman/read_peminjaman_action.dart';
 import 'package:inventara/actions/users/read_user_action.dart';
 import 'package:inventara/structures/barang.dart';
-import 'package:inventara/structures/detailPeminjaman.dart';
+import 'package:inventara/structures/detail_peminjaman.dart';
 import 'package:inventara/structures/kendaraan.dart';
 import 'package:inventara/structures/peminjaman.dart';
 import 'package:inventara/structures/user.dart';

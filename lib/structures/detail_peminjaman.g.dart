@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'detailPeminjaman.dart';
+part of 'detail_peminjaman.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

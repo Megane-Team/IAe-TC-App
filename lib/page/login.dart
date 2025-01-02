@@ -154,23 +154,38 @@ class LoginState extends State<Login> {
                         var login = await loginAction(
                             _emailController.text, _passwordController.text);
 
-                        if (login != true) {
-                          AlertDialog(
-                            title: const Text('Gagal'),
-                            content: const Text('Email atau password salah'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  context.pop();
-                                },
-                                child: const Text('OK'),
-                              )
-                            ],
-                          );
-                        } else {
+                        if (login == true) {
                           if (context.mounted) {
                             context.go('/beranda');
                           }
+                        } else {
+                          // show an alert dialog
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Login Gagal'),
+                                  content: const Text(
+                                      'Email atau password yang anda masukkan salah'),
+                                  actions: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.orange,
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      child: TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text(
+                                            'OK',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )),
+                                    )
+                                  ],
+                                );
+                              });
                         }
                       }
                     },
