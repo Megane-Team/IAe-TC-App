@@ -47,10 +47,15 @@ class LoginState extends State<Login> {
             const EdgeInsets.only(top: 32, left: 24, right: 24, bottom: 32),
         child: Column(
           children: [
-            Image.asset(
-              Assets.logos('inventara'),
+            Container(
+              padding: const EdgeInsets.all(40),
               height: 250,
               width: 250,
+              child: Image.asset(
+                Assets.logos('IAe'),
+                height: 200,
+                width: 200,
+              ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
