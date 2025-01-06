@@ -1,9 +1,11 @@
+import 'package:app_links/app_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:inventara/constants/themes.dart';
+import 'package:inventara/deep_link_listeners.dart';
 import 'package:inventara/router.dart';
 import 'package:inventara/structures/barang.dart';
 import 'package:inventara/structures/detail_peminjaman.dart';
@@ -66,13 +68,16 @@ Future<void> main() async {
 
   await initializeDateFormatting('id_ID', null);
 
-  runApp(const App());
+  final appLinks = AppLinks();
+
+  runApp(App(appLinks: appLinks));
 }
 
 class App extends StatelessWidget {
   static final api = ApiClient(http.Client());
+  final AppLinks appLinks;
 
-  const App({super.key});
+  const App({super.key, required this.appLinks});
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +86,9 @@ class App extends StatelessWidget {
       routerConfig: appRouter,
       theme: mainTheme,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return DeepLinkListener(appLinks: appLinks, child: child!);
+      },
     );
   }
 }

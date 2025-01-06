@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:inventara/deep_link_listeners.dart';
 import 'package:inventara/page/gedung.dart';
 import 'package:inventara/page/beranda.dart';
 import 'package:inventara/page/konfirmasi_kendaraan.dart';
@@ -17,7 +16,7 @@ final appRouter = GoRouter(initialLocation: '/Login', routes: [
   GoRoute(path: '/Login', builder: (context, state) => const Login()),
   GoRoute(
       path: '/Beranda',
-      builder: (context, state) => DeepLinkListener(child: const Beranda())),
+      builder: (context, state) => const Beranda()),
   GoRoute(path: '/Riwayat', builder: (context, state) => const Riwayat()),
   GoRoute(
       path: '/Notifikasi',
