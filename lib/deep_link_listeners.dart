@@ -16,7 +16,8 @@ class DeepLinkListener extends StatefulWidget {
   final Widget child;
   final AppLinks appLinks;
 
-  const DeepLinkListener({super.key, required this.child, required this.appLinks});
+  const DeepLinkListener(
+      {super.key, required this.child, required this.appLinks});
 
   @override
   State<DeepLinkListener> createState() => _DeepLinkListenerState();
@@ -53,7 +54,8 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
           if (mounted) {
             appRouter.push('/gedung?id=$tempatId&rId=${ruangan.id}');
             if (mounted) {
-              appRouter.push('/ruangan?id=${ruangan.id}&category=ruangan&index=$id');
+              appRouter
+                  .push('/ruangan?id=${ruangan.id}&category=ruangan&index=$id');
             }
           }
         }
@@ -66,7 +68,8 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
           var tempat = await readTempatbyId(kendaraan!.tempatId, context);
           int tempatId = tempat!.id;
           if (mounted) {
-            appRouter.push('/ruangan?id=$tempatId&category=kendaraan&index=$id');
+            appRouter
+                .push('/ruangan?id=$tempatId&category=kendaraan&index=$id');
           }
         }
       }

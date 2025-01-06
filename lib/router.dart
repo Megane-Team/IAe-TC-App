@@ -14,9 +14,7 @@ import 'package:inventara/page/detail_peminjaman.dart';
 
 final appRouter = GoRouter(initialLocation: '/Login', routes: [
   GoRoute(path: '/Login', builder: (context, state) => const Login()),
-  GoRoute(
-      path: '/Beranda',
-      builder: (context, state) => const Beranda()),
+  GoRoute(path: '/Beranda', builder: (context, state) => const Beranda()),
   GoRoute(path: '/Riwayat', builder: (context, state) => const Riwayat()),
   GoRoute(
       path: '/Notifikasi',
