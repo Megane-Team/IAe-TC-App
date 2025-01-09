@@ -26,6 +26,7 @@ class UserAdapter extends TypeAdapter<User> {
       photo: fields[6] as String?,
       phone: fields[7] as String,
       createdAt: fields[8] as DateTime,
+      nik: fields[9] as String,
     );
   }
 
@@ -50,7 +51,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(7)
       ..write(obj.phone)
       ..writeByte(8)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(9)
+      ..write(obj.nik);
   }
 
   @override

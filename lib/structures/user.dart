@@ -23,6 +23,8 @@ class User {
   late String phone;
   @HiveField(8)
   late DateTime createdAt;
+  @HiveField(9)
+  late String nik;
 
   User(
       {required this.id,
@@ -33,12 +35,14 @@ class User {
       required this.address,
       required this.photo,
       required this.phone,
-      required this.createdAt});
+      required this.createdAt,
+      required this.nik});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
         id: json['id'],
         name: json['name'],
+        nik: json['nik'],
         email: json['email'],
         role: Role.values
             .firstWhere((e) => e.toString() == 'Role.${json['role']}'),
