@@ -26,18 +26,18 @@ class User {
   @HiveField(9)
   late DateTime createdAt;
 
-
-  User(
-      {required this.id,
-      required this.name,
-      required this.nik,
-      required this.email,
-      required this.role,
-      required this.unit,
-      required this.address,
-      required this.photo,
-      required this.phone,
-      required this.createdAt,});
+  User({
+    required this.id,
+    required this.name,
+    required this.nik,
+    required this.email,
+    required this.role,
+    required this.unit,
+    required this.address,
+    required this.photo,
+    required this.phone,
+    required this.createdAt,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
