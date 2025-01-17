@@ -10,33 +10,34 @@ class User {
   @HiveField(1)
   late String name;
   @HiveField(2)
-  late String? email;
-  @HiveField(3)
-  late Role? role;
-  @HiveField(4)
-  late String unit;
-  @HiveField(5)
-  late String address;
-  @HiveField(6)
-  late String? photo;
-  @HiveField(7)
-  late String phone;
-  @HiveField(8)
-  late DateTime createdAt;
-  @HiveField(9)
   late String nik;
+  @HiveField(3)
+  late String? email;
+  @HiveField(4)
+  late Role? role;
+  @HiveField(5)
+  late String unit;
+  @HiveField(6)
+  late String address;
+  @HiveField(7)
+  late String? photo;
+  @HiveField(8)
+  late String phone;
+  @HiveField(9)
+  late DateTime createdAt;
+
 
   User(
       {required this.id,
       required this.name,
+      required this.nik,
       required this.email,
       required this.role,
       required this.unit,
       required this.address,
       required this.photo,
       required this.phone,
-      required this.createdAt,
-      required this.nik});
+      required this.createdAt,});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(

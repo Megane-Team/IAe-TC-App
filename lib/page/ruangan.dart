@@ -480,7 +480,7 @@ class RuanganState extends State<Ruangan> {
                                                                               child: ClipRRect(
                                                                                 borderRadius: BorderRadius.circular(10),
                                                                                 child: FutureBuilder<Widget>(
-                                                                                    future: Assets.barang(barang[index2].photo ?? ''),
+                                                                                    future: Assets.barang(items[index2].photo ?? ''),
                                                                                     builder: (context, snapshot) {
                                                                                       if (snapshot.connectionState == ConnectionState.waiting) {
                                                                                         return const CircularProgressIndicator(); // Show a loading indicator while waiting
@@ -502,7 +502,7 @@ class RuanganState extends State<Ruangan> {
                                                                                 CrossAxisAlignment.start,
                                                                             children: [
                                                                               Text(
-                                                                                items[index2].code,
+                                                                                '${items[index2].name} ${index2 + 1}',
                                                                                 style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                                                                               ),
                                                                               Text(
@@ -797,7 +797,7 @@ class RuanganState extends State<Ruangan> {
                                                                                 ClipRRect(
                                                                               borderRadius: BorderRadius.circular(10),
                                                                               child: FutureBuilder<Widget>(
-                                                                                  future: Assets.kendaraan(kendaraan[index2].photo ?? ''),
+                                                                                  future: Assets.kendaraan(items[index2].photo ?? ''),
                                                                                   builder: (context, snapshot) {
                                                                                     if (snapshot.connectionState == ConnectionState.waiting) {
                                                                                       return const CircularProgressIndicator(); // Show a loading indicator while waiting
@@ -1013,7 +1013,7 @@ void onPressedBarang(BuildContext context, Barang items) {
                   ),
                 ),
                 const Gap(8),
-                Text(items.code,
+                Text(items.name,
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.w600)),
                 const Gap(4),
